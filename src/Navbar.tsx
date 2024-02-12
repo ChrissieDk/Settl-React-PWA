@@ -9,6 +9,7 @@ import {
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { useNavigate } from "react-router-dom";
+import logo from "./img/settl_logo1.png";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
@@ -84,14 +85,9 @@ export function StickyNavbar() {
         placeholder={undefined}
       >
         <div className="flex items-center justify-between text-blue-gray-900">
-          <Typography
-            as="a"
-            href="#"
-            className="mr-4 cursor-pointer py-1.5 font-bold"
-            placeholder={undefined}
-          >
-            Settl
-          </Typography>
+          <a href="/">
+            <img className="h-10 w-6" src={logo} />
+          </a>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
