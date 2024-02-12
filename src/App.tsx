@@ -13,7 +13,7 @@ const App: React.FC = () => {
         <StickyNavbar />
         <Routes>
           {/* <Route path="/homepage" element={<HomePage />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/SignUp" element={<SignUp />} />
         </Routes>
       </Router>
