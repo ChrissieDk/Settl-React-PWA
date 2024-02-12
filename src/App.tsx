@@ -5,6 +5,7 @@ import { StickyNavbar } from "./Navbar";
 import Dashboard from "./Dashboard";
 import SignUp from "./components/SignUp/SignUp";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./HomePage";
 
 const App: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ const App: React.FC = () => {
       <Router>
         <StickyNavbar />
         <Routes>
-          {/* <Route path="/homepage" element={<HomePage />} /> */}
+          <Route path="/" element={<HomePage />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/SignUp" element={<SignUp />} />
         </Routes>
