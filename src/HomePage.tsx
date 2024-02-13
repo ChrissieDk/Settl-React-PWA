@@ -3,15 +3,16 @@ import phoneImage from "./img/HP_Phones.png";
 
 const HomePage = () => {
   return (
-    <div className="p-8 lg:pt-20 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+    <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
       <div className="flex flex-col lg:flex-row w-full">
         <div className="lg:w-1/2 pt-4">
           {/* Content for the first half of the page */}
-          <h1 className="font-medium  text-4xl lg:text-7xl text-left ">
-            Welcome to Settl: Where Health Meets Freedom
+          <h1 className="font-medium  text-4xl lg:text-7xl text-left  text-blue-700">
+            Welcome to <span className="text-orange-400">Settl</span>: Where
+            Health Meets <span className="text-orange-400">Freedom</span>.
           </h1>
           <div className="lg:pt-10">
-            <p className="lg:p-2 text-left">
+            <p className="lg:p-2 text-left text-blue-700">
               Say goodbye to medical bills and embrace a future of wellness with
               our revolutionary tokens. With Settl tokens, embrace a future
               where your health is secured without the burdens of insurance
