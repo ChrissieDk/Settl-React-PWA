@@ -52,13 +52,11 @@ export function StickyNavbar() {
   const navigateToSignUp = () => {
     console.log("Navigate to sign-up page or open sign-up modal");
     navigate("/signup");
-    // Implement navigation or modal opening logic here
   };
 
   // Placeholder function for sign-in navigation or modal
   const navigateToSignIn = () => {
     console.log("Navigate to sign-in page or open sign-in modal");
-    // Implement navigation or modal opening logic here
   };
 
   const navList = (
