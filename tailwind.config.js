@@ -145,6 +145,10 @@ module.exports = withMT({
         DEFAULT: "5px 5px",
         large: "10px 10px",
       },
+      fontSize: {
+        "custom-icon-large": "100px",
+        "custom-icon-small": "80px",
+      },
 
       colors: {
         black: "#141520",

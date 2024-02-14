@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import phoneImage from "./img/HP_Phones.png";
 import { FaSliders } from "react-icons/fa6";
@@ -7,25 +7,43 @@ import { LuHeartHandshake } from "react-icons/lu";
 
 const blockText = [
   {
-    description:
-      "Build your customised healthcare package. Add beneficiaries so that they can use it too!",
-    icon: <FaSliders color="white" size={100} />,
+    description: "Build your customised healthcare package.",
+    IconComponent: FaSliders,
     id: "1",
   },
   {
-    description:
-      "Access, manage and view total cover based on your selected package.",
-    icon: <GrUserSettings color="white" size={100} />,
+    description: "Access, manage and view total cover.",
+    IconComponent: GrUserSettings,
     id: "2",
   },
   {
     description: "Feel empowered by tailoring your own healthcare coverage.",
-    icon: <LuHeartHandshake color="white" size={100} />,
+    IconComponent: LuHeartHandshake,
     id: "3",
   },
 ];
 
+// interface Block {
+//   description: string;
+//   IconComponent: React.ElementType;
+//   id: string;
+// }
+
 const HomePage = () => {
+  const [iconSize, setIconSize] = useState(100);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Adjust this logic based on your specific responsive breakpoints
+      setIconSize(window.innerWidth < 768 ? 40 : 100);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       {/* Hero section */}
@@ -54,7 +72,7 @@ const HomePage = () => {
           <div className="flex lg:w-1/2">
             {/* Content for the second half of the page */}
             <img
-              className="pt-2 mx-auto h-[18em] w-auto lg:h-auto"
+              className="pt-10 mx-auto h-[18em] w-auto lg:h-auto"
               src={phoneImage}
               alt="Settl-phone-image"
             />
@@ -86,13 +104,17 @@ const HomePage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="flex flex-col lg:flex-row items-center lg:space-x-4 space-y-4 lg:space-y-0"
+                    className="flex lg:flex-row items-center lg:space-x-4 space-y-4 lg:space-y-0"
                   >
-                    <div className="w-36 h-36 lg:w-36 lg:h-36 p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl">
-                      {block.icon}
+                    <div className="w-16 h-16 lg:w-36 lg:h-36 lg:p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl">
+                      {/* Dynamically render icon with adjusted size */}
+                      {React.createElement(block.IconComponent, {
+                        color: "white",
+                        size: iconSize,
+                      })}
                     </div>
                     <div className="p-2 flex-1 min-w-0">
-                      <p className="text-blue-700 break-words text-xl lg:text-left font-medium">
+                      <p className="text-blue-700 break-words text-sm lg:text-xl text-left font-medium pb-4 lg:pb-0">
                         {block.description}
                       </p>
                     </div>
@@ -106,7 +128,7 @@ const HomePage = () => {
             <img
               src={phoneImage}
               alt="Description"
-              className="max-w-full h-auto"
+              className="max-w-full pt-10 mx-auto h-[18em] w-auto lg:h-auto"
             />
           </div>
         </div>
