@@ -44,8 +44,48 @@ const chips = [
 //   id: string;
 // }
 
+const useTypingEffect = (
+  words: any,
+  typingSpeed = 120,
+  deletingSpeed = 50,
+  delay = 1800
+) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setReverse(true);
+      setTimeout(() => setSubIndex(subIndex - 1), delay);
+      return;
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(
+      () => {
+        setText(words[index].substring(0, subIndex));
+        setSubIndex((prevSubIndex) => prevSubIndex + (reverse ? -1 : 1));
+      },
+      reverse ? deletingSpeed : typingSpeed
+    );
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words, typingSpeed, deletingSpeed, delay]);
+
+  return text;
+};
+
 const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
+  const dynamicWords = ["Freedom", "Flexibility", "Choice"];
+  const dynamicText = useTypingEffect(dynamicWords);
 
   useEffect(() => {
     const handleResize = () => {
@@ -66,9 +106,10 @@ const HomePage = () => {
         <div className="flex flex-col lg:flex-row w-full">
           <div className="lg:w-1/2 lg:pt-10">
             {/* Content for the first half of the page */}
-            <h1 className="font-medium  text-4xl lg:text-7xl text-left  text-blue-700">
+            <h1 className="font-medium text-4xl lg:text-7xl text-left text-blue-700">
               Welcome to <span className="text-orange-400">Settl</span>: Where
-              Health Meets <span className="text-orange-400">Freedom</span>.
+              Health Meets{" "}
+              <span className="text-orange-400">{dynamicText}</span>.
             </h1>
             <div className="lg:pt-10">
               <p className="pt-2 text-left text-blue-700">
@@ -165,7 +206,18 @@ const HomePage = () => {
             />
           ))}
         </div>
-        <div></div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* First Group of Three Blocks */}
+          <div className="bg-blue-500 rounded-lg p-4">Block 1</div>
+          <div className="bg-blue-500 rounded-lg p-4">Block 2</div>
+          <div className="bg-blue-500 rounded-lg p-4">Block 3</div>
+
+          {/* Second Group of Three Blocks */}
+          <div className="bg-blue-500 rounded-lg p-4">Block 4</div>
+          <div className="bg-blue-500 rounded-lg p-4">Block 5</div>
+          <div className="bg-blue-500 rounded-lg p-4">Block 6</div>
+        </div>
       </section>
     </>
   );
