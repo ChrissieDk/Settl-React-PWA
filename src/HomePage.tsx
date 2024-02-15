@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 //images and icons
 import chip1 from "./img/1.png";
@@ -53,6 +55,12 @@ const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
   const dynamicText = useTypingEffect(dynamicWords);
+  const [value, setValue] = useState(0);
+
+  const OnChangeEventTriggerd = (newValue: any) => {
+    console.log("new Value", newValue);
+    setValue(newValue);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -151,6 +159,50 @@ const HomePage = () => {
           <div className="grid lg:grid-cols-1 grid-cols-1 gap-4 w-full">
             <BlocksContainer />
           </div>
+        </div>
+      </section>
+
+      {/* Its as easy as... */}
+      <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+        <h1 className="text-blue-700 font-medium text-4xl lg:text-7xl text-left">
+          It's as <span className="text-orange-400">easy</span> as..
+        </h1>
+        <div className="lg:w-1/2 p-4 gap-32">
+          <div className="mb-2">
+            <Slider
+              value={value}
+              onChange={OnChangeEventTriggerd}
+              min={0}
+              max={500}
+            />
+          </div>
+          <div>
+            <Slider
+              value={value}
+              onChange={OnChangeEventTriggerd}
+              min={0}
+              max={500}
+            />
+          </div>
+          <div>
+            <Slider
+              value={value}
+              onChange={OnChangeEventTriggerd}
+              min={0}
+              max={500}
+            />
+          </div>
+          <div>
+            <Slider
+              value={value}
+              onChange={OnChangeEventTriggerd}
+              min={0}
+              max={500}
+            />
+          </div>
+        </div>
+        <div className="lg:w-1/2">
+          {/* <Slider defaultValue={60} min={0} max={500} /> */}
         </div>
       </section>
     </>
