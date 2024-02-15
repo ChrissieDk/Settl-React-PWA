@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
+import HeroSection from "./components/HeroSection/HeroSection";
 import phoneImage from "./img/HP_Phones.png";
 import chip1 from "./img/1.png";
 import chip2 from "./img/2.png";
@@ -44,44 +46,6 @@ const chips = [
 //   id: string;
 // }
 
-const useTypingEffect = (
-  words: any,
-  typingSpeed = 120,
-  deletingSpeed = 50,
-  delay = 1800
-) => {
-  const [index, setIndex] = useState(0);
-  const [subIndex, setSubIndex] = useState(0);
-  const [reverse, setReverse] = useState(false);
-  const [text, setText] = useState("");
-
-  useEffect(() => {
-    if (subIndex === words[index].length + 1 && !reverse) {
-      setReverse(true);
-      setTimeout(() => setSubIndex(subIndex - 1), delay);
-      return;
-    }
-
-    if (subIndex === 0 && reverse) {
-      setReverse(false);
-      setIndex((prevIndex) => (prevIndex + 1) % words.length);
-      return;
-    }
-
-    const timeout = setTimeout(
-      () => {
-        setText(words[index].substring(0, subIndex));
-        setSubIndex((prevSubIndex) => prevSubIndex + (reverse ? -1 : 1));
-      },
-      reverse ? deletingSpeed : typingSpeed
-    );
-
-    return () => clearTimeout(timeout);
-  }, [subIndex, index, reverse, words, typingSpeed, deletingSpeed, delay]);
-
-  return text;
-};
-
 const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
@@ -104,35 +68,7 @@ const HomePage = () => {
       {/* Hero section */}
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row w-full">
-          <div className="lg:w-1/2 lg:pt-10">
-            {/* Content for the first half of the page */}
-            <h1 className="font-medium text-4xl lg:text-7xl text-left text-blue-700">
-              Welcome to <span className="text-orange-400">Settl</span>: Where
-              Health Meets{" "}
-              <span className="text-orange-400">{dynamicText}</span>.
-            </h1>
-            <div className="lg:pt-10">
-              <p className="pt-2 text-left text-blue-700">
-                Say goodbye to medical bills and embrace a future of wellness
-                with our revolutionary tokens. With Settl tokens, embrace a
-                future where your health is secured without the burdens of
-                insurance premiums and bills.
-              </p>
-            </div>
-            <div className="pt-4 pb-4 lg:pt-10 lg:pb-2 flex justify-center lg:justify-start">
-              <button className="w-2/3 p-4 border shadow-md rounded-xl lg:w-1/2 bg-orange-400 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out">
-                <h1 className="lg:text-xl font-medium">HOW IT WORKS</h1>
-              </button>
-            </div>
-          </div>
-          <div className="flex lg:w-1/2">
-            {/* Content for the second half of the page */}
-            <img
-              className="pt-10 mx-auto h-[18em] w-auto lg:h-auto"
-              src={phoneImage}
-              alt="Settl-phone-example"
-            />
-          </div>
+          <HeroSection dynamicText={dynamicText} />
         </div>
         {/* Interested button - always visible */}
         <button className="fixed bottom-4 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-700 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
