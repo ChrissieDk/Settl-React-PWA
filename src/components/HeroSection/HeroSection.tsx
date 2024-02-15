@@ -3,7 +3,7 @@ import React from "react";
 import phoneImage from "../../img/HP_Phones.png";
 
 interface HeroSectionProps {
-  dynamicText: string; // Assuming dynamicText is a string
+  dynamicText: string;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
@@ -29,18 +29,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
             </button>
           </div>
         </div>
-        <div className="flex lg:w-1/2 mx-auto">
+        <div className="flex lg:w-1/2 pt-5 pb-5">
           <img
-            className="pt-10 mx-auto h-[18em] w-auto lg:h-auto"
+            className=" mx-auto h-[18em] w-auto lg:h-[30rem]"
             src={phoneImage}
             alt="Settl-phone-example"
           />
         </div>
       </div>
-      {/* Interested button */}
-      <button className="fixed bottom-4 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-700 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
-        <h1 className="pl-6 pr-2">I'm interested</h1>
-      </button>
     </section>
   );
 };

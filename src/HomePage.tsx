@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
-import HeroSection from "./components/HeroSection/HeroSection";
-import phoneImage from "./img/HP_Phones.png";
+
+//images and icons
 import chip1 from "./img/1.png";
 import chip2 from "./img/2.png";
 import chip3 from "./img/3.png";
@@ -12,6 +12,9 @@ import chip6 from "./img/6.png";
 import { FaSliders } from "react-icons/fa6";
 import { GrUserSettings } from "react-icons/gr";
 import { LuHeartHandshake } from "react-icons/lu";
+import HeroSection from "./components/HeroSection/HeroSection";
+import phoneImage from "./img/HP_Phones.png";
+import BlocksContainer from "./components/Block/BlockContainer";
 
 const blockText = [
   {
@@ -71,7 +74,7 @@ const HomePage = () => {
           <HeroSection dynamicText={dynamicText} />
         </div>
         {/* Interested button - always visible */}
-        <button className="fixed bottom-4 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-700 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
+        <button className="fixed bottom-10 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-700 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
           <h1 className="pl-6 pr-2">I'm interested</h1>
         </button>
       </section>
@@ -83,8 +86,8 @@ const HomePage = () => {
             {/* Adjusted for vertical layout */}
             <div>
               <h1 className="font-medium text-4xl lg:text-7xl text-left text-blue-700">
-                <span className="text-orange-400 ">Take control</span> <br /> of
-                your money and health.
+                <span className="text-orange-400 ">Take control</span> of your
+                money and health.
               </h1>
             </div>
             {/* Blocks Container - Directly below the text, still within the left side */}
@@ -116,11 +119,11 @@ const HomePage = () => {
             </div>
           </div>
           {/* Placeholder image on the right side */}
-          <div className="lg:w-1/2 flex justify-center items-center">
+          <div className="lg:w-1/2 flex justify-center items-center pt-5 pb-5">
             <img
               src={phoneImage}
               alt="Description"
-              className="max-w-full pt-10 mx-auto h-[18em] w-auto lg:h-auto"
+              className="max-w-full mx-auto h-[18em] w-auto lg:h-[30rem]"
             />
           </div>
         </div>
@@ -129,7 +132,7 @@ const HomePage = () => {
       {/* How it works */}
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
         <h1 className="font-medium text-4xl lg:text-7xl text-blue-700 lg:pb-4">
-          How it works:
+          How it works<span className="text-orange-400"> :</span>
         </h1>
 
         <div className="hidden lg:grid grid-cols-6 gap-4 mt-8">
@@ -143,16 +146,11 @@ const HomePage = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* First Group of Three Blocks */}
-          <div className="bg-blue-500 rounded-lg p-4">Block 1</div>
-          <div className="bg-blue-500 rounded-lg p-4">Block 2</div>
-          <div className="bg-blue-500 rounded-lg p-4">Block 3</div>
-
-          {/* Second Group of Three Blocks */}
-          <div className="bg-blue-500 rounded-lg p-4">Block 4</div>
-          <div className="bg-blue-500 rounded-lg p-4">Block 5</div>
-          <div className="bg-blue-500 rounded-lg p-4">Block 6</div>
+        {/* First Group of Three Blocks */}
+        <div className="pt-10">
+          <div className="grid lg:grid-cols-1 grid-cols-1 gap-4 w-full">
+            <BlocksContainer />
+          </div>
         </div>
       </section>
     </>
