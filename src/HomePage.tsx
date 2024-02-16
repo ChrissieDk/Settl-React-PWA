@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { Tooltip } from "@material-tailwind/react";
 
 //images and icons
 import chip1 from "./img/1.png";
@@ -14,8 +15,13 @@ import chip6 from "./img/6.png";
 import { FaSliders } from "react-icons/fa6";
 import { GrUserSettings } from "react-icons/gr";
 import { LuHeartHandshake } from "react-icons/lu";
+import { FaUserDoctor } from "react-icons/fa6";
+import { LiaToothSolid } from "react-icons/lia";
+import { PiEyeThin } from "react-icons/pi";
+import { GiMedicinePills } from "react-icons/gi";
 import HeroSection from "./components/HeroSection/HeroSection";
 import phoneImage from "./img/HP_Phones.png";
+import planBg from "./img/image3.png";
 import BlocksContainer from "./components/Block/BlockContainer";
 
 const blockText = [
@@ -80,6 +86,7 @@ const HomePage = () => {
       setValues(updatedValues);
     }
   };
+  const totalValue = values.reduce((acc, current) => acc + current, 0);
 
   const sliderWidth = 450; // Assume you've dynamically determined this
   const handleWidth = 20; // The width of your handle
@@ -205,8 +212,11 @@ const HomePage = () => {
             set the desired payment amount, then click for instant results!
           </p>
         </div>
-        <div className="lg:w-1/2 p-10 gap-32">
-          <div className="mb-2">
+
+        {/* Flex container for sliders and image */}
+        <div className="flex flex-col lg:flex-row">
+          {/* Sliders container */}
+          <div className="lg:w-1/2 p-10 gap-32">
             {values.map((value, index) => (
               <div key={index} className="mb-8">
                 {/* Header above the Slider */}
@@ -229,24 +239,24 @@ const HomePage = () => {
                     value={value}
                     min={0}
                     max={1500}
-                    step={0.5}
+                    step={1}
                     onChange={(newValue) =>
                       onChangeEventTriggered(index, newValue)
                     }
                     className="flex-grow"
                   />
                   {/* Tooltip for displaying the current value */}
-                  <div
+                  {/* <div
                     style={{
                       position: "absolute",
-                      left: `${calculateLeftPosition(value, 1500)}px`,
-                      bottom: "30px", // Adjust based on your slider's handle size
-                      zIndex: 2, // Ensure it's above the slider
+                      left: `${calculateLeftPosition(value, 1500)}px`, // You need to define this function
+                      bottom: "30px",
+                      zIndex: 2,
                     }}
                     className="w-20 h-10 flex justify-center items-center border-2 border-orange-400 text-sm rounded-xl "
                   >
                     R {value}
-                  </div>
+                  </div> */}
                   {/* Value display box to the right of the slider */}
                   <div className="ml-4 w-20 h-10 flex justify-center items-center border-2 border-orange-400 text-sm rounded-xl">
                     R {value}
@@ -255,10 +265,58 @@ const HomePage = () => {
               </div>
             ))}
           </div>
-        </div>
 
-        <div className="lg:w-1/2">
-          {/* <Slider defaultValue={60} min={0} max={500} /> */}
+          {/* Image container */}
+          <div
+            style={{
+              backgroundImage: `url(${planBg})`,
+              backgroundSize: " 120%",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+            className="flex lg:w-1/2"
+          >
+            <div className="relative h-96 w-3/4 lg:w-[45%] lg:h-[92%] mx-auto my-auto rounded-2xl shadow-2xl flex flex-col items-center justify-center">
+              {/* Semi-transparent background */}
+              <div className="absolute inset-0 bg-orange-400 opacity-70 rounded-2xl"></div>
+
+              {/* Content */}
+              <div className="px-3 py-4 w-full text-center relative z-10">
+                <h1 className="pb-6 lg:text-3xl font-bold text-white">
+                  Your Plan Value Is
+                </h1>
+                <div className="pt-10 bg-blue-500 rounded-full w-1/2 h-32 mx-auto flex items-center justify-center">
+                  <h1 className="text-center mb-8 text-white text-2xl font-semibold">
+                    R {totalValue}
+                  </h1>
+                </div>
+                <ul className="text-left w-full pt-4 text-lg">
+                  <h1 className="lg:text-xl font-bold text-white">Benefits</h1>
+                  <div className="pl-2">
+                    <li className="flex items-center">
+                      <FaUserDoctor className="mr-2 text-white" />{" "}
+                      <span className="text-white">R {values[0]}</span>
+                    </li>
+                    <li className="flex items-center">
+                      <LiaToothSolid className="mr-2 text-white" />{" "}
+                      <span className="text-white">R {values[1]}</span>
+                    </li>
+                    <li className="flex items-center">
+                      <PiEyeThin className="mr-2 text-white" />{" "}
+                      <span className="text-white">R {values[2]}</span>
+                    </li>
+                    <li className="flex items-center">
+                      <GiMedicinePills className="mr-2 text-white" />{" "}
+                      <span className="text-white">R {values[3]}</span>
+                    </li>
+                  </div>
+                </ul>
+              </div>
+              <button className="w-auto p-2 ml-2 mr-2 border shadow-md rounded-xl lg:w-auto bg-gray-600 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out relative z-10">
+                <h1 className="lg:text-lg font-medium">I'M INTERESTED</h1>
+              </button>
+            </div>
+          </div>
         </div>
       </section>
       {/* Effortlessly customize your choices with the slider.
