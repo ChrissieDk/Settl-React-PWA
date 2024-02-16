@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Settl-React-PWA/static/css/main.4eaf59ba.css",
-    "main.js": "/Settl-React-PWA/static/js/main.2b8298db.js",
+    "main.js": "/Settl-React-PWA/static/js/main.04b75e15.js",
     "static/media/image3.png": "/Settl-React-PWA/static/media/image3.e57a5f0e83aa55e20f53.png",
     "static/media/HP_Phones.png": "/Settl-React-PWA/static/media/HP_Phones.2c9a37ca8e5b99999f2b.png",
     "static/media/3.png": "/Settl-React-PWA/static/media/3.a0de40d6943f9bb63976.png",
@@ -14,10 +14,10 @@
     "service-worker.js": "/Settl-React-PWA/service-worker.js",
     "index.html": "/Settl-React-PWA/index.html",
     "main.4eaf59ba.css.map": "/Settl-React-PWA/static/css/main.4eaf59ba.css.map",
-    "main.2b8298db.js.map": "/Settl-React-PWA/static/js/main.2b8298db.js.map"
+    "main.04b75e15.js.map": "/Settl-React-PWA/static/js/main.04b75e15.js.map"
   },
   "entrypoints": [
     "static/css/main.4eaf59ba.css",
-    "static/js/main.2b8298db.js"
+    "static/js/main.04b75e15.js"
   ]
 }
