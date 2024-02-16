@@ -10,7 +10,7 @@ import HomePage from "./HomePage";
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Router>
+      <Router basename="/Settl-React-PWA">
         <StickyNavbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
