@@ -20,17 +20,20 @@ import BlocksContainer from "./components/Block/BlockContainer";
 
 const blockText = [
   {
-    description: "Build your customised healthcare package.",
+    description:
+      "Build your customised healthcare package. Lorem ipsum dolor sit amet, consectetur adipiscing.",
     IconComponent: FaSliders,
     id: "1",
   },
   {
-    description: "Access, manage and view total cover.",
+    description:
+      "Access, manage and view total cover. Lorem ipsum dolor sit amet, consectetur adipiscing.",
     IconComponent: GrUserSettings,
     id: "2",
   },
   {
-    description: "Feel empowered by tailoring your own healthcare coverage.",
+    description:
+      "Feel empowered by tailoring your own healthcare coverage. Lorem ipsum dolor sit amet, consectetur adipiscing.",
     IconComponent: LuHeartHandshake,
     id: "3",
   },
@@ -45,6 +48,8 @@ const chips = [
   { src: chip6, alt: "Step 6" },
 ];
 
+const sliderHeaders = ["GP", "Optometry", "Dentistry", "OTC"];
+
 // interface Block {
 //   description: string;
 //   IconComponent: React.ElementType;
@@ -56,11 +61,38 @@ const HomePage = () => {
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
   const dynamicText = useTypingEffect(dynamicWords);
   const [value, setValue] = useState(0);
+  const [values, setValues] = useState<number[]>([0, 0, 0, 0]); // values for slider
 
-  const OnChangeEventTriggerd = (newValue: any) => {
-    console.log("new Value", newValue);
-    setValue(newValue);
+  const onChangeEventTriggered = (
+    index: number,
+    newValue: number | number[]
+  ) => {
+    // Check if newValue is an array and handle accordingly
+    if (Array.isArray(newValue)) {
+      // Handle the case where newValue is an array (e.g., for range sliders)
+      // This might involve updating your state differently
+      console.log("Received an array of values", newValue);
+    } else {
+      // Handle the case where newValue is a single number
+      const updatedValues = values.map((value, i) =>
+        i === index ? newValue : value
+      );
+      setValues(updatedValues);
+    }
   };
+
+  const sliderWidth = 450; // Assume you've dynamically determined this
+  const handleWidth = 20; // The width of your handle
+
+  const calculateLeftPosition = (value: number, maxValue: number) => {
+    const trackWidth = sliderWidth - handleWidth;
+    const positionRatio = value / maxValue;
+    return trackWidth * positionRatio - handleWidth / 2; // Adjust based on handle's alignment
+  };
+
+  useEffect(() => {
+    console.log("Component updated, current values:", values);
+  }, [values]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -117,7 +149,7 @@ const HomePage = () => {
                       })}
                     </div>
                     <div className="p-2 flex-1 min-w-0">
-                      <p className="text-blue-700 break-words text-sm lg:text-2xl text-left font-medium pb-4 lg:pb-0">
+                      <p className="text-blue-700 break-words text-sm lg:text-xl text-left font-medium lg:pb-0">
                         {block.description}
                       </p>
                     </div>
@@ -167,44 +199,71 @@ const HomePage = () => {
         <h1 className="text-blue-700 font-medium text-4xl lg:text-7xl text-left">
           It's as <span className="text-orange-400">easy</span> as..
         </h1>
-        <div className="lg:w-1/2 p-4 gap-32">
+        <div className="lg:pt-10">
+          <p className="pt-2 text-left text-blue-700">
+            Effortlessly customize your choices with the slider. Just slide to
+            set the desired payment amount, then click for instant results!
+          </p>
+        </div>
+        <div className="lg:w-1/2 p-10 gap-32">
           <div className="mb-2">
-            <Slider
-              value={value}
-              onChange={OnChangeEventTriggerd}
-              min={0}
-              max={500}
-            />
-          </div>
-          <div>
-            <Slider
-              value={value}
-              onChange={OnChangeEventTriggerd}
-              min={0}
-              max={500}
-            />
-          </div>
-          <div>
-            <Slider
-              value={value}
-              onChange={OnChangeEventTriggerd}
-              min={0}
-              max={500}
-            />
-          </div>
-          <div>
-            <Slider
-              value={value}
-              onChange={OnChangeEventTriggerd}
-              min={0}
-              max={500}
-            />
+            {values.map((value, index) => (
+              <div key={index} className="mb-8">
+                {/* Header above the Slider */}
+                <div className="mb-2 text-xl text-black text-left">
+                  {sliderHeaders[index]}
+                </div>
+                {/* Slider and value display container */}
+                <div className="relative flex items-center">
+                  <Slider
+                    trackStyle={{ backgroundColor: "blue", height: 7 }}
+                    railStyle={{ backgroundColor: "lightblue", height: 7 }}
+                    handleStyle={{
+                      borderColor: "blue",
+                      height: 15,
+                      width: 15,
+                      marginLeft: 5,
+                      marginTop: -5,
+                      backgroundColor: "blue",
+                    }}
+                    value={value}
+                    min={0}
+                    max={1500}
+                    step={0.5}
+                    onChange={(newValue) =>
+                      onChangeEventTriggered(index, newValue)
+                    }
+                    className="flex-grow"
+                  />
+                  {/* Tooltip for displaying the current value */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: `${calculateLeftPosition(value, 1500)}px`,
+                      bottom: "30px", // Adjust based on your slider's handle size
+                      zIndex: 2, // Ensure it's above the slider
+                    }}
+                    className="w-20 h-10 flex justify-center items-center border-2 border-orange-400 text-sm rounded-xl "
+                  >
+                    R {value}
+                  </div>
+                  {/* Value display box to the right of the slider */}
+                  <div className="ml-4 w-20 h-10 flex justify-center items-center border-2 border-orange-400 text-sm rounded-xl">
+                    R {value}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+
         <div className="lg:w-1/2">
           {/* <Slider defaultValue={60} min={0} max={500} /> */}
         </div>
       </section>
+      {/* Effortlessly customize your choices with the slider.
+Just slide to set the desired payment amount, then click for
+instant results! */}
     </>
   );
 };
