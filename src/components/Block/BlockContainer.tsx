@@ -21,20 +21,19 @@ const BlocksContainer: React.FC = () => {
     },
     {
       header: "Step 4",
-      subTitle:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      subTitle: "Lorem ipsum dolor sit amet, consectetur adipiscing.",
       extra: "Read more",
     },
     {
       header: "Step 5",
       subTitle:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.",
       extra: "Read more",
     },
     {
       header: "Step 6",
       subTitle:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
       extra: "Read more",
     },
   ];
