@@ -5,31 +5,37 @@ import { FaArrowUp } from "react-icons/fa";
 const AboutUs = () => {
   const faqData = [
     {
+      id: 1,
       question: "What is Lorem Ipsum What is Lorem Ipsum?",
       answer:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     },
     {
+      id: 2,
       question: "Why do we use it What is Lorem Ipsum?",
       answer:
         "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
     },
     {
+      id: 3,
       question: "What is Lorem Ipsum What is Lorem Ipsum",
       answer:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     },
     {
+      id: 4,
       question: "Why do we use it?",
       answer:
         "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
     },
     {
+      id: 5,
       question: "What is Lorem Ipsum What is Lorem Ipsum?",
       answer:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     },
     {
+      id: 6,
       question: "Why do we use it?",
       answer:
         "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout..",
@@ -39,8 +45,8 @@ const AboutUs = () => {
   const [activeItem, setActiveItem] = useState(null);
 
   // Function to toggle accordion item
-  const toggleItem = (index: any) => {
-    setActiveItem(activeItem === index ? null : index);
+  const toggleItem = (id: any) => {
+    setActiveItem(activeItem === id ? null : id);
   };
 
   return (
@@ -49,23 +55,23 @@ const AboutUs = () => {
         Unfold clarity in our FAQ section
       </div>
       <div className="mt-8 lg:px-36 text-lg">
-        {faqData.map((item, index) => (
-          <div key={index} className="mb-4">
+        {faqData.map((item) => (
+          <div key={item.id} className="mb-4">
             <div
-              className={`flex justify-between items-center cursor-pointer rounded-3xl p-6 text-white transition-colors duration-500 ${
-                activeItem === index
+              className={`flex justify-between items-center cursor-pointer rounded-2xl p-6 text-white transition-colors duration-500 ${
+                activeItem === item.id
                   ? "bg-blue-500"
                   : "bg-orange-400 hover:bg-blue-500"
               }`}
-              onClick={() => toggleItem(index)}
+              onClick={() => toggleItem(item.id)}
             >
               <div className="font-semibold">{item.question}</div>
               <div>
-                {activeItem === index ? <FaArrowUp /> : <FaArrowRight />}
+                {activeItem === item.id ? <FaArrowUp /> : <FaArrowRight />}
               </div>
             </div>
-            {activeItem === index && (
-              <div className="mt-2 text-left p-6 text-lg">{item.answer}</div>
+            {activeItem === item.id && (
+              <div className="mt-2 text-left p-2 text-lg">{item.answer}</div>
             )}
           </div>
         ))}
