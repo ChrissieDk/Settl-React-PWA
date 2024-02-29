@@ -1,6 +1,6 @@
 // HeroSection.jsx
 import React from "react";
-import phoneImage from "../../img/HP_Phones.png";
+import phoneImage from "../../../img/HP_Phones.png";
 
 interface HeroSectionProps {
   dynamicText: string;

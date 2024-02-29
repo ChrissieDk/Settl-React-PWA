@@ -68,7 +68,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
         placeholder={undefined}
       >
-        <a href="/" className="flex items-center">
+        <a href="/AboutUs" className="flex items-center">
           <span className="hover:text-blue-500">About Us</span>
         </a>
       </Typography>

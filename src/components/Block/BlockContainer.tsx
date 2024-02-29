@@ -16,7 +16,7 @@ const BlocksContainer: React.FC = () => {
     },
     {
       header: "Step 3",
-      subTitle: "Create your heallth tokens and redeem it at...",
+      subTitle: "Create your health tokens and redeem it at...",
       extra: "Read more",
     },
     {
