@@ -7,6 +7,7 @@ import SignUp from "./components/SignUp/SignUp";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import AboutUs from "./AboutUs";
+import FindNetwork from "./FindNetwork";
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AboutUs" element={<AboutUs />} />
+          <Route path="/FindNetwork" element={<FindNetwork />} />
         </Routes>
       </Router>
     </div>
