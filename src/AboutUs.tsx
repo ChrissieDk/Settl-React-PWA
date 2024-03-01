@@ -50,11 +50,12 @@ const AboutUs = () => {
   };
 
   return (
+    // FAQS
     <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
-      <div className="text-2xl lg:text-5xl font-bold mb-10">
+      <div className="text-2xl lg:text-5xl font-bold mb-10 text-blue-500">
         Unfold clarity in our FAQ section
       </div>
-      <div className="mt-8 lg:px-36 text-lg">
+      <div className="mt-8 lg:px-36 text-lg text-left">
         {faqData.map((item) => (
           <div key={item.id} className="mb-4">
             <div
