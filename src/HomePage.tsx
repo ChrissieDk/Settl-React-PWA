@@ -211,13 +211,13 @@ const HomePage = () => {
                 </div>
                 <div className="relative flex items-center">
                   <Slider
-                    trackStyle={{ backgroundColor: "blue", height: 7 }}
-                    railStyle={{ backgroundColor: "lightblue", height: 7 }}
+                    trackStyle={{ backgroundColor: "blue", height: 8 }}
+                    railStyle={{ backgroundColor: "lightblue", height: 8 }}
                     handleStyle={{
                       borderColor: "blue",
                       height: 15,
                       width: 15,
-                      marginLeft: -7,
+                      marginLeft: -2,
                       marginTop: -4,
                       backgroundColor: "blue",
                     }}
@@ -225,6 +225,7 @@ const HomePage = () => {
                     min={0}
                     max={5}
                     step={1}
+                    dots={true}
                     onChange={(newValue) =>
                       onChangeEventTriggered(index, newValue)
                     }

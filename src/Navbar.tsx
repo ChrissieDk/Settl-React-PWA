@@ -27,7 +27,6 @@ export function StickyNavbar() {
       }
     });
 
-    // Cleanup subscriptions and event listeners
     return () => {
       unregisterAuthObserver();
       window.removeEventListener("resize", () => {
@@ -68,7 +67,7 @@ export function StickyNavbar() {
         className="p-1 font-normal"
         placeholder={undefined}
       >
-        <a href="/AboutUs" className="flex items-center">
+        <a href="/Settl-React-PWA/AboutUs" className="flex items-center">
           <span className="hover:text-blue-500">About Us</span>
         </a>
       </Typography>
@@ -83,7 +82,7 @@ export function StickyNavbar() {
         placeholder={undefined}
       >
         <div className="flex items-center justify-between text-blue-gray-900">
-          <a href="/">
+          <a href="/Settl-React-PWA">
             <img className="h-10 w-6" src={logo} />
           </a>
           <div className="flex items-center gap-4">
