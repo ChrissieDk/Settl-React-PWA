@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import paperPlane from "../src/img/Paper_plane.png";
 
+const services = [
+  {
+    id: 1,
+    service: "gp",
+  },
+  {
+    id: 2,
+    service: "dentist",
+  },
+  {
+    id: 3,
+    service: "optometrist",
+  },
+  {
+    id: 4,
+    service: "pharmacy",
+  },
+];
+
 const FindNetwork = () => {
+  const [activeItem, setActiveItem] = useState(null);
+
+  const toggleItem = (id: any) => {
+    setActiveItem(activeItem === id ? null : id);
+  };
+
   return (
     <section className=" bg-blue-500 min-h-screen">
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
         <div className="w-full lg:w-1/3 text-left">
           {/* Left column content */}
           {/* This is where you can add the content for finding a healthcare provider, search inputs, etc. */}
-          <h1 className="text-xl lg:text-7xl font-bold mb-2 text-white">
+          <h1 className="text-3xl lg:text-7xl font-bold mb-2 text-white">
             Find a Healthcare Provider
           </h1>
           <p className="lg:text-2xl font-bold">
@@ -23,20 +48,36 @@ const FindNetwork = () => {
             <img
               src={paperPlane}
               alt="paper plane illustration"
-              className="absolute h-60 w-[30rem] left-0"
+              className="absolute h-auto w-auto bottom-0 lg:bottom-auto lg:h-60 lg:w-[30rem] left-0"
             />
           </div>
         </div>
         <div className="w-full lg:w-2/3 text-left">
           {/* Right column content */}
-          <div>
+          <div className="lg:pl-2">
             <p className="pb-2">Input address:</p>
             <input
-              className="w-48 rounded-md p-2"
+              className="w-1/2 rounded-md p-2"
               type="text"
               placeholder="Enter your area..."
             />
           </div>
+          <div className="py-2">
+            {services.map((item) => (
+              <button
+                key={item.id}
+                className={`uppercase font-bold justify-between items-center cursor-pointer rounded-md p-2 m-2 text-white min-w-24 transition-colors duration-500  ${
+                  activeItem === item.id
+                    ? "bg-blue-800"
+                    : "bg-orange-400 hover:bg-blue-800"
+                }`}
+                onClick={() => toggleItem(item.id)}
+              >
+                {item.service}
+              </button>
+            ))}
+          </div>
+
           {/* This is where you can place the map and list of healthcare providers */}
           <div className=" mb-4">{/* Insert map here */}</div>
           <div className="">{/* Insert list of providers here */}</div>
