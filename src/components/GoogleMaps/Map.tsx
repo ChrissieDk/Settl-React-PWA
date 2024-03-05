@@ -1,16 +1,34 @@
-// Map.tsx
 import React from "react";
 import GoogleMapReact from "google-map-react";
 
+// Interface for props expected by MapComponent
 interface MapComponentProps {
-  text: string;
   lat: number;
   lng: number;
+  // Additional props like a label or custom styles can be added here
+  text?: string; // Optional text property for future customization
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ text, lat, lng }) => (
-  <div>{text}</div>
-);
+// Updated MapComponent to render a marker
+const MapComponent: React.FC<MapComponentProps> = (props) => {
+  // Custom marker style
+  const markerStyle = {
+    height: "15px",
+    width: "15px",
+    backgroundColor: "#007bff",
+    borderRadius: "50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+  };
+
+  return (
+    <div style={markerStyle}>
+      {props.text} {/* Optional text inside the marker */}
+    </div>
+  );
+};
 
 interface MapProps {
   center: {
@@ -30,7 +48,8 @@ const Map: React.FC<MapProps> = ({ center, zoom }) => {
         defaultCenter={center}
         defaultZoom={zoom}
       >
-        <MapComponent lat={center.lat} lng={center.lng} text="My Marker" />
+        {/* Example usage of MapComponent with an optional text prop */}
+        <MapComponent lat={center.lat} lng={center.lng} text="A" />
       </GoogleMapReact>
     </div>
   );
