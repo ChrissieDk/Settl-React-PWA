@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import paperPlane from "../src/img/Paper_plane.png";
+import Map from "./components/GoogleMaps/Map";
 
 const services = [
   {
@@ -27,6 +28,14 @@ const FindNetwork = () => {
     setActiveItem(activeItem === id ? null : id);
   };
 
+  const defaultProps = {
+    center: {
+      lat: -33.894272,
+      lng: 18.629438,
+    },
+    zoom: 11,
+  };
+
   return (
     <section className=" bg-blue-500 min-h-screen">
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
@@ -52,12 +61,12 @@ const FindNetwork = () => {
             />
           </div>
         </div>
-        <div className="w-full lg:w-2/3 text-left">
+        <div className="w-full lg:w-2/3 text-left pl-4">
           {/* Right column content */}
           <div className="lg:pl-2">
-            <p className="pb-2">Input address:</p>
+            <p className="pt-4 lg:pt-0 pb-2">Input address:</p>
             <input
-              className="w-1/2 rounded-md p-2"
+              className="lg:w-1/2 rounded-md p-2"
               type="text"
               placeholder="Enter your area..."
             />
@@ -78,8 +87,11 @@ const FindNetwork = () => {
             ))}
           </div>
 
-          {/* This is where you can place the map and list of healthcare providers */}
-          <div className=" mb-4">{/* Insert map here */}</div>
+          <div className="h-96 w-full mb-4">
+            {" "}
+            {/* Set the desired height for the map */}
+            <Map center={defaultProps.center} zoom={defaultProps.zoom} />
+          </div>
           <div className="">{/* Insert list of providers here */}</div>
         </div>
       </div>
