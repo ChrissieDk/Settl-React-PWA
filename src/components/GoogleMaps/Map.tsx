@@ -1,33 +1,14 @@
 import React from "react";
-import GoogleMapReact from "google-map-react";
+import {
+  GoogleMap,
+  InfoWindow,
+  Marker,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 
-// Interface for props expected by MapComponent
-interface MapComponentProps {
-  lat: number;
-  lng: number;
-  // Additional props like a label or custom styles can be added here
-  text?: string; // Optional text property for future customization
-}
-
-// Updated MapComponent to render a marker
-const MapComponent: React.FC<MapComponentProps> = (props) => {
-  // Custom marker style
-  const markerStyle = {
-    height: "15px",
-    width: "15px",
-    backgroundColor: "#007bff",
-    borderRadius: "50%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "white",
-  };
-
-  return (
-    <div style={markerStyle}>
-      {props.text} {/* Optional text inside the marker */}
-    </div>
-  );
+const containerStyle = {
+  width: "100%",
+  height: "100%",
 };
 
 interface MapProps {
@@ -36,22 +17,47 @@ interface MapProps {
     lng: number;
   };
   zoom: number;
+  markers: {
+    lat: number;
+    lng: number;
+    text: string;
+  }[];
 }
 
-const Map: React.FC<MapProps> = ({ center, zoom }) => {
-  const apiKey = process.env.REACT_APP_GOOGLE_API_KEY!;
+const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
+  const [selectedMarker, setSelectedMarker] = React.useState<null | {
+    lat: number;
+    lng: number;
+    text: string;
+  }>(null);
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "",
+  });
+
+  if (!isLoaded) return null;
 
   return (
-    <div className="h-full w-full">
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: apiKey }}
-        defaultCenter={center}
-        defaultZoom={zoom}
-      >
-        {/* Example usage of MapComponent with an optional text prop */}
-        <MapComponent lat={center.lat} lng={center.lng} text="A" />
-      </GoogleMapReact>
-    </div>
+    <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={zoom}>
+      {markers.map((marker, index) => (
+        <Marker
+          key={index}
+          position={{ lat: marker.lat, lng: marker.lng }}
+          onClick={() => setSelectedMarker(marker)}
+        >
+          {selectedMarker !== null &&
+            selectedMarker.lat === marker.lat &&
+            selectedMarker.lng === marker.lng && (
+              <InfoWindow position={{ lat: marker.lat, lng: marker.lng }}>
+                <div>
+                  <h1>{marker.text}</h1>
+                </div>
+              </InfoWindow>
+            )}
+        </Marker>
+      ))}
+    </GoogleMap>
   );
 };
 

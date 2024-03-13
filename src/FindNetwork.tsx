@@ -23,17 +23,23 @@ const services = [
 
 const FindNetwork = () => {
   const [activeItem, setActiveItem] = useState(null);
+  const [mapCenter, setMapCenter] = useState({
+    lat: -33.894272,
+    lng: 18.629438,
+  });
 
   const toggleItem = (id: any) => {
     setActiveItem(activeItem === id ? null : id);
   };
 
   const defaultProps = {
-    center: {
-      lat: -33.894272,
-      lng: 18.629438,
-    },
     zoom: 11,
+    testMarkers: [
+      { lat: -33.9539, lng: 20.1234, text: "Rondebosch Local Spot" },
+      { lat: -33.9275, lng: 18.4514, text: "Woodstock Local Spot" },
+      { lat: -33.9173, lng: 18.3754, text: "Sea Point Local Spot" },
+      { lat: -33.8261, lng: 18.6577, text: "Durbanville Local Spot" },
+    ],
   };
 
   return (
@@ -41,7 +47,6 @@ const FindNetwork = () => {
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
         <div className="w-full lg:w-1/3 text-left">
           {/* Left column content */}
-          {/* This is where you can add the content for finding a healthcare provider, search inputs, etc. */}
           <h1 className="text-3xl lg:text-7xl font-bold mb-2 text-white">
             Find a Healthcare Provider
           </h1>
@@ -88,9 +93,11 @@ const FindNetwork = () => {
           </div>
 
           <div className="h-96 w-full mb-4">
-            {" "}
-            {/* Set the desired height for the map */}
-            <Map center={defaultProps.center} zoom={defaultProps.zoom} />
+            <Map
+              center={mapCenter}
+              zoom={defaultProps.zoom}
+              markers={defaultProps.testMarkers}
+            />
           </div>
           <div className="">{/* Insert list of providers here */}</div>
         </div>

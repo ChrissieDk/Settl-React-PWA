@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./App.css";
 import { StickyNavbar } from "./Navbar";
 import Dashboard from "./Dashboard";
