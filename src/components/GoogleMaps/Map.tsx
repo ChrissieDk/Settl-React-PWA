@@ -18,6 +18,7 @@ interface MapProps {
   };
   zoom: number;
   markers: {
+    id: number;
     lat: number;
     lng: number;
     text: string;
@@ -29,6 +30,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
     lat: number;
     lng: number;
     text: string;
+    subText?: string;
   }>(null);
 
   const { isLoaded } = useJsApiLoader({
@@ -44,19 +46,23 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
         <Marker
           key={index}
           position={{ lat: marker.lat, lng: marker.lng }}
-          onClick={() => setSelectedMarker(marker)}
-        >
-          {selectedMarker !== null &&
-            selectedMarker.lat === marker.lat &&
-            selectedMarker.lng === marker.lng && (
-              <InfoWindow position={{ lat: marker.lat, lng: marker.lng }}>
-                <div>
-                  <h1>{marker.text}</h1>
-                </div>
-              </InfoWindow>
-            )}
-        </Marker>
+          onClick={() => {
+            setSelectedMarker((prev) =>
+              prev && marker.id === marker.id ? null : marker
+            );
+          }}
+        />
       ))}
+      {selectedMarker && (
+        <InfoWindow
+          position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+        >
+          <div>
+            <h1>{selectedMarker.text}</h1>
+            {selectedMarker.subText && <p>{selectedMarker.subText}</p>}
+          </div>
+        </InfoWindow>
+      )}
     </GoogleMap>
   );
 };

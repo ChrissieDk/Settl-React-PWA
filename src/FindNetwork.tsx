@@ -35,10 +35,34 @@ const FindNetwork = () => {
   const defaultProps = {
     zoom: 11,
     testMarkers: [
-      { lat: -33.9539, lng: 20.1234, text: "Rondebosch Local Spot" },
-      { lat: -33.9275, lng: 18.4514, text: "Woodstock Local Spot" },
-      { lat: -33.9173, lng: 18.3754, text: "Sea Point Local Spot" },
-      { lat: -33.8261, lng: 18.6577, text: "Durbanville Local Spot" },
+      {
+        id: 1,
+        lat: -33.9539,
+        lng: 20.1234,
+        text: "Rondebosch Local Spot",
+        subText: "Open 9AM - 5PM",
+      },
+      {
+        id: 2,
+        lat: -33.9275,
+        lng: 18.4514,
+        text: "Woodstock Local Spot",
+        subText: "Open 10AM - 6PM",
+      },
+      {
+        id: 3,
+        lat: -33.9173,
+        lng: 18.3754,
+        text: "Sea Point Local Spot",
+        subText: "Open 8AM - 4PM",
+      },
+      {
+        id: 4,
+        lat: -33.8261,
+        lng: 18.6577,
+        text: "Durbanville Local Spot",
+        subText: "Open 7AM - 3PM",
+      },
     ],
   };
 
@@ -99,7 +123,10 @@ const FindNetwork = () => {
               markers={defaultProps.testMarkers}
             />
           </div>
-          <div className="">{/* Insert list of providers here */}</div>
+          <div className="">
+            {/* TODO:
+             */}
+          </div>
         </div>
       </div>
     </section>
