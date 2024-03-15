@@ -124,7 +124,7 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen max-h-screen bg-gray-200 p-8">
+    <div className=" bg-gray-200 px-8 py-5">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
         <div className="flex items-center justify-between">
           <div className="flex">
@@ -226,6 +226,9 @@ const Dashboard: React.FC = () => {
                 <thead>
                   <tr>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Id
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       Date
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -245,6 +248,9 @@ const Dashboard: React.FC = () => {
                 <tbody>
                   {transactions.map((transaction) => (
                     <tr key={transaction.id}>
+                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                        {transaction.id}
+                      </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                         {transaction.date}
                       </td>
