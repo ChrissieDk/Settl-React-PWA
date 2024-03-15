@@ -67,6 +67,17 @@ export function StickyNavbar() {
         className="p-1 font-normal"
         placeholder={undefined}
       >
+        <a href="/Settl-React-PWA/FindNetwork" className="flex items-center">
+          <span className="hover:text-blue-500">Find a network provider</span>
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+        placeholder={undefined}
+      >
         <a href="/Settl-React-PWA/AboutUs" className="flex items-center">
           <span className="hover:text-blue-500">About Us</span>
         </a>

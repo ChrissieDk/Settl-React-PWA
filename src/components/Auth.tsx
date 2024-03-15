@@ -28,7 +28,6 @@ const Auth = () => {
       ui.delete();
     };
   }, []); // The empty array ensures this effect runs only once after the initial render.
-
   return <div id="firebaseui-auth-container"></div>;
 };
 

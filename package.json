@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@material-tailwind/react": "^2.1.8",
+    "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -62,6 +63,7 @@
   },
   "devDependencies": {
     "@types/firebase": "^3.2.1",
+    "@types/google-map-react": "^2.1.10",
     "@types/node": "^20.11.13",
     "tailwindcss": "^3.4.1"
   }

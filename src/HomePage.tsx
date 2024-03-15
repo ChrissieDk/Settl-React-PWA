@@ -195,11 +195,13 @@ const HomePage = () => {
         <h1 className="text-blue-700 font-medium text-4xl lg:text-7xl text-left">
           It's as <span className="text-orange-400">easy</span> as..
         </h1>
-        <div className="lg:pt-10">
-          <p className="pt-2 text-left text-blue-700">
-            Effortlessly customize your choices with the slider. Just slide to
-            set the desired payment amount, then click for instant results!
-          </p>
+        <div className="lg:w-1/2">
+          <div className="lg:pt-4">
+            <p className="pl-1 text-left text-blue-700">
+              Effortlessly customize your choices with the slider. Just slide to
+              set the desired payment amount, then click for instant results!
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row justify-between items-start gap-10">
