@@ -56,6 +56,7 @@ export function StickyNavbar() {
   // Placeholder function for sign-in navigation or modal
   const navigateToSignIn = () => {
     console.log("Navigate to sign-in page or open sign-in modal");
+    navigate("/dashboard");
   };
 
   const navList = (
