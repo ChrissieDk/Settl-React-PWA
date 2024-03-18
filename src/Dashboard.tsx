@@ -202,19 +202,19 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="flex justify-between items-center mt-4 space-x-4">
-            <div className="flex-1 bg-white shadow-lg rounded p-4">
+            <div className="flex-1 bg-white shadow-lg rounded-lg p-4">
               <div className="text-gray-600 text-lg font-semibold">
                 Total Plan Value
               </div>
               <div className="text-gray-900 text-2xl font-bold">R 10000</div>
             </div>
 
-            <div className="flex-1 bg-white shadow-lg rounded p-4">
+            <div className="flex-1 bg-white shadow-lg rounded-lg p-4">
               <div className="text-gray-600 text-lg font-semibold">Balance</div>
               <div className="text-gray-900 text-2xl font-bold">R 5000</div>
             </div>
 
-            <div className="flex-1 bg-white shadow-lg rounded p-4">
+            <div className="flex-1 bg-white shadow-lg rounded-lg p-4">
               <div className="text-gray-600 text-lg font-semibold">Spent</div>
               <div className="text-gray-900 text-2xl font-bold">R 3000</div>
             </div>
