@@ -47,7 +47,6 @@ const TokenModal: React.FC<TokenModalProps> = ({ action, isOpen, onClose }) => {
     pharmacy: "Pharmacy",
   };
 
-  // Implement your token generation, sending, and requesting logic here,
   // using selectedService (for generate) and recipientId, amount (for send and request)
   const generateToken = (selectedService: string) => {
     console.log("Generating token for", selectedService, "...");
@@ -119,7 +118,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ action, isOpen, onClose }) => {
                 </label>
                 <input
                   id="recipientId"
-                  type="text" // Adjust type as needed (e.g., number)
+                  type="text"
                   value={recipientId}
                   onChange={handleRecipientIdChange}
                   className="border border-gray-300 rounded-md p-2 w-full"

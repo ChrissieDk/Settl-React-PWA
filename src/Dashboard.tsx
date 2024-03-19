@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
 
 const Dashboard: React.FC = () => {
@@ -6,62 +6,8 @@ const Dashboard: React.FC = () => {
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("last7days");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<string>("");
-
-  const handleTabChange = (tab: string) => {
-    setSelectedTab(tab);
-  };
-
-  const handleTimePeriodChange = (timePeriod: string) => {
-    setSelectedTimePeriod(timePeriod);
-  };
-
-  const generateToken = () => {
-    // TODO: Implement logic to generate a token
-  };
-
-  const sendToken = () => {
-    // TODO: Implement logic to send a token
-  };
-
-  const requestToken = () => {
-    // TODO: Implement logic to request a token
-  };
-
-  const StatusPill = ({ status }: { status: string }) => {
-    let statusClasses;
-
-    switch (status) {
-      case "Success":
-        statusClasses = "bg-green-300 text-green-800 min-w-[5rem] uppercase";
-        break;
-      case "Pending":
-        statusClasses = "bg-yellow-300 text-yellow-800 min-w-[5rem] uppercase";
-        break;
-      case "Failed":
-        statusClasses = "bg-red-300 text-red-800 min-w-[5rem] uppercase";
-        break;
-      default:
-        statusClasses = "bg-gray-100 text-gray-800 min-w-[5rem] uppercase";
-    }
-
-    return (
-      <span
-        className={`inline-flex items-center justify-center font-semibold rounded-full text-xs  py-1 ${statusClasses}`}
-      >
-        {status}
-      </span>
-    );
-  };
-
-  const openModal = (action: string) => {
-    setIsModalOpen(true);
-    setSelectedAction(action);
-    console.log("Selected action", action);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const transactions = [
     {
@@ -134,10 +80,137 @@ const Dashboard: React.FC = () => {
       amount: 200,
       status: "Success",
     },
+    {
+      id: 11,
+      date: "2022-01-01",
+      type: "Token Redeemed",
+      amount: 100,
+      status: "Success",
+    },
+    {
+      id: 12,
+      date: "2022-01-01",
+      type: "Token Transfer",
+      amount: 100,
+      status: "Success",
+    },
+    {
+      id: 13,
+      date: "2022-01-02",
+      type: "Token Generate",
+      amount: 50,
+      status: "Pending",
+    },
+    {
+      id: 14,
+      date: "2022-01-02",
+      type: "Token Generate",
+      amount: 50,
+      status: "Pending",
+    },
+    {
+      id: 15,
+      date: "2022-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+    },
+    {
+      id: 16,
+      date: "2022-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+    },
+    {
+      id: 17,
+      date: "2022-01-03",
+      type: "Token Request",
+      amount: 200,
+      status: "Failed",
+    },
+    {
+      id: 18,
+      date: "2022-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+    },
+    {
+      id: 19,
+      date: "2022-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+    },
+    {
+      id: 20,
+      date: "2022-01-03",
+      type: "Token Request",
+      amount: 200,
+      status: "Success",
+    },
   ];
 
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+  const currentData = transactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleTabChange = (tab: string) => {
+    setSelectedTab(tab);
+  };
+
+  const handleTimePeriodChange = (timePeriod: string) => {
+    setSelectedTimePeriod(timePeriod);
+  };
+
+  const openModal = (action: string) => {
+    setIsModalOpen(true);
+    setSelectedAction(action);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const StatusPill = ({ status }: { status: string }) => {
+    let statusClasses;
+
+    switch (status) {
+      case "Success":
+        statusClasses = "bg-green-300 text-green-800 min-w-[5rem] uppercase";
+        break;
+      case "Pending":
+        statusClasses = "bg-yellow-300 text-yellow-800 min-w-[5rem] uppercase";
+        break;
+      case "Failed":
+        statusClasses = "bg-red-300 text-red-800 min-w-[5rem] uppercase";
+        break;
+      default:
+        statusClasses = "bg-gray-100 text-gray-800 min-w-[5rem] uppercase";
+    }
+
+    return (
+      <span
+        className={`inline-flex items-center justify-center font-semibold rounded-full text-xs py-1 ${statusClasses}`}
+      >
+        {status}
+      </span>
+    );
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage]);
+
   return (
-    <div className=" bg-gray-200 px-8 py-5">
+    <div className="bg-gray-200 px-8 py-8 min-h-screen">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
         <div className="flex items-center justify-between">
           <div className="flex">
@@ -145,7 +218,7 @@ const Dashboard: React.FC = () => {
               className={`text-lg font-semibold ${
                 selectedTab === "dashboard" ? "text-blue-600" : "text-gray-600"
               } mr-6`}
-              onClick={() => setSelectedTab("dashboard")}
+              onClick={() => handleTabChange("dashboard")}
             >
               Dashboard
             </button>
@@ -155,7 +228,7 @@ const Dashboard: React.FC = () => {
                   ? "text-blue-600"
                   : "text-gray-600"
               }`}
-              onClick={() => setSelectedTab("transactions")}
+              onClick={() => handleTabChange("transactions")}
             >
               Transactions
             </button>
@@ -176,7 +249,6 @@ const Dashboard: React.FC = () => {
               >
                 Generate
               </button>
-              {/* Other buttons for Send and Request actions */}
               <button
                 className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
                 onClick={() => openModal("send")}
@@ -189,15 +261,6 @@ const Dashboard: React.FC = () => {
               >
                 Request
               </button>
-
-              {/* Conditionally render the TokenModal component based on isOpen state */}
-              {isModalOpen && (
-                <TokenModal
-                  action={selectedAction}
-                  isOpen={isModalOpen}
-                  onClose={closeModal}
-                />
-              )}
             </div>
             <div>
               <button
@@ -206,7 +269,7 @@ const Dashboard: React.FC = () => {
                     ? "bg-orange-400"
                     : "bg-gray-300"
                 } hover:bg-orange-500 text-white font-bold py-2 px-4 rounded`}
-                onClick={() => setSelectedTimePeriod("last7days")}
+                onClick={() => handleTimePeriodChange("last7days")}
               >
                 Last 7 days
               </button>
@@ -216,7 +279,7 @@ const Dashboard: React.FC = () => {
                     ? "bg-orange-400"
                     : "bg-gray-300"
                 } hover:bg-orange-500 text-white font-bold py-2 px-4 rounded ml-2`}
-                onClick={() => setSelectedTimePeriod("last30days")}
+                onClick={() => handleTimePeriodChange("last30days")}
               >
                 Last 30 days
               </button>
@@ -226,34 +289,21 @@ const Dashboard: React.FC = () => {
                     ? "bg-orange-400"
                     : "bg-gray-300"
                 } hover:bg-orange-500 text-white font-bold py-2 px-4 rounded ml-2`}
-                onClick={() => setSelectedTimePeriod("last90days")}
+                onClick={() => handleTimePeriodChange("last90days")}
               >
                 Last 90 days
               </button>
             </div>
           </div>
-
-          <div className="flex justify-between items-center mt-4 space-x-4">
-            <div className="flex-1 bg-white shadow-lg rounded-lg p-4">
-              <div className="text-gray-600 text-lg font-semibold">
-                Total Plan Value
-              </div>
-              <div className="text-gray-900 text-2xl font-bold">R 10000</div>
-            </div>
-
-            <div className="flex-1 bg-white shadow-lg rounded-lg p-4">
-              <div className="text-gray-600 text-lg font-semibold">Balance</div>
-              <div className="text-gray-900 text-2xl font-bold">R 5000</div>
-            </div>
-
-            <div className="flex-1 bg-white shadow-lg rounded-lg p-4">
-              <div className="text-gray-600 text-lg font-semibold">Spent</div>
-              <div className="text-gray-900 text-2xl font-bold">R 3000</div>
-            </div>
-          </div>
-
+          {isModalOpen && (
+            <TokenModal
+              action={selectedAction}
+              isOpen={isModalOpen}
+              onClose={closeModal}
+            />
+          )}
           <div className="mt-4 bg-white shadow-lg rounded-lg p-4">
-            <div className="overflow-y-auto max-h-80">
+            <div className="overflow-y-auto min-h-80">
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
@@ -278,7 +328,7 @@ const Dashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction) => (
+                  {currentData.map((transaction) => (
                     <tr key={transaction.id}>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                         {transaction.id}
@@ -304,6 +354,42 @@ const Dashboard: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div className="flex flex-row justify-center">
+            <div className="flex justify-center mt-4">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`mx-1 px-4 py-2 rounded border border-blue-500 ${
+                      page === currentPage
+                        ? "bg-blue-500 text-white"
+                        : "bg-white border"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+            </div>
+            <div>
+              {/* <label htmlFor="itemsPerPage">Items per page:</label> */}
+              <select
+                id="itemsPerPage"
+                value={itemsPerPage}
+                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                className="ml-2 rounded px-2 py-1 mt-6 border border-blue-500 "
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>
+              </select>
             </div>
           </div>
         </div>
