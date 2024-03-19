@@ -40,6 +40,13 @@ const TokenModal: React.FC<TokenModalProps> = ({ action, isOpen, onClose }) => {
     }
   };
 
+  const services = {
+    gp: "GP",
+    dentist: "Dentist",
+    optometrist: "Optometrist",
+    pharmacy: "Pharmacy",
+  };
+
   // Implement your token generation, sending, and requesting logic here,
   // using selectedService (for generate) and recipientId, amount (for send and request)
   const generateToken = (selectedService: string) => {
@@ -94,10 +101,11 @@ const TokenModal: React.FC<TokenModalProps> = ({ action, isOpen, onClose }) => {
                   onChange={handleServiceChange}
                   className="border border-gray-300 rounded-md p-2 w-full"
                 >
-                  <option value="gp">GP</option>
-                  <option value="dentist">Dentist</option>
-                  <option value="optometrist">Optometrist</option>
-                  <option value="pharmacy">Pharmacy</option>
+                  {Object.keys(services).map((serviceKey) => (
+                    <option key={serviceKey} value={serviceKey}>
+                      {(services as { [key: string]: string })[serviceKey]}
+                    </option>
+                  ))}
                 </select>
               </div>
             ) : null}
