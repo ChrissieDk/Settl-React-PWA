@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import TokenModal from "./components/TokenModal/TokenModal";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("last7days");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAction, setSelectedAction] = useState<string>("");
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -48,6 +51,16 @@ const Dashboard: React.FC = () => {
         {status}
       </span>
     );
+  };
+
+  const openModal = (action: string) => {
+    setIsModalOpen(true);
+    setSelectedAction(action);
+    console.log("Selected action", action);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const transactions = [
@@ -157,15 +170,34 @@ const Dashboard: React.FC = () => {
         <div>
           <div className="flex justify-between items-center mt-4">
             <div>
-              <button className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button
+                onClick={() => openModal("generate")}
+                className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
                 Generate
               </button>
-              <button className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+              {/* Other buttons for Send and Request actions */}
+              <button
+                className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+                onClick={() => openModal("send")}
+              >
                 Send
               </button>
-              <button className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+              <button
+                className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+                onClick={() => openModal("request")}
+              >
                 Request
               </button>
+
+              {/* Conditionally render the TokenModal component based on isOpen state */}
+              {isModalOpen && (
+                <TokenModal
+                  action={selectedAction}
+                  isOpen={isModalOpen}
+                  onClose={closeModal}
+                />
+              )}
             </div>
             <div>
               <button
