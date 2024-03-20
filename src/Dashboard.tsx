@@ -9,146 +9,175 @@ const Dashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const transactions = [
+  interface Transaction {
+    id: number;
+    date: string;
+    type: string;
+    amount: number;
+    status: string;
+    service: string;
+  }
+
+  const transactions: Transaction[] = [
     {
       id: 1,
-      date: "2022-01-01",
+      date: "2024-01-01",
       type: "Token Redeemed",
       amount: 100,
       status: "Success",
+      service: "GP",
     },
     {
       id: 2,
-      date: "2022-01-01",
+      date: "2024-01-01",
       type: "Token Transfer",
       amount: 100,
       status: "Success",
+      service: "Dentistry",
     },
     {
       id: 3,
-      date: "2022-01-02",
+      date: "2024-01-02",
       type: "Token Generate",
       amount: 50,
       status: "Pending",
+      service: "Dentistry",
     },
     {
       id: 4,
-      date: "2022-01-02",
+      date: "2024-01-02",
       type: "Token Generate",
       amount: 50,
       status: "Pending",
+      service: "GP",
     },
     {
       id: 5,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "GP",
     },
     {
       id: 6,
-      date: "2022-01-03",
+      date: "2023-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "Optometry",
     },
     {
       id: 7,
-      date: "2022-01-03",
+      date: "2023-01-03",
       type: "Token Request",
       amount: 200,
       status: "Failed",
+      service: "Optometry",
     },
     {
       id: 8,
-      date: "2022-01-03",
+      date: "2023-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "GP",
     },
     {
       id: 9,
-      date: "2022-01-03",
+      date: "2023-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "Optometry",
     },
     {
       id: 10,
-      date: "2022-01-03",
+      date: "2023-01-03",
       type: "Token Request",
       amount: 200,
       status: "Success",
+      service: "GP",
     },
     {
       id: 11,
-      date: "2022-01-01",
+      date: "2021-01-01",
       type: "Token Redeemed",
       amount: 100,
       status: "Success",
+      service: "Dentistry",
     },
     {
       id: 12,
-      date: "2022-01-01",
+      date: "2021-01-01",
       type: "Token Transfer",
       amount: 100,
       status: "Success",
+      service: "Dentistry",
     },
     {
       id: 13,
-      date: "2022-01-02",
+      date: "2021-01-02",
       type: "Token Generate",
       amount: 50,
       status: "Pending",
+      service: "Optometry",
     },
     {
       id: 14,
-      date: "2022-01-02",
+      date: "2024-01-02",
       type: "Token Generate",
       amount: 50,
       status: "Pending",
+      service: "GP",
     },
     {
       id: 15,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "OTC",
     },
     {
       id: 16,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "GP",
     },
     {
       id: 17,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Token Request",
       amount: 200,
       status: "Failed",
+      service: "GP",
     },
     {
       id: 18,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "Dentistry",
     },
     {
       id: 19,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
+      service: "GP",
     },
     {
       id: 20,
-      date: "2022-01-03",
+      date: "2024-01-03",
       type: "Token Request",
       amount: 200,
       status: "Success",
+      service: "Dentistry",
     },
   ];
 
@@ -303,7 +332,7 @@ const Dashboard: React.FC = () => {
             />
           )}
           <div className="mt-4 bg-white shadow-lg rounded-lg p-4">
-            <div className="overflow-y-auto min-h-80">
+            <div className="overflow-y-auto max-h-96">
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
@@ -312,6 +341,9 @@ const Dashboard: React.FC = () => {
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
                       Date
+                    </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                      Service
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
                       Transaction Type
@@ -337,6 +369,9 @@ const Dashboard: React.FC = () => {
                         {transaction.date}
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                        {transaction.service}
+                      </td>
+                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                         {transaction.type}
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
@@ -356,6 +391,7 @@ const Dashboard: React.FC = () => {
               </table>
             </div>
           </div>
+          {/* Pagination + ItemsPerPage */}
           <div className="flex flex-row justify-center">
             <div className="flex justify-center mt-4">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(
@@ -375,13 +411,13 @@ const Dashboard: React.FC = () => {
               )}
             </div>
             <div>
-              {/* <label htmlFor="itemsPerPage">Items per page:</label> */}
               <select
                 id="itemsPerPage"
                 value={itemsPerPage}
                 onChange={(e) => setItemsPerPage(Number(e.target.value))}
                 className="ml-2 rounded px-2 py-1 mt-6 border border-blue-500 "
               >
+                {/* TODO: Make more dynamic  */}
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>

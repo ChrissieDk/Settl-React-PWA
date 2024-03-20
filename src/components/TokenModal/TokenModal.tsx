@@ -45,6 +45,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ action, isOpen, onClose }) => {
     dentist: "Dentist",
     optometrist: "Optometrist",
     pharmacy: "Pharmacy",
+    otc: "Over the Counter Medication",
   };
 
   // using selectedService (for generate) and recipientId, amount (for send and request)
