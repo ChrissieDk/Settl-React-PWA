@@ -1,132 +1,96 @@
 import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-interface SignUpForm {
-  email: string;
-  password: string;
-  error: string;
-}
-
-const SignUp: React.FC = () => {
+const Signup = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
 
-    // Basic validation to prevent unnecessary Firebase calls
-    if (!email.trim()) {
-      alert("Please enter your email address.");
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-    if (!password.length) {
-      alert("Please enter your password.");
-      return;
-    }
-
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-
-      // Handle successful signup (e.g., redirect, display message)
-      console.log("User signed up successfully!");
-      // You can clear email and password fields or redirect here
-    } catch (error: any) {
-      console.error("Signup error:", error);
-
-      // Display user-friendly error message based on the error code
-      switch (error.code) {
-        case "auth/invalid-email":
-          alert("Please enter a valid email address.");
-          break;
-        case "auth/weak-password":
-          alert("Password must be at least 6 characters long.");
-          break;
-        // Add more cases for other potential errors
-        default:
-          alert("An error occurred during signup. Please try again.");
-      }
-    }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        navigate("/Dashboard");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   return (
-    <div className="w-full max-w-xs">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      >
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="example@gmail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-6 relative">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="*********"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-          />
-          <button
-            type="button"
-            onClick={togglePasswordVisibility}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </button>
-          <p className="text-red-500 text-xs italic">
-            Please choose a password.
+    <main className="flex h-screen bg-gray-100">
+      <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
+        <div>
+          <h1 className="text-2xl font-bold text-center text-gray-800">
+            Creat an account
+          </h1>
+          <form onSubmit={onSubmit} className="mt-4">
+            <div className="mb-4">
+              <label
+                htmlFor="email-address"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email address
+              </label>
+              <input
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                type="email"
+                id="email-address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Email address"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Sign up
+            </button>
+          </form>
+
+          <p className="mt-4 text-sm text-center text-gray-600">
+            Already have an account?
+            <NavLink
+              to="/login"
+              className="text-indigo-600 hover:text-indigo-500"
+            >
+              {" "}
+              Sign in
+            </NavLink>
           </p>
         </div>
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Sign Up
-          </button>
-          <a
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-            href="#"
-          >
-            Forgot Password?
-          </a>
-        </div>
-      </form>
-    </div>
+      </section>
+    </main>
   );
 };
 
-export default SignUp;
+export default Signup;

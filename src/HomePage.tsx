@@ -22,6 +22,8 @@ import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSec
 import phoneImage from "./img/HP_Phones.png";
 import planBg from "./img/image3.png";
 import BlocksContainer from "./components/Block/BlockContainer";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
 
 const blockText = [
   {
@@ -100,6 +102,22 @@ const HomePage = () => {
     handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        // ...
+        console.log("uid", uid);
+      } else {
+        // User is signed out
+        // ...
+        console.log("user is logged out");
+      }
+    });
   }, []);
 
   return (

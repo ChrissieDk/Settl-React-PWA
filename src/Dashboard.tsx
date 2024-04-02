@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
       type: "Token Transfer",
       amount: 100,
       status: "Success",
-      service: "Dentistry",
+      service: "Transfer",
     },
     {
       id: 3,
@@ -97,7 +97,7 @@ const Dashboard: React.FC = () => {
       type: "Token Request",
       amount: 200,
       status: "Success",
-      service: "GP",
+      service: "Request",
     },
     {
       id: 11,
@@ -113,7 +113,7 @@ const Dashboard: React.FC = () => {
       type: "Token Transfer",
       amount: 100,
       status: "Success",
-      service: "Dentistry",
+      service: "Transfer",
     },
     {
       id: 13,
@@ -137,7 +137,7 @@ const Dashboard: React.FC = () => {
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
-      service: "OTC",
+      service: "Deposit",
     },
     {
       id: 16,
@@ -145,7 +145,7 @@ const Dashboard: React.FC = () => {
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
-      service: "GP",
+      service: "Deposit",
     },
     {
       id: 17,
@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
       type: "Token Request",
       amount: 200,
       status: "Failed",
-      service: "GP",
+      service: "Request",
     },
     {
       id: 18,
@@ -161,7 +161,7 @@ const Dashboard: React.FC = () => {
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
-      service: "Dentistry",
+      service: "Deposit",
     },
     {
       id: 19,
@@ -169,7 +169,7 @@ const Dashboard: React.FC = () => {
       type: "Wallet deposit",
       amount: 200,
       status: "Success",
-      service: "GP",
+      service: "Deposit",
     },
     {
       id: 20,
@@ -177,7 +177,7 @@ const Dashboard: React.FC = () => {
       type: "Token Request",
       amount: 200,
       status: "Success",
-      service: "Dentistry",
+      service: "Request",
     },
   ];
 
