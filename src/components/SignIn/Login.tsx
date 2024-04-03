@@ -52,7 +52,6 @@ const Login = () => {
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.error(errorCode, errorMessage);
       });
-    localStorage.setItem("user", "google");
   };
 
   // Email / Password login
