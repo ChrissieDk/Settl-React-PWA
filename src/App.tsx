@@ -7,7 +7,7 @@ import HomePage from "./HomePage";
 import AboutUs from "./AboutUs";
 import FindNetwork from "./FindNetwork";
 import SignOut from "./components/SignOut/SignOut";
-import Login from "./components/SignIn/SignIn";
+import Login from "./components/SignIn/Login";
 import Signup from "./components/SignUp/SignUp";
 import { AuthProvider } from "./Auth/AuthContext";
 import { ProtectedRoute } from "./Auth/ProtectedRoute";
@@ -20,6 +20,7 @@ const App: React.FC = () => {
           <StickyNavbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
+            {/* Example protected route */}
             <Route
               path="/Dashboard"
               element={

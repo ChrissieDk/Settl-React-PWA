@@ -1,12 +1,38 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../firebase-config";
+import { GoogleAuthProvider } from "firebase/auth";
+import { FcGoogle } from "react-icons/fc";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Maybe change to signInWithRedirect to avoid error in console ?
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // Navigate to Dashboard or do something with the user info
+        navigate("/Dashboard");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.error(errorCode, errorMessage);
+      });
+  };
 
   const onSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -75,6 +101,15 @@ const Signup = () => {
             >
               Sign up
             </button>
+            <div className="flex justify-center mt-4">
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 bg-gray-100 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 active:bg-gray-200 focus:outline-none focus:border-gray-200 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                onClick={() => signInWithGoogle()}
+              >
+                <FcGoogle size={25} />
+              </button>
+            </div>
           </form>
 
           <p className="mt-4 text-sm text-center text-gray-600">

@@ -14,7 +14,7 @@ const SignOut = () => {
         console.log("Signed out successfully");
       })
       .catch((error) => {
-        // An error happened.
+        console.log("Error signing out: ", error);
       });
   };
 
