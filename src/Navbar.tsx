@@ -40,10 +40,12 @@ export function StickyNavbar() {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log("User signed out");
+        // Sign-out successful.
+        navigate("/");
+        console.log("Signed out successfully");
       })
       .catch((error) => {
-        console.error("Sign Out Error", error);
+        console.log("Error signing out: ", error);
       });
   };
 

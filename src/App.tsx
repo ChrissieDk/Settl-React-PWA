@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import AboutUs from "./AboutUs";
 import FindNetwork from "./FindNetwork";
-import SignOut from "./components/SignOut/SignOut";
 import Login from "./components/SignIn/Login";
 import Signup from "./components/SignUp/SignUp";
 import { AuthProvider } from "./Auth/AuthContext";
@@ -31,7 +30,6 @@ const App: React.FC = () => {
             />
             <Route path="/signUp" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/SignOut" element={<SignOut />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/FindNetwork" element={<FindNetwork />} />
           </Routes>
