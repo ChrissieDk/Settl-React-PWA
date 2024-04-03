@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, googleProvider } from "../../firebase-config";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
@@ -43,6 +47,9 @@ const Signup = () => {
         const user = userCredential.user;
         console.log(user);
         navigate("/Dashboard");
+        sendEmailVerification(userCredential.user).then(() => {
+          console.log("Email verification sent", userCredential.user.email);
+        });
       })
       .catch((error) => {
         const errorCode = error.code;

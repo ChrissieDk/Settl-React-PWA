@@ -1,17 +1,36 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth, googleProvider } from "../../firebase-config";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Forgot password function
+  const handleForgotPassword = (email: string) => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Password reset email sent! Check your inbox.");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+        alert("Failed to send password reset email. Please try again.");
+      });
+  };
+
   // Maybe change to signInWithRedirect to avoid error in console ?
+  // Google login
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
@@ -33,8 +52,10 @@ const Login = () => {
         const credential = GoogleAuthProvider.credentialFromError(error);
         console.error(errorCode, errorMessage);
       });
+    localStorage.setItem("user", "google");
   };
 
+  // Email / Password login
   const onLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
@@ -107,10 +128,20 @@ const Login = () => {
             <div className="flex justify-center mt-4">
               <button
                 type="button"
-                className="inline-flex items-center px-4 py-2 bg-gray-100 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 active:bg-gray-200 focus:outline-none focus:border-gray-200 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                className="inline-flex items-center  bg-gray-100 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 active:bg-gray-200 focus:outline-none focus:border-gray-200 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
                 onClick={() => signInWithGoogle()}
               >
                 <FcGoogle size={25} />
+              </button>
+            </div>
+            <div className="text-right mt-2 inline-flex items-center">
+              <button
+                type="button"
+                className="text-indigo-600 hover:text-indigo-500 text-sm"
+                onClick={() => handleForgotPassword(email)}
+                disabled={!email}
+              >
+                Forgot password?
               </button>
             </div>
           </form>
