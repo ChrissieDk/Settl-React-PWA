@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase-config";
+import { NavLink, useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 
-const Signup = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,15 +35,14 @@ const Signup = () => {
       });
   };
 
-  const onSubmit = async (e: { preventDefault: () => void }) => {
+  const onLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
-    await createUserWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
         navigate("/Dashboard");
+        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -52,13 +52,13 @@ const Signup = () => {
   };
 
   return (
-    <main className="flex h-screen bg-gray-100">
-      <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
-        <div>
-          <h1 className="text-2xl font-bold text-center text-gray-800">
-            Creat an account
-          </h1>
-          <form onSubmit={onSubmit} className="mt-4">
+    <>
+      <main className="flex h-screen bg-gray-100">
+        <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-xl font-bold text-center text-gray-800">
+            Login to Your Account
+          </h2>
+          <form className="mt-4">
             <div className="mb-4">
               <label
                 htmlFor="email-address"
@@ -68,12 +68,12 @@ const Signup = () => {
               </label>
               <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                type="email"
                 id="email-address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                type="email"
                 required
                 placeholder="Email address"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -86,21 +86,24 @@ const Signup = () => {
               </label>
               <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                type="password"
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                type="password"
                 required
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Sign up
-            </button>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                onClick={onLogin}
+              >
+                Login
+              </button>
+            </div>
             <div className="flex justify-center mt-4">
               <button
                 type="button"
@@ -113,19 +116,19 @@ const Signup = () => {
           </form>
 
           <p className="mt-4 text-sm text-center text-gray-600">
-            Already have an account?
+            No account yet?
             <NavLink
-              to="/login"
+              to="/signup"
               className="text-indigo-600 hover:text-indigo-500"
             >
               {" "}
-              Sign in
+              Sign up
             </NavLink>
           </p>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </>
   );
 };
 
-export default Signup;
+export default Login;
