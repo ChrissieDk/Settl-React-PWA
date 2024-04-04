@@ -75,7 +75,7 @@ const Login = () => {
     <>
       <main className="flex h-screen bg-gray-100">
         <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-center text-gray-800">
+          <h2 className="text-2xl font-bold text-center text-gray-800">
             Login to Your Account
           </h2>
           <form className="mt-4">
@@ -83,6 +83,7 @@ const Login = () => {
               <label
                 htmlFor="email-address"
                 className="block text-sm font-medium text-gray-700"
+                aria-required="true"
               >
                 Email address
               </label>
@@ -101,6 +102,7 @@ const Login = () => {
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
+                aria-required="true"
               >
                 Password
               </label>
@@ -118,7 +120,7 @@ const Login = () => {
             <div className="flex justify-center">
               <button
                 type="button"
-                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 onClick={onLogin}
               >
                 Login
@@ -133,7 +135,7 @@ const Login = () => {
                 <FcGoogle size={25} />
               </button>
             </div>
-            <div className="text-right mt-2 inline-flex items-center">
+            <div className="text-right  inline-flex items-center">
               <button
                 type="button"
                 className="text-indigo-600 hover:text-indigo-500 text-sm"
@@ -145,7 +147,7 @@ const Login = () => {
             </div>
           </form>
 
-          <p className="mt-4 text-sm text-center text-gray-600">
+          <p className=" text-sm text-center text-gray-600">
             No account yet?
             <NavLink
               to="/signup"
