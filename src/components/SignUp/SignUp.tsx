@@ -63,7 +63,7 @@ const Signup = () => {
       <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
         <div>
           <h1 className="text-2xl font-bold text-center text-gray-800">
-            Creat an account
+            Create an account
           </h1>
           <form onSubmit={onSubmit} className="mt-4">
             <div className="mb-4">
@@ -108,7 +108,7 @@ const Signup = () => {
             >
               Sign up
             </button>
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-2">
               <button
                 type="button"
                 className="inline-flex items-center px-4 py-2 bg-gray-100 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 active:bg-gray-200 focus:outline-none focus:border-gray-200 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
@@ -119,7 +119,7 @@ const Signup = () => {
             </div>
           </form>
 
-          <p className="mt-4 text-sm text-center text-gray-600">
+          <p className=" text-sm text-center text-gray-600">
             Already have an account?
             <NavLink
               to="/login"
