@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
+import ViewTransactions from "./ViewTransactions/ViewTransactions";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -8,6 +10,11 @@ const Dashboard: React.FC = () => {
   const [selectedAction, setSelectedAction] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [tokenModalOpen, setTokenModalOpen] = useState(false);
+  const [viewTransactionsModalOpen, setViewTransactionsModalOpen] =
+    useState(false);
+
+  const navigate = useNavigate();
 
   interface Transaction {
     id: number;
@@ -196,12 +203,18 @@ const Dashboard: React.FC = () => {
   };
 
   const openModal = (action: string) => {
-    setIsModalOpen(true);
-    setSelectedAction(action);
+    // Check which modal to open based on the action
+    if (action === "generate" || action === "send" || action === "request") {
+      setTokenModalOpen(true);
+      setSelectedAction(action);
+    } else {
+      setIsModalOpen(true); // Open the generic modal for viewing transactions
+    }
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
+    setTokenModalOpen(false);
+    setIsModalOpen(false); // Close the generic modal for viewing transactions
   };
 
   const handlePageChange = (newPage: number) => {
@@ -324,10 +337,10 @@ const Dashboard: React.FC = () => {
               </button>
             </div>
           </div>
-          {isModalOpen && (
+          {tokenModalOpen && (
             <TokenModal
               action={selectedAction}
-              isOpen={isModalOpen}
+              isOpen={tokenModalOpen}
               onClose={closeModal}
             />
           )}
@@ -381,9 +394,19 @@ const Dashboard: React.FC = () => {
                         R {transaction.amount}
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm">
-                        <button className="text-blue-600 hover:text-blue-900">
-                          View Transaction
+                        <button
+                          onClick={() => setIsModalOpen(true)}
+                          className="px-4 py-2 text-blue-500  hover:text-blue-900"
+                        >
+                          View Transactions
                         </button>
+                        {isModalOpen && (
+                          <ViewTransactions
+                            isOpen={isModalOpen}
+                            transactions={transactions}
+                            onClose={closeModal}
+                          />
+                        )}
                       </td>
                     </tr>
                   ))}
