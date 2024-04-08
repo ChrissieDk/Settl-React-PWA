@@ -11,8 +11,6 @@ const Dashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
-  const [viewTransactionsModalOpen, setViewTransactionsModalOpen] =
-    useState(false);
 
   const navigate = useNavigate();
 
