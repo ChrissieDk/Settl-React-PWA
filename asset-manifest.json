@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Settl-React-PWA/static/css/main.4eaf59ba.css",
-    "main.js": "/Settl-React-PWA/static/js/main.04b75e15.js",
+    "main.css": "/Settl-React-PWA/static/css/main.b4870643.css",
+    "main.js": "/Settl-React-PWA/static/js/main.599e3604.js",
     "static/media/image3.png": "/Settl-React-PWA/static/media/image3.e57a5f0e83aa55e20f53.png",
     "static/media/HP_Phones.png": "/Settl-React-PWA/static/media/HP_Phones.2c9a37ca8e5b99999f2b.png",
     "static/media/3.png": "/Settl-React-PWA/static/media/3.a0de40d6943f9bb63976.png",
@@ -12,12 +12,13 @@
     "static/media/1.png": "/Settl-React-PWA/static/media/1.e02d428c3b2aacc59071.png",
     "static/media/4.png": "/Settl-React-PWA/static/media/4.3f738fef7f0e03619957.png",
     "service-worker.js": "/Settl-React-PWA/service-worker.js",
+    "static/media/Paper_plane.png": "/Settl-React-PWA/static/media/Paper_plane.aaa148f1257ce9281983.png",
     "index.html": "/Settl-React-PWA/index.html",
-    "main.4eaf59ba.css.map": "/Settl-React-PWA/static/css/main.4eaf59ba.css.map",
-    "main.04b75e15.js.map": "/Settl-React-PWA/static/js/main.04b75e15.js.map"
+    "main.b4870643.css.map": "/Settl-React-PWA/static/css/main.b4870643.css.map",
+    "main.599e3604.js.map": "/Settl-React-PWA/static/js/main.599e3604.js.map"
   },
   "entrypoints": [
-    "static/css/main.4eaf59ba.css",
-    "static/js/main.04b75e15.js"
+    "static/css/main.b4870643.css",
+    "static/js/main.599e3604.js"
   ]
 }
