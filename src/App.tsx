@@ -10,7 +10,6 @@ import Login from "./components/SignIn/Login";
 import Signup from "./components/SignUp/SignUp";
 import { AuthProvider } from "./Auth/AuthContext";
 import { ProtectedRoute } from "./Auth/ProtectedRoute";
-import ViewTransactions from "./ViewTransactions/ViewTransactions";
 
 const App: React.FC = () => {
   return (

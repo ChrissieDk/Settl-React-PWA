@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
 import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
+import { Transaction } from "./types/Types";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -13,15 +14,6 @@ const Dashboard: React.FC = () => {
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
 
   const navigate = useNavigate();
-
-  interface Transaction {
-    id: number;
-    date: string;
-    type: string;
-    amount: number;
-    status: string;
-    service: string;
-  }
 
   const transactions: Transaction[] = [
     {

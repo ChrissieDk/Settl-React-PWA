@@ -2,21 +2,8 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
-
-interface Transaction {
-  id: number;
-  date: string;
-  type: string;
-  amount: number;
-  status: string;
-  service: string;
-}
-
-interface TransactionModalProps {
-  isOpen: boolean;
-  transactions: Transaction[];
-  onClose: () => void;
-}
+import { Transaction } from "../types/Types";
+import { TransactionModalProps } from "../types/Types";
 
 const ViewTransactions: React.FC<TransactionModalProps> = ({
   isOpen,
