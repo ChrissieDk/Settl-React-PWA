@@ -1,10 +1,5 @@
 import React from "react";
-
-interface BlockProps {
-  header: string;
-  subTitle: string;
-  extra: string;
-}
+import { BlockProps } from "../../types/Types";
 
 const Block: React.FC<BlockProps> = ({ header, subTitle, extra }) => {
   const [label, number] = header.split(" ");

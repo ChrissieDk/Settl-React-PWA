@@ -5,25 +5,12 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import { MapProps } from "../../types/Types";
 
 const containerStyle = {
   width: "100%",
   height: "100%",
 };
-
-interface MapProps {
-  center: {
-    lat: number;
-    lng: number;
-  };
-  zoom: number;
-  markers: {
-    id: number;
-    lat: number;
-    lng: number;
-    text: string;
-  }[];
-}
 
 const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
   const [selectedMarker, setSelectedMarker] = React.useState<null | {

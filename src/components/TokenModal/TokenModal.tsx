@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
-
-interface TokenModalProps {
-  action: string;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { TokenModalProps } from "../../types/Types";
 
 const TokenModal: React.FC<TokenModalProps> = ({ action, isOpen, onClose }) => {
   const [selectedService, setSelectedService] = useState("gp"); // Initial service selection (for generate action)
