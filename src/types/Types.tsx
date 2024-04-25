@@ -47,12 +47,3 @@ export interface TokenModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-export interface Transaction {
-  id: number;
-  date: string;
-  type: string;
-  amount: number;
-  status: string;
-  service: string;
-}
