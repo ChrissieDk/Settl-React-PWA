@@ -49,28 +49,28 @@ export function StickyNavbar() {
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <li className="p-1 font-normal">
+      <li className="p-1">
         <a
           href="/Settl-React-PWA/FindNetwork"
           className="flex items-center hover:text-blue-500"
         >
-          Find a network provider
+          <h1 className="font-navbar">Find a network provider</h1>
         </a>
       </li>
-      <li className="p-1 font-normal">
+      <li className="p-1">
         <a
           href="/Settl-React-PWA/AboutUs"
           className="flex items-center hover:text-blue-500"
         >
-          About Us
+          <h1 className="font-navbar">About Us</h1>
         </a>
       </li>
-      <li className="p-1 font-normal">
+      <li className="p-1">
         <a
           href="/Settl-React-PWA/"
           className="flex items-center hover:text-blue-500"
         >
-          Contact us
+          <h1 className="font-navbar">Contact us</h1>
         </a>
       </li>
     </ul>
@@ -88,7 +88,7 @@ export function StickyNavbar() {
             <div className="flex items-center gap-x-1">
               {isUserSignedIn ? (
                 <button
-                  className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  className="bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                   onClick={handleSignOut}
                 >
                   Sign Out
@@ -96,13 +96,13 @@ export function StickyNavbar() {
               ) : (
                 <>
                   <button
-                    className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    className="bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                     onClick={navigateToLogin}
                   >
                     Sign In
                   </button>
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-700 rounded"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-4 border border-blue-700 rounded"
                     onClick={navigateToSignUp}
                   >
                     Sign Up
