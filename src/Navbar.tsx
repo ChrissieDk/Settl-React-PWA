@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
-import logo from "./img/settl_logo1.png";
+import logo from "./img/Homepage/settl icon.png";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
@@ -63,6 +63,14 @@ export function StickyNavbar() {
           className="flex items-center hover:text-blue-500"
         >
           About Us
+        </a>
+      </li>
+      <li className="p-1 font-normal">
+        <a
+          href="/Settl-React-PWA/"
+          className="flex items-center hover:text-blue-500"
+        >
+          Contact us
         </a>
       </li>
     </ul>

@@ -213,7 +213,9 @@ module.exports = withMT({
           800: "#DE5E75",
           900: "#BF2743",
         },
-        blue: {},
+        blue: {
+          500: "#0B809B",
+        },
       },
     },
     plugins: [],
