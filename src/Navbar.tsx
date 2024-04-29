@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import logo from "./img/Homepage/settl icon.png";
+import { FaInstagram } from "react-icons/fa6";
+import { FaFacebookF } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
@@ -73,6 +77,36 @@ export function StickyNavbar() {
           <h1 className="font-navbar">Contact us</h1>
         </a>
       </li>
+
+      {isUserSignedIn ? (
+        <li className="p-1">
+          <button
+            className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </button>
+        </li>
+      ) : (
+        <>
+          <li className="p-1">
+            <button
+              className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              onClick={navigateToLogin}
+            >
+              Sign In
+            </button>
+          </li>
+          <li className="p-1">
+            <button
+              className="lg:hidden bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-4 border border-blue-700 rounded"
+              onClick={navigateToSignUp}
+            >
+              Sign Up
+            </button>
+          </li>
+        </>
+      )}
     </ul>
   );
 
@@ -80,15 +114,31 @@ export function StickyNavbar() {
     <div className="sticky top-0 z-10 bg-white shadow max-h-[768px]">
       <div className="max-w-full px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between">
-          <a href="/Settl-React-PWA">
-            <img className="h-10 w-auto" src={logo} alt="Settl Logo" />
-          </a>
+          <div className="flex">
+            <a href="/Settl-React-PWA">
+              <img className="h-10 w-auto" src={logo} alt="Settl Logo" />
+            </a>
+            <div className="flex ml-4 my-auto">
+              <a href="YOUR_FACEBOOK_URL" className="ml-4">
+                <FaInstagram className="text-blue-500 h-6 w-6" />
+              </a>
+              <a href="YOUR_TWITTER_URL" className="ml-4">
+                <FaFacebookF className="text-blue-500 h-6 w-6" />
+              </a>
+              <a href="YOUR_INSTAGRAM_URL" className="ml-4">
+                <FaXTwitter className="text-blue-500 h-6 w-6" />
+              </a>
+              <a href="YOUR_INSTAGRAM_URL" className="ml-4">
+                <FaLinkedinIn className="text-blue-500 h-6 w-6" />
+              </a>
+            </div>
+          </div>
           <div className="flex items-center gap-4">
             <div className="hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
               {isUserSignedIn ? (
                 <button
-                  className="bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  className="hidden lg:block bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                   onClick={handleSignOut}
                 >
                   Sign Out
@@ -96,13 +146,13 @@ export function StickyNavbar() {
               ) : (
                 <>
                   <button
-                    className="bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    className="hidden lg:block bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                     onClick={navigateToLogin}
                   >
                     Sign In
                   </button>
                   <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-4 border border-blue-700 rounded"
+                    className="hidden lg:block bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-4 border border-blue-700 rounded"
                     onClick={navigateToSignUp}
                   >
                     Sign Up

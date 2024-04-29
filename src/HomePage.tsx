@@ -128,7 +128,7 @@ const HomePage = () => {
           <HeroSection dynamicText={dynamicText} />
         </div>
         {/* Interested button - always visible */}
-        <button className="fixed bottom-10 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-700 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
+        <button className="fixed bottom-10 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-500 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
           <h1 className="pl-6 pr-2 font-buttonFont">I'm interested</h1>
         </button>
       </section>
