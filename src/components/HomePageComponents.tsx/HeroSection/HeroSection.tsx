@@ -15,7 +15,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
             src={settlLogo}
             alt="Settl-logo"
           />
-          <h1 className="font-headerFont text-4xl lg:text-6xl text-left text-blue-700 lg:pb-2">
+          <h1 className="font-headerFont text-4xl lg:text-6xl text-left text-blue-500 lg:pb-2">
             Welcome to {""}
             <span className="text-orange-400 font-headerFont">Settl</span>:
             Where Health Meets {""}
