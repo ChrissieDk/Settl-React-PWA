@@ -140,14 +140,15 @@ module.exports = withMT({
       ],
     },
     extend: {
-      // boxShadow: {
-      //   small: "3px 3px",
-      //   DEFAULT: "5px 5px",
-      //   large: "10px 10px",
-      // },
       fontSize: {
         "custom-icon-large": "100px",
         "custom-icon-small": "80px",
+      },
+      fontFamily: {
+        headerFont: ["headerFont", "sans-serif"],
+        navbar: ["navbar", "sans-serif"],
+        paragraphFont: ["paragraphFont", "sans-serif"],
+        buttonFont: ["buttonFont", "sans-serif"],
       },
 
       colors: {
@@ -176,42 +177,6 @@ module.exports = withMT({
           700: "#51919E",
           800: "#366068",
           900: "#1C3236",
-        },
-        lila: {
-          50: "#FBFAFF",
-          100: "#F7F5FF",
-          200: "#EAE6FE",
-          300: "#E2DCFE",
-          400: "#D6CEFD",
-          500: "#C8BEFD",
-          600: "#B4A6FC",
-          700: "#A08DFB",
-          800: "#836BFA",
-          900: "#5534F9",
-        },
-        yellow: {
-          50: "#FFFDFA",
-          100: "#FFFAF5",
-          200: "#FFF5EB",
-          300: "#FEEEDC",
-          400: "#FEE9D2",
-          500: "#FEE3C6",
-          600: "#FDC991",
-          700: "#FCA446",
-          800: "#EC7C04",
-          900: "#AA5903",
-        },
-        red: {
-          50: "#FEFBFB",
-          100: "#FDF7F8",
-          200: "#FBEAED",
-          300: "#F8DDE2",
-          400: "#F6D0D7",
-          500: "#F3C4CD",
-          600: "#EEAAB7",
-          700: "#E88D9D",
-          800: "#DE5E75",
-          900: "#BF2743",
         },
         blue: {
           500: "#0B809B",
