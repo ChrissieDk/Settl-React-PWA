@@ -22,26 +22,30 @@ import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSec
 import phoneImage from "./img/HP_Phones.png";
 import planBg from "./img/image3.png";
 import BlocksContainer from "./components/Block/BlockContainer";
+import smilingPeople from "./img/Homepage/smiling_people.png";
+import takeControl1 from "./img/Homepage/slider icon.png";
+import takeControl2 from "./img/Homepage/pay icon.png";
+import takeControl3 from "./img/Homepage/support icon.png";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 
 const blockText = [
   {
     description:
-      "Build your customised healthcare package. Lorem ipsum dolor sit amet, consectetur adipiscing.",
-    IconComponent: FaSliders,
+      "Use our health calculator to find your perfect fit!Slide the dials to adjust cover for GP, dentist and optometrists’ visits, and even the amount of OTC  medication you need. Learn more.",
+    imgSrc: takeControl1,
     id: "1",
   },
   {
     description:
-      "Access, manage and view total cover. Lorem ipsum dolor sit amet, consectetur adipiscing.",
-    IconComponent: GrUserSettings,
+      "Pay the way that works for you! We offer a variety of flexible payment options, including cash, buy now, pay later, medical credit, and even a customisable payment plan. Learn more.",
+    imgSrc: takeControl2,
     id: "2",
   },
   {
     description:
-      "Feel empowered by tailoring your own healthcare coverage. Lorem ipsum dolor sit amet, consectetur adipiscing.",
-    IconComponent: LuHeartHandshake,
+      "Support their health! Send and receive funds for your loved ones' health wallets. Learn more.",
+    imgSrc: takeControl3,
     id: "3",
   },
 ];
@@ -129,7 +133,7 @@ const HomePage = () => {
         </div>
         {/* Interested button - always visible */}
         <button className="fixed bottom-10 right-0 p-4 bg-orange-400 text-white font-bold lg:text-xl rounded-l-full rounded-r-none shadow-lg hover:bg-blue-500 active:scale-95 transition duration-300 ease-in-out z-50 uppercase">
-          <h1 className="pl-6 pr-2 font-buttonFont">I'm interested</h1>
+          <h1 className="pl-6 pr-2 font-button">I'm interested</h1>
         </button>
       </section>
 
@@ -138,47 +142,57 @@ const HomePage = () => {
         <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto bg-gray-200">
           <div className="flex flex-col lg:flex-row w-full">
             <div className="lg:w-1/2 flex flex-col">
-              {/* Adjusted for vertical layout */}
               <div>
-                <h1 className="font-medium text-4xl lg:text-7xl text-left text-blue-700">
-                  <span className="text-orange-400 ">Take control</span> of your
-                  money and health.
+                <h1 className="font-header text-4xl lg:text-6xl text-left text-blue-500">
+                  <span className="text-orange-400 font-header">
+                    Take control
+                  </span>{" "}
+                  of your money and health.
                 </h1>
               </div>
-              {/* Blocks Container - Directly below the text, still within the left side */}
+
               <div className="flex flex-col space-y-4 mt-10">
                 <AnimatePresence>
-                  {blockText.map((block) => (
-                    <motion.div
-                      key={block.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="flex lg:flex-row items-center lg:space-x-4 space-y-4 lg:space-y-0"
-                    >
-                      <div className="w-16 h-16 lg:w-36 lg:h-36 lg:p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl mr-2 lg:mr-0">
-                        {/* Dynamically render icon with adjusted size */}
-                        {React.createElement(block.IconComponent, {
-                          color: "white",
-                          size: iconSize,
-                        })}
-                      </div>
-                      <div className="p-2 flex-1 min-w-0">
-                        <p className="text-blue-700 break-words text-sm lg:text-xl text-left font-medium lg:pb-0">
-                          {block.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {blockText.map((block) => {
+                    const learnMoreUrl = "/";
+
+                    return (
+                      <motion.div
+                        key={block.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="flex lg:flex-row items-center lg:space-x-4 space-y-4 lg:space-y-0"
+                      >
+                        <div className="w-16 h-16 lg:w-32 lg:h-32 lg:p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl mr-2 lg:mr-0">
+                          <img
+                            src={block.imgSrc}
+                            alt="Icon"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="p-2 flex-1 min-w-0">
+                          <p className="text-blue-500 break-words text-sm lg:text-lg text-left font-paragraph lg:pb-0">
+                            {block.description.replace("Learn more.", "")}
+                            <a
+                              href={learnMoreUrl}
+                              className="text-orange-400 hover:text-orange-500"
+                            >
+                              Learn more.
+                            </a>
+                          </p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </AnimatePresence>
               </div>
             </div>
-            {/* Placeholder image on the right side */}
-            <div className="lg:w-1/2 flex justify-center items-center pt-5 pb-5">
+            <div className="lg:w-1/2 flex items-center pt-5 pb-5 relative">
               <img
-                src={phoneImage}
+                src={smilingPeople}
                 alt="Description"
-                className="max-w-full mx-auto h-[18em] w-auto lg:h-[30rem]"
+                className="hidden lg:block absolute max-w-full h-[18em] w-auto lg:h-[36rem] bottom-0"
               />
             </div>
           </div>

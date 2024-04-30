@@ -11,22 +11,19 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
       <div className="flex flex-col lg:flex-row w-full">
         <div className="lg:w-1/2 ">
           <img
-            className=" h-[3.5em] w-auto lg:h-[7rem] pb-2 lg:mb-8"
+            className=" h-[3.5em] w-auto lg:h-[7rem] pb-2 lg:mb-10"
             src={settlLogo}
             alt="Settl-logo"
           />
-          <h1 className="font-headerFont text-4xl lg:text-6xl text-left text-blue-500 lg:pb-2">
+          <h1 className="font-header text-4xl lg:text-6xl text-left text-blue-500 lg:pb-2">
             Welcome to {""}
-            <span className="text-orange-400 font-headerFont">Settl</span>:
-            Where Health Meets {""}
+            <span className="text-orange-400 font-header">Settl</span>: Where
+            Health Meets {""}
             <br></br>
-            <span className="text-orange-400 font-headerFont">
-              {dynamicText}
-            </span>
-            .
+            <span className="text-orange-400 font-header">{dynamicText}</span>.
           </h1>
           <div className="lg:pt-2">
-            <p className="pt-2 text-left lg:text-lg text-blue-700 font-paragraphFont">
+            <p className="pt-2 text-left lg:text-lg text-blue-700 font-paragraph">
               We’re all about healthcare made easy. Our goal is to give you the
               freedom to pick the healthcare options that fit you best, make
               managing payments easy with our flexible payment alternatives, and
@@ -36,10 +33,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
           </div>
           <div className="pt-4 pb-4 lg:pt-5 flex text-left gap-2 lg:gap-6 lg:pb-10">
             <button className=" w-2/3 p-3 border shadow-md rounded-xl lg:w-52 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out">
-              <h1 className="lg:text-xl font-buttonFont">HOW IT WORKS</h1>
+              <h1 className="lg:text-xl font-button">HOW IT WORKS</h1>
             </button>
             <button className="w-2/3 p-3 border shadow-md rounded-xl lg:w-52 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out">
-              <h1 className="lg:text-xl font-buttonFont">HOW IT WORKS</h1>
+              <h1 className="lg:text-xl font-button">HOW IT WORKS</h1>
             </button>
           </div>
         </div>

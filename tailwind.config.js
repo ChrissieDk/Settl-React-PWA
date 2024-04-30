@@ -27,7 +27,7 @@ module.exports = withMT({
       lg: [
         "1.125rem",
         {
-          lineHeight: "2rem",
+          lineHeight: "1.75rem",
         },
       ],
       xl: [
@@ -145,10 +145,10 @@ module.exports = withMT({
         "custom-icon-small": "80px",
       },
       fontFamily: {
-        headerFont: ["headerFont", "sans-serif"],
+        header: ["header", "sans-serif"],
         navbar: ["navbar", "sans-serif"],
-        paragraphFont: ["paragraphFont", "sans-serif"],
-        buttonFont: ["buttonFont", "sans-serif"],
+        paragraph: ["paragraph", "sans-serif"],
+        button: ["button", "sans-serif"],
       },
 
       colors: {
@@ -159,7 +159,7 @@ module.exports = withMT({
           100: "#FDE4DE",
           200: "#FAC6B7",
           300: "#F8AB96",
-          400: "#ebbc1c",
+          400: "#FCB120",
           500: "#F3734E",
           600: "#EF4010",
           700: "#B5310C",
