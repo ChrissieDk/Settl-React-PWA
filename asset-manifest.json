@@ -1,24 +1,30 @@
 {
   "files": {
-    "main.css": "/Settl-React-PWA/static/css/main.b4870643.css",
-    "main.js": "/Settl-React-PWA/static/js/main.599e3604.js",
+    "main.css": "/Settl-React-PWA/static/css/main.45d843ec.css",
+    "main.js": "/Settl-React-PWA/static/js/main.57195986.js",
+    "static/media/smiling_people.png": "/Settl-React-PWA/static/media/smiling_people.954a009def57ad52168e.png",
     "static/media/image3.png": "/Settl-React-PWA/static/media/image3.e57a5f0e83aa55e20f53.png",
-    "static/media/HP_Phones.png": "/Settl-React-PWA/static/media/HP_Phones.2c9a37ca8e5b99999f2b.png",
-    "static/media/3.png": "/Settl-React-PWA/static/media/3.a0de40d6943f9bb63976.png",
-    "static/media/settl_logo1.png": "/Settl-React-PWA/static/media/settl_logo1.7d95f7aad3654b61cdd4.png",
-    "static/media/6.png": "/Settl-React-PWA/static/media/6.f26c38b54ca4d6a8e112.png",
-    "static/media/2.png": "/Settl-React-PWA/static/media/2.608b765b58a9cef570b5.png",
-    "static/media/5.png": "/Settl-React-PWA/static/media/5.f383a9f832c31857ed12.png",
-    "static/media/1.png": "/Settl-React-PWA/static/media/1.e02d428c3b2aacc59071.png",
-    "static/media/4.png": "/Settl-React-PWA/static/media/4.3f738fef7f0e03619957.png",
+    "static/media/settl bird_blur.png": "/Settl-React-PWA/static/media/settl bird_blur.27838e574dd06b5c5299.png",
+    "static/media/phones_updated.png": "/Settl-React-PWA/static/media/phones_updated.47c5cce7d883b839b98a.png",
+    "static/media/Roboto-Light.ttf": "/Settl-React-PWA/static/media/Roboto-Light.03e629f6348896ffa23a.ttf",
+    "static/media/Roboto-BoldCondensed.ttf": "/Settl-React-PWA/static/media/Roboto-BoldCondensed.01decb86b9d1459ffdfb.ttf",
+    "static/media/Roboto-Regular.ttf": "/Settl-React-PWA/static/media/Roboto-Regular.f25bd05915c1a3468d3d.ttf",
+    "static/media/RobotoSlab-Bold.ttf": "/Settl-React-PWA/static/media/RobotoSlab-Bold.37f7c30bbfc1ebae4939.ttf",
+    "static/media/see your doc.png": "/Settl-React-PWA/static/media/see your doc.d316fa6ac47ea7e58738.png",
+    "static/media/join settl.png": "/Settl-React-PWA/static/media/join settl.5a0c09b0cb6569aa3b26.png",
+    "static/media/craft your plan.png": "/Settl-React-PWA/static/media/craft your plan.424c398e01960d739b05.png",
+    "static/media/Settl logo.png": "/Settl-React-PWA/static/media/Settl logo.a9af7d4f7489bead2ac7.png",
+    "static/media/pay icon.png": "/Settl-React-PWA/static/media/pay icon.4cf983a173d4a474e9a6.png",
     "service-worker.js": "/Settl-React-PWA/service-worker.js",
     "static/media/Paper_plane.png": "/Settl-React-PWA/static/media/Paper_plane.aaa148f1257ce9281983.png",
+    "static/media/support icon.png": "/Settl-React-PWA/static/media/support icon.dc2914ad89923cbde590.png",
+    "static/media/slider icon.png": "/Settl-React-PWA/static/media/slider icon.4a0e61b7b43abb4ac4d3.png",
     "index.html": "/Settl-React-PWA/index.html",
-    "main.b4870643.css.map": "/Settl-React-PWA/static/css/main.b4870643.css.map",
-    "main.599e3604.js.map": "/Settl-React-PWA/static/js/main.599e3604.js.map"
+    "main.45d843ec.css.map": "/Settl-React-PWA/static/css/main.45d843ec.css.map",
+    "main.57195986.js.map": "/Settl-React-PWA/static/js/main.57195986.js.map"
   },
   "entrypoints": [
-    "static/css/main.b4870643.css",
-    "static/js/main.599e3604.js"
+    "static/css/main.45d843ec.css",
+    "static/js/main.57195986.js"
   ]
 }
