@@ -3,31 +3,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
 
 //images and icons
-import chip1 from "./img/1.png";
-import chip2 from "./img/2.png";
-import chip3 from "./img/3.png";
-import chip4 from "./img/4.png";
-import chip5 from "./img/5.png";
-import chip6 from "./img/6.png";
-import { FaSliders } from "react-icons/fa6";
-import { GrUserSettings } from "react-icons/gr";
-import { LuHeartHandshake } from "react-icons/lu";
 import { FaUserDoctor } from "react-icons/fa6";
 import { LiaToothSolid } from "react-icons/lia";
 import { PiEyeThin } from "react-icons/pi";
 import { GiMedicinePills } from "react-icons/gi";
 import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSection";
-import phoneImage from "./img/HP_Phones.png";
 import planBg from "./img/image3.png";
-import BlocksContainer from "./components/Block/BlockContainer";
 import smilingPeople from "./img/Homepage/smiling_people.png";
 import takeControl1 from "./img/Homepage/slider icon.png";
 import takeControl2 from "./img/Homepage/pay icon.png";
 import takeControl3 from "./img/Homepage/support icon.png";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config";
+import block1 from "../src/img/Homepage/join settl.png";
+import block2 from "../src/img/Homepage/craft your plan.png";
+import block3 from "../src/img/Homepage/see your doc.png";
+import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 
 const blockText = [
   {
@@ -48,15 +41,6 @@ const blockText = [
     imgSrc: takeControl3,
     id: "3",
   },
-];
-
-const chips = [
-  { src: chip1, alt: "Step 1" },
-  { src: chip2, alt: "Step 2" },
-  { src: chip3, alt: "Step 3" },
-  { src: chip4, alt: "Step 4" },
-  { src: chip5, alt: "Step 5" },
-  { src: chip6, alt: "Step 6" },
 ];
 
 const sliderHeaders = ["GP", "Dentistry", "Optometry", "OTC"];
@@ -118,7 +102,6 @@ const HomePage = () => {
         console.log("uid", uid);
       } else {
         // User is signed out
-        // ...
         console.log("user is logged out");
       }
     });
@@ -176,7 +159,7 @@ const HomePage = () => {
                             {block.description.replace("Learn more.", "")}
                             <a
                               href={learnMoreUrl}
-                              className="text-orange-400 hover:text-orange-500"
+                              className="text-orange-400 hover:text-blue-500 underline"
                             >
                               Learn more.
                             </a>
@@ -200,26 +183,75 @@ const HomePage = () => {
       </section>
 
       {/* How it works */}
-      <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
-        <h1 className="font-medium text-4xl lg:text-7xl text-blue-700 lg:pb-4">
+      <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto relative">
+        <h1 className="font-header text-4xl lg:text-6xl text-blue-500 lg:pb-4">
           How it works<span className="text-orange-400"> :</span>
         </h1>
-
-        <div className="hidden lg:grid grid-cols-6 gap-4 mt-8">
-          {chips.map((chip, index) => (
-            <img
-              key={index}
-              src={chip.src}
-              alt={chip.alt}
-              className="w-44 h-auto rounded-full"
-            />
-          ))}
+        <div className="absolute inset-0 z-0">
+          {/* TOP LEFT  */}
+          <img
+            src={blurredBird}
+            alt="Dove Behind"
+            className="h-20 lg:h-40 w-auto object-cover blur-[2px] lg:ml-10"
+          />
+        </div>
+        <div className="absolute top-8 right-0 lg:-right-8 z-0">
+          {/* TOP RIGHT */}
+          <img
+            src={blurredBird}
+            alt="Dove Behind"
+            className="h-16 lg:h-72 w-auto object-cover blur-[2px] lg:ml-10 scale-x-[-1]"
+          />
         </div>
 
-        {/* First Group of Three Blocks */}
-        <div className="pt-10">
-          <div className="grid lg:grid-cols-1 grid-cols-1 gap-4 w-full">
-            <BlocksContainer />
+        <div className="relative lg:h-[70vh] flex justify-center items-center">
+          <div className="flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 mx-auto">
+            <div className="w-full lg:w-[30%] px-2 relative">
+              <img className="w-full h-auto" src={block1} alt="testblock" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8 flex flex-col items-center text-center w-full">
+                <h2 className="text-2xl lg:text-2xl font-button mt-2 text-black">
+                  JOIN SETTL
+                </h2>
+                <p className="text-xl lg:text-lg font-paragraph text-white">
+                  It’s free, takes seconds!
+                </p>
+              </div>
+            </div>
+            <div className="w-full lg:w-[30%] px-2 relative">
+              <img
+                className="lg:w-full lg:h-auto"
+                src={block2}
+                alt="testblock"
+              />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-12 flex flex-col items-center text-center w-full">
+                <h2 className="pt-14 text-2xl lg:text-2xl font-button mt-2 text-black lg:pt-10">
+                  CRAFT YOUR PLAN
+                </h2>
+                <p className="text-xl lg:text-lg font-paragraph text-white">
+                  Use our calculator to customise how much you allocate for
+                  doctors, dentists, optometrists and meds.
+                </p>
+              </div>
+            </div>
+            <div className="w-full lg:w-[30%] px-2 relative">
+              <img className="w-full h-auto" src={block3} alt="testblock" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-12 flex flex-col items-center text-center w-full">
+                <h2 className="text-2xl lg:text-2xl font-button mt-2 text-black lg:pt-3">
+                  SEE YOUR DOC
+                </h2>
+                <p className="text-xl lg:text-lg font-paragraph text-white">
+                  Pay seamlessly with your Settl token at checkout!
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-[-8%] z-0">
+            {/* BOTTOM LEFT */}
+            <img
+              src={blurredBird}
+              alt="Dove Behind"
+              className="h-24 lg:h-56 w-auto object-cover blur-[2px] lg:ml-10"
+            />
           </div>
         </div>
       </section>
