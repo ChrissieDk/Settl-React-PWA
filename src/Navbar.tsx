@@ -125,9 +125,9 @@ export function StickyNavbar() {
               <a href="YOUR_TWITTER_URL" className="ml-4">
                 <FaFacebookF className="text-blue-500 h-6 w-6" />
               </a>
-              <a href="YOUR_INSTAGRAM_URL" className="ml-4">
+              {/* <a href="YOUR_INSTAGRAM_URL" className="ml-4">
                 <FaXTwitter className="text-blue-500 h-6 w-6" />
-              </a>
+              </a> */}
               <a href="YOUR_INSTAGRAM_URL" className="ml-4">
                 <FaLinkedinIn className="text-blue-500 h-6 w-6" />
               </a>

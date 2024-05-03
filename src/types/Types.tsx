@@ -19,6 +19,7 @@ export interface BlockProps {
   header: string;
   subTitle: string;
   extra: string;
+  imageSrc: string;
 }
 
 // Maps

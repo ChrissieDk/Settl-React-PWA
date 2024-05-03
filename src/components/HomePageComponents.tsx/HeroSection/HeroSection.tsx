@@ -54,7 +54,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
           {/* Phone image */}
           <div className="relative z-10">
             <img
-              className="mx-auto h-[18em] w-auto lg:h-[30rem] lg:w-[35rem] justify-center text-center"
+              className="mx-auto pt-8 h-[18em] w-auto lg:h-[33rem] lg:w-[35rem] justify-center text-center"
               src={phoneImage}
               alt="Settl-phone-example"
             />
