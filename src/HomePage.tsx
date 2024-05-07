@@ -4,6 +4,7 @@ import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { HealthCalculator } from "./components/HomePageComponents.tsx/HealthCalculator/HealthCalculator";
+import { IconList } from "./components/HomePageComponents.tsx/HealthCalculator/SliderIcons";
 
 //images and icons
 import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSection";
@@ -49,6 +50,10 @@ const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
   const dynamicText = useTypingEffect(dynamicWords);
+  const [gpVisits, setGpVisits] = useState(0);
+  const [dental, setDental] = useState(0);
+  const [optometry, setOptometry] = useState(0);
+  const [otcMeds, setOtcMeds] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -289,19 +294,31 @@ const HomePage = () => {
         <div className="p-8 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row bg-gray-300">
             <div className="lg:w-2/5">
-              <HealthCalculator />
+              <HealthCalculator
+                gpVisits={gpVisits}
+                setGpVisits={setGpVisits}
+                dental={dental}
+                setDental={setDental}
+                optometry={optometry}
+                setOptometry={setOptometry}
+                otcMeds={otcMeds}
+                setOtcMeds={setOtcMeds}
+              />
             </div>
             <div
               className="bg-cover bg-center lg:w-3/5 lg:m-[-7rem] lg:ml-[1rem] lg:mr-[-6rem] relative"
               style={{ backgroundImage: `url(${planBg})` }}
             >
-              <div className="absolute inset-0 flex justify-center items-center">
-                <div className="w-64 h-[30rem] bg-orange-400 bg-opacity-60 shadow-lg rounded-3xl">
-                  <h1 className="text-white font-header text-2xl pt-8">
-                    Your Plan Value Is:{" "}
-                  </h1>
-                </div>
-              </div>
+              <IconList
+                gpVisits={gpVisits}
+                dental={dental}
+                optometry={optometry}
+                otcMeds={otcMeds}
+              />
+              {/* Centered Button below IconList */}
+              <button className="absolute bottom-16 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
+                I'M INTERESTED
+              </button>
             </div>
           </div>
         </div>
