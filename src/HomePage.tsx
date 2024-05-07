@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
+import { HealthCalculator } from "./components/HomePageComponents.tsx/HealthCalculator/HealthCalculator";
+import { IconList } from "./components/HomePageComponents.tsx/HealthCalculator/SliderIcons";
 
 //images and icons
-import { FaUserDoctor } from "react-icons/fa6";
-import { LiaToothSolid } from "react-icons/lia";
-import { PiEyeThin } from "react-icons/pi";
-import { GiMedicinePills } from "react-icons/gi";
 import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSection";
 import planBg from "./img/image3.png";
 import smilingPeople from "./img/Homepage/smiling_people.png";
@@ -21,6 +17,13 @@ import block1 from "../src/img/Homepage/join settl.png";
 import block2 from "../src/img/Homepage/craft your plan.png";
 import block3 from "../src/img/Homepage/see your doc.png";
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
+import step1 from "../src/img/Homepage/1.png";
+import step2 from "../src/img/Homepage/2.png";
+import step3 from "../src/img/Homepage/3.png";
+import { FaUserDoctor } from "react-icons/fa6";
+import { LiaToothSolid } from "react-icons/lia";
+import { PiEyeThin } from "react-icons/pi";
+import { GiMedicinePills } from "react-icons/gi";
 
 const blockText = [
   {
@@ -43,42 +46,14 @@ const blockText = [
   },
 ];
 
-const sliderHeaders = ["GP", "Dentistry", "Optometry", "OTC"];
-
 const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
   const dynamicText = useTypingEffect(dynamicWords);
-  const [sliderValues, setSliderValues] = useState<number[]>([0, 0, 0, 0]);
-  const suggestedUnitPrice = [600, 750, 1500, 0];
-
-  const onChangeEventTriggered = (
-    index: number,
-    newValue: number | number[]
-  ): void => {
-    // Ensure only a number is processed
-    const valueToProcess = Array.isArray(newValue) ? newValue[0] : newValue; // Taking the first value if it's an array
-
-    const updatedSliderValues = sliderValues.map((value, i) =>
-      i === index ? valueToProcess : value
-    );
-    setSliderValues(updatedSliderValues);
-  };
-
-  const calculatedCosts = sliderValues.map(
-    (visits, index) => visits * suggestedUnitPrice[index]
-  );
-
-  const calculateDisplayValues = () =>
-    sliderValues.map((value, index) => value * suggestedUnitPrice[index]);
-
-  const totalValue = calculatedCosts.reduce((acc, current) => acc + current, 0);
-
-  const displayValues = calculateDisplayValues();
-
-  useEffect(() => {
-    console.log("Component updated, current values:", sliderValues);
-  }, [sliderValues]);
+  const [gpVisits, setGpVisits] = useState(0);
+  const [dental, setDental] = useState(0);
+  const [optometry, setOptometry] = useState(0);
+  const [otcMeds, setOtcMeds] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,6 +67,7 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Check if user is logged in
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -184,7 +160,7 @@ const HomePage = () => {
 
       {/* How it works */}
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto relative">
-        <h1 className="font-header text-4xl lg:text-6xl text-blue-500 lg:pb-4">
+        <h1 className="font-header text-4xl lg:text-7xl text-blue-500 lg:pb-4">
           How it works<span className="text-orange-400"> :</span>
         </h1>
         <div className="absolute inset-0 z-0">
@@ -192,7 +168,7 @@ const HomePage = () => {
           <img
             src={blurredBird}
             alt="Dove Behind"
-            className="h-20 lg:h-40 w-auto object-cover blur-[2px] lg:ml-10"
+            className="h-20 lg:h-40 w-auto object-cover blur-[2px] lg:ml-24"
           />
         </div>
         <div className="absolute top-8 right-0 lg:-right-8 z-0">
@@ -256,117 +232,92 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Its as easy as... */}
-      <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
-        <h1 className="text-blue-700 font-medium text-4xl lg:text-7xl text-left">
-          It's as <span className="text-orange-400">easy</span> as..
-        </h1>
-        <div className="lg:w-1/2">
-          <div className="lg:pt-4">
-            <p className="pl-1 text-left text-blue-700">
-              Effortlessly customize your choices with the slider. Just slide to
-              set the desired payment amount, then click for instant results!
-            </p>
+      {/* Health Calculator */}
+      <section className="bg-gray-200">
+        <div className="p-8 pt-2 lg:pt-12 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+          <h1 className="text-4xl lg:text-7xl text-left text-blue-500 font-header">
+            Health{" "}
+            <span className="text-orange-400 font-header">Calculator</span>
+          </h1>
+          <p className="text-blue-500 pl-1 text-left font-paragraph mt-4">
+            Ready to personalise your health cover? Follow these simple steps!
+          </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 text-left">
+            {/* Block 1 */}
+            <div className="flex items-center space-x-4">
+              <img className="h-20 w-20" src={step1} alt="first step" />
+              <div className="flex-1">
+                <p className="text-sm text-blue-500 font-paragraph lg:mr-8">
+                  <span className="text-orange-400 font-paragraph">
+                    Slide and Select:
+                  </span>{" "}
+                  Our health calculator features easy-to-use sliders. Slide each
+                  dial to the level of cover you want for GP visits, dental
+                  consultations, optometry appointments, and even OTC
+                  medication.
+                </p>
+              </div>
+            </div>
+            {/* Block 2 */}
+            <div className="flex items-center space-x-4">
+              <img className="h-20 w-20" src={step2} alt="second step" />
+              <div className="flex-1">
+                <p className="text-sm text-blue-500 font-paragraph lg:mr-8">
+                  <span className="text-orange-400 font-paragraph">
+                    Instant Update:
+                  </span>{" "}
+                  As you adjust each slider, watch the recommended cover amount
+                  for your health wallet update in real time!
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* Block 3 - Placed under the first step */}
+          <div className="flex items-center space-x-4 mt-4 text-left lg:w-1/2 lg:pt-6">
+            <img className="h-20 w-20" src={step3} alt="third step" />
+            <div className="flex-1">
+              <p className="text-sm text-blue-500 font-paragraph lg:mr-8">
+                <span className="text-orange-400 font-paragraph">
+                  Your Cover Defined: Slide, See, Save!
+                </span>{" "}
+                The calculator shows your personalised cover for each selection.
+                Simply load your Settl health wallet with this amount to unlock
+                quality private healthcare at lower-than-market rates.
+              </p>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-10">
-          <div className="lg:w-1/2 p-10">
-            {sliderValues.map((value, index) => (
-              <div key={index} className="mb-8">
-                <div className="mb-2 text-xl text-black text-left">
-                  {sliderHeaders[index]}
-                </div>
-                <div className="relative flex items-center">
-                  <Slider
-                    trackStyle={{ backgroundColor: "blue", height: 8 }}
-                    railStyle={{ backgroundColor: "lightblue", height: 8 }}
-                    handleStyle={{
-                      borderColor: "blue",
-                      height: 15,
-                      width: 15,
-                      marginLeft: -2,
-                      marginTop: -4,
-                      backgroundColor: "blue",
-                    }}
-                    value={value}
-                    min={0}
-                    max={5}
-                    step={1}
-                    dots={true}
-                    onChange={(newValue) =>
-                      onChangeEventTriggered(index, newValue)
-                    }
-                    className="flex-grow"
-                  />
-                  <input
-                    type="text"
-                    value={displayValues[index]}
-                    className="ml-4 w-20 h-10 flex justify-center items-center border-2 border-orange-400 text-sm rounded-xl text-center"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div
-            style={{
-              backgroundImage: `url(${planBg})`,
-              backgroundSize: "120%",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-            className="w-full lg:w-1/2 flex justify-center mt-10"
-          >
-            <div className="relative h-96 w-3/4 lg:w-[45%] lg:h-[92%] mx-auto my-auto rounded-2xl shadow-2xl flex flex-col items-center justify-center">
-              <div className="absolute inset-0 bg-orange-400 opacity-70 rounded-2xl"></div>
-              <div className="px-4 py-4 w-full text-center relative z-10">
-                <h1 className="pb-6 lg:text-2xl font-bold text-white">
-                  Your Plan Value Is
-                </h1>
-                <div className="mx-auto flex items-center justify-center">
-                  <svg
-                    height="140"
-                    width="140"
-                    viewBox="0 0 100 100"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle r="45" cx="50" cy="50" fill="lightblue" />
-                    <text
-                      x="50%"
-                      y="50%"
-                      dominantBaseline="middle"
-                      textAnchor="middle"
-                      fill="white"
-                    >
-                      R {totalValue}
-                    </text>
-                  </svg>
-                </div>
-                <ul className="text-left w-full pt-4 text-lg">
-                  <h1 className="lg:text-xl font-bold text-white">Benefits</h1>
-                  <div className="pl-2">
-                    <li className="flex items-center">
-                      <FaUserDoctor className="mr-2 text-white" />{" "}
-                      <span className="text-white">R {displayValues[0]}</span>
-                    </li>
-                    <li className="flex items-center">
-                      <LiaToothSolid className="mr-2 text-white" />{" "}
-                      <span className="text-white">R {displayValues[1]}</span>
-                    </li>
-                    <li className="flex items-center">
-                      <PiEyeThin className="mr-2 text-white" />{" "}
-                      <span className="text-white">R {displayValues[2]}</span>
-                    </li>
-                    <li className="flex items-center">
-                      <GiMedicinePills className="mr-2 text-white" />{" "}
-                      <span className="text-white">R {displayValues[3]}</span>
-                    </li>
-                  </div>
-                </ul>
-              </div>
-              <button className="w-auto p-2 ml-2 mr-2 border shadow-md rounded-xl lg:w-auto bg-gray-600 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out relative z-10">
-                <h1 className="lg:text-lg font-medium">I'M INTERESTED</h1>
+      {/* Health Calculator - slider */}
+      <section className="bg-gray-300 h-[30rem]">
+        <div className="p-8 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row bg-gray-300">
+            <div className="lg:w-2/5">
+              <HealthCalculator
+                gpVisits={gpVisits}
+                setGpVisits={setGpVisits}
+                dental={dental}
+                setDental={setDental}
+                optometry={optometry}
+                setOptometry={setOptometry}
+                otcMeds={otcMeds}
+                setOtcMeds={setOtcMeds}
+              />
+            </div>
+            <div
+              className="bg-cover bg-center lg:w-3/5 lg:m-[-7rem] lg:ml-[1rem] lg:mr-[-6rem] relative"
+              style={{ backgroundImage: `url(${planBg})` }}
+            >
+              <IconList
+                gpVisits={gpVisits}
+                dental={dental}
+                optometry={optometry}
+                otcMeds={otcMeds}
+              />
+              {/* Centered Button below IconList */}
+              <button className="absolute bottom-16 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
+                I'M INTERESTED
               </button>
             </div>
           </div>
