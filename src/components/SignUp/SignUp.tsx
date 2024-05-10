@@ -8,6 +8,7 @@ import {
 import { auth, googleProvider } from "../../firebase-config";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
+import { register } from "../../Services/data.service";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,13 +18,14 @@ const Signup = () => {
   // Maybe change to signInWithRedirect to avoid error in console ?
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
-      .then((result) => {
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         // The signed-in user info.
         const user = result.user;
         // Navigate to Dashboard or do something with the user info
+        await registerLocal(user);
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -42,10 +44,11 @@ const Signup = () => {
     e.preventDefault();
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
         console.log(user);
+        await registerLocal(user);
         navigate("/Dashboard");
         sendEmailVerification(userCredential.user).then(() => {
           console.log("Email verification sent", userCredential.user.email);
@@ -58,6 +61,23 @@ const Signup = () => {
       });
   };
 
+  const registerLocal = async (user: any) => {
+    const userIn = {
+      email: user.email,
+      password: password || "test", // Using the password or default if none provided
+      firebaseId: user.uid,
+      username: user.email,
+    };
+
+    return register(userIn)
+      .then((response) => {
+        console.log("User registered in the database:", response);
+        return sendEmailVerification(user);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
   return (
     <main className="flex h-screen bg-gray-100">
       <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">

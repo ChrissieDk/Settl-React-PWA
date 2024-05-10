@@ -40,6 +40,10 @@ const Login = () => {
         // The signed-in user info.
         const user = result.user;
         // Navigate to Dashboard or do something with the user info
+        user.getIdToken().then((idToken) => {
+          localStorage.setItem("bearer", idToken);
+          console.log("Bearer " + idToken);
+        });
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -61,6 +65,10 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        user.getIdToken().then((idToken) => {
+          localStorage.setItem("bearer", idToken);
+          console.log("Bearer " + idToken);
+        });
         navigate("/Dashboard");
         console.log(user);
       })
