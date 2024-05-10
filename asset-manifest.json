@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Settl-React-PWA/static/css/main.0c244e45.css",
-    "main.js": "/Settl-React-PWA/static/js/main.aa5688f0.js",
+    "main.js": "/Settl-React-PWA/static/js/main.31db6ae4.js",
     "static/media/smiling_people.png": "/Settl-React-PWA/static/media/smiling_people.954a009def57ad52168e.png",
     "static/media/image3.png": "/Settl-React-PWA/static/media/image3.e57a5f0e83aa55e20f53.png",
     "static/media/settl bird_blur.png": "/Settl-React-PWA/static/media/settl bird_blur.27838e574dd06b5c5299.png",
@@ -21,10 +21,10 @@
     "static/media/slider icon.png": "/Settl-React-PWA/static/media/slider icon.4a0e61b7b43abb4ac4d3.png",
     "index.html": "/Settl-React-PWA/index.html",
     "main.0c244e45.css.map": "/Settl-React-PWA/static/css/main.0c244e45.css.map",
-    "main.aa5688f0.js.map": "/Settl-React-PWA/static/js/main.aa5688f0.js.map"
+    "main.31db6ae4.js.map": "/Settl-React-PWA/static/js/main.31db6ae4.js.map"
   },
   "entrypoints": [
     "static/css/main.0c244e45.css",
-    "static/js/main.aa5688f0.js"
+    "static/js/main.31db6ae4.js"
   ]
 }
