@@ -48,3 +48,10 @@ export interface TokenModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export interface UserIn {
+  email: string;
+  password: string;
+  firebaseId: string;
+  username: string;
+}
