@@ -5,6 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { HealthCalculator } from "./components/HomePageComponents.tsx/HealthCalculator/HealthCalculator";
 import { IconList } from "./components/HomePageComponents.tsx/HealthCalculator/SliderIcons";
+import { getAllUsers } from "./Services/data.service";
 
 //images and icons
 import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSection";
@@ -46,6 +47,8 @@ const blockText = [
   },
 ];
 
+// write call getAllUsers from dataService
+
 const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
@@ -81,6 +84,8 @@ const HomePage = () => {
         console.log("user is logged out");
       }
     });
+    // users test
+    getAllUsers();
   }, []);
 
   return (
