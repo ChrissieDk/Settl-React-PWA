@@ -84,6 +84,7 @@ const HomePage = () => {
         console.log("user is logged out");
       }
     });
+    // users test
     getAllUsers();
   }, []);
 
