@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "axios": "^1.6.8",
     "firebase": "^10.7.2",
     "firebaseui": "^6.1.0",
     "framer-motion": "^11.0.3",
