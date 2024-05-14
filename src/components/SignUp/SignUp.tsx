@@ -78,6 +78,7 @@ const Signup = () => {
         throw error;
       });
   };
+
   return (
     <main className="flex h-screen bg-gray-100">
       <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">

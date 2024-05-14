@@ -25,17 +25,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Users test
-export const getAllUsers = async () => {
-  try {
-    const response = await axiosInstance.get("/user/users");
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const getUserById = async (id = 1) => {
   try {
     const response = await axiosInstance.get(`/user/${id}`);
@@ -50,6 +39,18 @@ export const register = async (user: UserIn) => {
   try {
     const response = await axiosInstance.post("/user/register", user);
     console.log("User registered:", response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserId = async (firebaseUserId: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `/user/login?firebaseId=${firebaseUserId}`
+    );
+    console.log("User logged in:", response.data);
     return response.data;
   } catch (error) {
     throw error;

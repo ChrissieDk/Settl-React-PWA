@@ -9,6 +9,7 @@ import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { getUserId } from "../../Services/data.service";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Login = () => {
           localStorage.setItem("bearer", idToken);
           console.log("Bearer " + idToken);
         });
+        getUserIdLogin(user.uid);
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -69,6 +71,7 @@ const Login = () => {
           localStorage.setItem("bearer", idToken);
           console.log("Bearer " + idToken);
         });
+        getUserIdLogin(user.uid);
         navigate("/Dashboard");
         console.log(user);
       })
@@ -76,6 +79,16 @@ const Login = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+      });
+  };
+
+  const getUserIdLogin = async (firebaseId: string) => {
+    return getUserId(firebaseId)
+      .then((response) => {
+        console.log("User registered in the database:", response);
+      })
+      .catch((error) => {
+        throw error;
       });
   };
 
