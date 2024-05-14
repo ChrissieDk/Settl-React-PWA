@@ -5,7 +5,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { HealthCalculator } from "./components/HomePageComponents.tsx/HealthCalculator/HealthCalculator";
 import { IconList } from "./components/HomePageComponents.tsx/HealthCalculator/SliderIcons";
-import { getAllUsers } from "./Services/data.service";
 
 //images and icons
 import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSection";
@@ -21,10 +20,6 @@ import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import step1 from "../src/img/Homepage/1.png";
 import step2 from "../src/img/Homepage/2.png";
 import step3 from "../src/img/Homepage/3.png";
-import { FaUserDoctor } from "react-icons/fa6";
-import { LiaToothSolid } from "react-icons/lia";
-import { PiEyeThin } from "react-icons/pi";
-import { GiMedicinePills } from "react-icons/gi";
 
 const blockText = [
   {
@@ -84,8 +79,6 @@ const HomePage = () => {
         console.log("user is logged out");
       }
     });
-    // users
-    getAllUsers();
   }, []);
 
   return (
