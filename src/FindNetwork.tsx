@@ -34,6 +34,7 @@ const FindNetwork = () => {
 
   const defaultProps = {
     zoom: 11,
+    center: { lat: -33.9249, lng: 18.4241 },
     testMarkers: [
       {
         id: 1,
@@ -59,6 +60,63 @@ const FindNetwork = () => {
       {
         id: 4,
         lat: -33.8261,
+        lng: 18.6577,
+        text: "Durbanville Local Spot",
+        subText: "Open 7AM - 3PM",
+      },
+      // testing
+      {
+        id: 5,
+        lat: -32.9539,
+        lng: 20.1234,
+        text: "Rondebosch Local Spot",
+        subText: "Open 9AM - 5PM",
+      },
+      {
+        id: 6,
+        lat: -33.8275,
+        lng: 18.4514,
+        text: "Woodstock Local Spot",
+        subText: "Open 10AM - 6PM",
+      },
+      {
+        id: 7,
+        lat: -34.1173,
+        lng: 18.3754,
+        text: "Sea Point Local Spot",
+        subText: "Open 8AM - 4PM",
+      },
+      {
+        id: 8,
+        lat: -33.1261,
+        lng: 18.6577,
+        text: "Durbanville Local Spot",
+        subText: "Open 7AM - 3PM",
+      },
+      {
+        id: 9,
+        lat: -33.9109,
+        lng: 20.1234,
+        text: "Rondebosch Local Spot",
+        subText: "Open 9AM - 5PM",
+      },
+      {
+        id: 10,
+        lat: -33.9205,
+        lng: 18.4514,
+        text: "Woodstock Local Spot",
+        subText: "Open 10AM - 6PM",
+      },
+      {
+        id: 11,
+        lat: -33.919,
+        lng: 18.3754,
+        text: "Sea Point Local Spot",
+        subText: "Open 8AM - 4PM",
+      },
+      {
+        id: 12,
+        lat: -31.5261,
         lng: 18.6577,
         text: "Durbanville Local Spot",
         subText: "Open 7AM - 3PM",
