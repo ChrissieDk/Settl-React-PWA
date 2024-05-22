@@ -5,23 +5,17 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { MapProps } from "../../types/Types";
+import { MapProps } from "../../types/Types"; // Adjust the path as needed
 
 const containerStyle = {
   width: "100%",
   height: "100%",
 };
 
-type MarkerType = {
-  id: number;
-  lat: number;
-  lng: number;
-  text: string;
-  subText?: string;
-};
-
 const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
-  const [selectedMarker, setSelectedMarker] = useState<null | MarkerType>(null);
+  const [selectedMarker, setSelectedMarker] = useState<
+    null | MapProps["markers"][0]
+  >(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [bounds, setBounds] = useState<{
     north: number;
@@ -29,7 +23,10 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
     east: number;
     west: number;
   } | null>(null);
-  const [filteredMarkers, setFilteredMarkers] = useState<MarkerType[]>([]);
+  const [filteredMarkers, setFilteredMarkers] = useState<MapProps["markers"]>(
+    []
+  );
+  console.log("Filtered markers:", filteredMarkers);
 
   const handleOnLoad = (mapInstance: google.maps.Map) => {
     setMap(mapInstance);
@@ -44,13 +41,12 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
     if (bounds) {
       const { north, south, east, west } = bounds;
       console.log("Bounds updated:", bounds);
-      const visibleMarkers = markers.filter(
-        (marker: MarkerType) =>
-          marker.lat <= north &&
-          marker.lat >= south &&
-          marker.lng <= east &&
-          marker.lng >= west
-      );
+      const visibleMarkers = markers.filter((marker) => {
+        if (marker.lat === undefined || marker.lng === undefined) return false;
+        const isWithinLat = marker.lat <= north && marker.lat >= south;
+        const isWithinLng = marker.lng <= east && marker.lng >= west;
+        return isWithinLat && isWithinLng;
+      });
       console.log("Visible markers:", visibleMarkers);
       setFilteredMarkers(visibleMarkers);
     }
@@ -90,21 +86,36 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
       {filteredMarkers.map((marker) => (
         <Marker
           key={marker.id}
-          position={{ lat: marker.lat, lng: marker.lng }}
+          position={{ lat: marker.lat!, lng: marker.lng! }}
           onClick={() => {
             setSelectedMarker((prev) =>
-              prev && marker.id === marker.id ? null : marker
+              prev && marker.id === prev.id ? null : marker
             );
           }}
         />
       ))}
       {selectedMarker && (
         <InfoWindow
-          position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+          position={{ lat: selectedMarker.lat!, lng: selectedMarker.lng! }}
+          onCloseClick={() => setSelectedMarker(null)}
         >
           <div>
             <h1>{selectedMarker.text}</h1>
             {selectedMarker.subText && <p>{selectedMarker.subText}</p>}
+            {selectedMarker.address && <p>Address: {selectedMarker.address}</p>}
+            {selectedMarker.province && (
+              <p>Province: {selectedMarker.province}</p>
+            )}
+            {selectedMarker.city && <p>City: {selectedMarker.city}</p>}
+            {selectedMarker.postcode && (
+              <p>Postcode: {selectedMarker.postcode}</p>
+            )}
+            {selectedMarker.email && <p>Email: {selectedMarker.email}</p>}
+            {selectedMarker.tel && <p>Telephone: {selectedMarker.tel}</p>}
+            {selectedMarker.providerSurname && (
+              <p>Provider Surname: {selectedMarker.providerSurname}</p>
+            )}
+            {selectedMarker.type && <p>Type: {selectedMarker.type}</p>}
           </div>
         </InfoWindow>
       )}
