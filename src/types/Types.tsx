@@ -29,10 +29,19 @@ export interface MapProps {
     lng: number;
   };
   zoom: number;
+
   markers: {
-    id: number;
-    lat: number;
-    lng: number;
+    id: string;
+    address?: string;
+    province?: string;
+    city?: string;
+    postcode?: number;
+    lng?: number;
+    lat?: number;
+    email?: string;
+    tel?: number;
+    providerSurname?: string;
+    type?: string;
     text: string;
     subText?: string;
   }[];
