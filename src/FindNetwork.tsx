@@ -35,13 +35,12 @@ const FindNetwork = () => {
   const defaultProps = {
     zoom: 11,
     center: { lat: -33.9249, lng: 18.4241 },
-    testMarkers: [
+    companyDetails: [
       {
         id: "1",
         lat: -33.9539,
         lng: 20.1234,
         text: "Rondebosch Local Spot",
-        subText: "Open 9AM - 5PM",
         address: "123 Main St",
         province: "Western Cape",
         city: "Cape Town",
@@ -56,7 +55,6 @@ const FindNetwork = () => {
         lat: -32.9539,
         lng: 20.1234,
         text: "Rondebosch Local Spot",
-        subText: "Open 9AM - 5PM",
         address: "123 Main St",
         province: "Western Cape",
         city: "Cape Town",
@@ -71,7 +69,6 @@ const FindNetwork = () => {
         lat: -33.6539,
         lng: 20.1234,
         text: "Rondebosch Local Spot",
-        subText: "Open 9AM - 5PM",
         address: "123 Main St",
         province: "Western Cape",
         city: "Cape Town",
@@ -86,7 +83,6 @@ const FindNetwork = () => {
         lat: -33.3539,
         lng: 20.1234,
         text: "Rondebosch Local Spot",
-        subText: "Open 9AM - 5PM",
         address: "123 Main St",
         province: "Western Cape",
         city: "Cape Town",
@@ -101,7 +97,6 @@ const FindNetwork = () => {
         lat: -33.1539,
         lng: 20.1234,
         text: "Rondebosch Local Spot",
-        subText: "Open 9AM - 5PM",
         address: "123 Main St",
         province: "Western Cape",
         city: "Cape Town",
@@ -168,7 +163,7 @@ const FindNetwork = () => {
             <Map
               center={mapCenter}
               zoom={defaultProps.zoom}
-              markers={defaultProps.testMarkers}
+              markers={defaultProps.companyDetails}
             />
           </div>
           <div className="">

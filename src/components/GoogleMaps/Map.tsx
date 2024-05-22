@@ -45,6 +45,9 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
         if (marker.lat === undefined || marker.lng === undefined) return false;
         const isWithinLat = marker.lat <= north && marker.lat >= south;
         const isWithinLng = marker.lng <= east && marker.lng >= west;
+        console.log(
+          `Marker ${marker.id} - Lat: ${marker.lat}, Lng: ${marker.lng}, WithinLat: ${isWithinLat}, WithinLng: ${isWithinLng}`
+        );
         return isWithinLat && isWithinLng;
       });
       console.log("Visible markers:", visibleMarkers);
@@ -101,7 +104,6 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
         >
           <div>
             <h1>{selectedMarker.text}</h1>
-            {selectedMarker.subText && <p>{selectedMarker.subText}</p>}
             {selectedMarker.address && <p>Address: {selectedMarker.address}</p>}
             {selectedMarker.province && (
               <p>Province: {selectedMarker.province}</p>
@@ -115,7 +117,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
             {selectedMarker.providerSurname && (
               <p>Provider Surname: {selectedMarker.providerSurname}</p>
             )}
-            {selectedMarker.type && <p>Type: {selectedMarker.type}</p>}
+            {/* {selectedMarker.type && <p>Type: {selectedMarker.type}</p>} */}
           </div>
         </InfoWindow>
       )}
