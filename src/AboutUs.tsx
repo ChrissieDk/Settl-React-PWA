@@ -131,6 +131,17 @@ const AboutUs = () => {
         </div>
       </section>
 
+      {/* Possiblly add later when we have the video ? At the moment extra section seems pointless. */}
+      {/* <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+        <h1 className="text-blue-500 font-header text-[3.5rem]">
+          Healthcare{" "}
+          <span className="text-orange-500 font-header text-[3.5rem]">
+            freedom
+          </span>{" "}
+          is just a tap away.
+        </h1>
+      </section> */}
+
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
         <div className="text-4xl lg:text-6xl font-header mb-10 text-gray-600">
           Unfold clarity in our FAQ section
