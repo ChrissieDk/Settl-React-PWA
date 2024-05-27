@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaArrowRight, FaArrowUp } from "react-icons/fa";
 import faqsGirl from "../src/img/Faqs/girl.png";
+import gotQuestions from "../src/img/Faqs/FAQ_bg2.png";
 
 const AboutUs = () => {
   const faqData = [
@@ -31,8 +32,11 @@ const AboutUs = () => {
     {
       id: 5,
       question: "How can I use my health wallet?",
-      answer:
-        "1 Load money: Once you become a member, you can easily select the health services you need and load money into your health wallet. 2 Generate a token: Your token is your digital payment for healthcare services. You can generate a token equal to the service fee. Providers like doctors, dentists, optometrist and pharmacist can redeem it by scanning the QR code or entering the unique code on their Settl account. 3 Send and receive: Easily send and receive funds from other Settl members.",
+      answer: [
+        "1 Load money: Once you become a member, you can easily select the health services you need and load money into your health wallet.",
+        "2 Generate a token: Your token is your digital payment for healthcare services. You can generate a token equal to the service fee. Providers like doctors, dentists, optometrists, and pharmacists can redeem it by scanning the QR code or entering the unique code on their Settl account.",
+        "3 Send and receive: Easily send and receive funds from other Settl members.",
+      ],
     },
     {
       id: 6,
@@ -142,6 +146,14 @@ const AboutUs = () => {
         </h1>
       </section> */}
 
+      {/* Possiblly add later when we have the video ? At the moment extra section seems pointless. */}
+      <section className="lg:p-8 pb-lg-0 2xl:px-0  mx-auto">
+        <img
+          className="w-full h-auto z-10"
+          src={gotQuestions}
+          alt="frequently_asked_questions_image"
+        />
+      </section>
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
         <div className="text-4xl lg:text-6xl font-header mb-10 text-gray-600">
           Unfold clarity in our FAQ section
