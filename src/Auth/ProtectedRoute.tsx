@@ -12,5 +12,5 @@ export const ProtectedRoute: React.FC<PropsWithChildren<{}>> = ({
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <>{children}</>;
 };
