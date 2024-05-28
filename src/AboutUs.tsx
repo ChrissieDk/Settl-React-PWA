@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaArrowRight, FaArrowUp } from "react-icons/fa";
 import faqsGirl from "../src/img/Faqs/girl.png";
 import gotQuestions from "../src/img/Faqs/FAQ_bg2.png";
+import faqBg from "../src/img/Faqs/settl see-through.png";
 
 const AboutUs = () => {
   const faqData = [
@@ -87,47 +88,52 @@ const AboutUs = () => {
 
   return (
     <>
-      <section className="bg-orange-400 w-full">
+      <section
+        className="bg-gray-200 w-full bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${faqBg})`,
+        }}
+      >
         <div className="pt-2 lg:pt-18 px-10 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex items-center">
           <img
-            className="w-auto h-[35rem] hidden lg:block"
+            className="w-auto h-[35.5rem] hidden lg:block"
             src={faqsGirl}
             alt="frequently_asked_questions_image"
           />
-          <div className="text-left text-white">
-            <h1 className="text-4xl lg:text-[3.5rem] font-header mb-4">
+          <div className="relative text-left text-blue-500 ">
+            <h1 className="text-4xl lg:text-[3.8rem] font-header mb-4 lg:-ml-20">
               Healthcare for EVERYONE <br />
-              <p className="font-header text-4xl text-black">
+              <span className="font-header text-4xl text-orange-500">
                 (at South African prices!)
-              </p>
+              </span>
             </h1>
 
-            <h1 className="text-xl font-header ">
-              <strong className="text-black">
+            <h2 className="text-xl font-header">
+              <strong className="text-orange-500">
                 Millions lack quality healthcare – Settl fixes that.
               </strong>
-            </h1>
-            <p className="text-lg mb-4 font-paragraph font-light text-black">
+            </h2>
+            <p className="text-lg mb-3 font-paragraph font-light text-black">
               We connect you to a massive network of top-notch doctors,
               dentists, and optometrists, all at better-than-market rates.
             </p>
 
-            <h1>
-              <strong className="font-header text-xl">
+            <h2>
+              <strong className="font-header text-xl text-orange-500">
                 You're in control!
               </strong>
-            </h1>
-            <p className="text-black font-paragraph mb-4 text-lg">
+            </h2>
+            <p className="text-black font-paragraph mb-3 text-lg">
               Settl is a prepaid healthcare payment enabler that puts you in
               charge. Load your health wallet, choose your cover, and access
               care whenever you need it. Pay as you go, with the flexibility to
               fit your life.
             </p>
 
-            <h1 className="text-xl text-white font-header">
+            <h2 className="text-xl font-header text-orange-500">
               Focus on well-being, not bills.
-            </h1>
-            <p className="text-lg text-black mb-4 font-paragraph">
+            </h2>
+            <p className="text-lg text-black mb-3 font-paragraph">
               We handle the costs, you focus on staying healthy. That's the
               Settl difference.
             </p>
@@ -147,7 +153,7 @@ const AboutUs = () => {
       </section> */}
 
       {/* Possiblly add later when we have the video ? At the moment extra section seems pointless. */}
-      <section className="lg:p-8 pb-lg-0 2xl:px-0  mx-auto">
+      <section className=" pb-lg-0 2xl:px-0  mx-auto">
         <img
           className="w-full h-auto z-10"
           src={gotQuestions}
@@ -155,27 +161,29 @@ const AboutUs = () => {
         />
       </section>
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
-        <div className="text-4xl lg:text-6xl font-header mb-10 text-gray-600">
+        <div className="text-4xl lg:text-7xl font-header mb-10 text-gray-600">
           Unfold clarity in our FAQ section
         </div>
-        <div className="mt-8 lg:px-24 text-xl font-header text-left">
+        <div className="mt-8 lg:px-20 text-xl lg:text-2xl font-header text-left">
           {faqData.map((item) => (
             <div key={item.id} className="mb-4">
               <div
-                className={`flex justify-between items-center cursor-pointer rounded-2xl p-6 text-white transition-colors duration-500 ${
+                className={`flex justify-between items-center cursor-pointer rounded-2xl p-6 lg:p-8 text-white transition-colors duration-500 ${
                   activeItem === item.id
                     ? "bg-blue-500"
                     : "bg-orange-400 hover:bg-blue-500"
                 }`}
                 onClick={() => toggleItem(item.id)}
               >
-                <div className="font-semibold">{item.question}</div>
+                <div className="font-paragraph">{item.question}</div>
                 <div>
                   {activeItem === item.id ? <FaArrowUp /> : <FaArrowRight />}
                 </div>
               </div>
               {activeItem === item.id && (
-                <div className="mt-2 text-left p-2 text-lg">{item.answer}</div>
+                <div className="mt-2 text-left p-2 text-xl font-paragraph">
+                  {item.answer}
+                </div>
               )}
             </div>
           ))}
