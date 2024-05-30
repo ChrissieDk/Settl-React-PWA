@@ -42,11 +42,11 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
       const { north, south, east, west } = bounds;
       console.log("Bounds updated:", bounds);
       const visibleMarkers = markers.filter((marker) => {
-        if (marker.lat === undefined || marker.lng === undefined) return false;
+        if (marker.lat === undefined || marker.lon === undefined) return false;
         const isWithinLat = marker.lat <= north && marker.lat >= south;
-        const isWithinLng = marker.lng <= east && marker.lng >= west;
+        const isWithinLng = marker.lon <= east && marker.lon >= west;
         console.log(
-          `Marker ${marker.id} - Lat: ${marker.lat}, Lng: ${marker.lng}, WithinLat: ${isWithinLat}, WithinLng: ${isWithinLng}`
+          `Marker ${marker.id} - Lat: ${marker.lat}, Lng: ${marker.lon}, WithinLat: ${isWithinLat}, WithinLng: ${isWithinLng}`
         );
         return isWithinLat && isWithinLng;
       });
@@ -89,7 +89,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
       {filteredMarkers.map((marker) => (
         <Marker
           key={marker.id}
-          position={{ lat: marker.lat!, lng: marker.lng! }}
+          position={{ lat: marker.lat!, lng: marker.lon! }}
           onClick={() => {
             setSelectedMarker((prev) =>
               prev && marker.id === prev.id ? null : marker
@@ -99,7 +99,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
       ))}
       {selectedMarker && (
         <InfoWindow
-          position={{ lat: selectedMarker.lat!, lng: selectedMarker.lng! }}
+          position={{ lat: selectedMarker.lat!, lng: selectedMarker.lon! }}
           onCloseClick={() => setSelectedMarker(null)}
         >
           <div>

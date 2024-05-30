@@ -36,7 +36,7 @@ export interface MapProps {
     province?: string;
     city?: string;
     postcode?: number;
-    lng?: number;
+    lon?: number;
     lat?: number;
     email?: string;
     tel?: number;
