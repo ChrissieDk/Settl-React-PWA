@@ -38,7 +38,7 @@ const FindNetwork: React.FC = () => {
   };
 
   const defaultProps = {
-    zoom: 11,
+    zoom: 13,
     center: { lat: -33.9249, lng: 18.4241 },
   };
 
