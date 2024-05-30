@@ -2,38 +2,28 @@ import React, { useState, useEffect } from "react";
 import paperPlane from "../src/img/Paper_plane.png";
 import Map from "./components/GoogleMaps/Map";
 import { getCompanyDetails } from "./Services/data.service";
+import { MapProps } from "./types/Types"; // Adjust the path as needed
 
 const services = [
-  {
-    id: 1,
-    service: "gp",
-  },
-  {
-    id: 2,
-    service: "dentist",
-  },
-  {
-    id: 3,
-    service: "optometrist",
-  },
-  {
-    id: 4,
-    service: "pharmacy",
-  },
+  { id: 1, service: "gp" },
+  { id: 2, service: "dentist" },
+  { id: 3, service: "optometrist" },
+  { id: 4, service: "pharmacy" },
 ];
 
-const FindNetwork = () => {
+const FindNetwork: React.FC = () => {
   const [activeItem, setActiveItem] = useState<number | null>(null);
   const [mapCenter, setMapCenter] = useState({
     lat: -33.894272,
     lng: 18.629438,
   });
-  const [companyDetails, setCompanyDetails] = useState<any[]>([]);
+  const [companyDetails, setCompanyDetails] = useState<MapProps["markers"]>([]);
 
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       try {
         const data = await getCompanyDetails();
+        console.log("Fetched company details:", data);
         setCompanyDetails(data);
       } catch (error) {
         console.error("Failed to fetch company details", error);
@@ -56,7 +46,6 @@ const FindNetwork = () => {
     <section className="bg-blue-500 min-h-screen">
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
         <div className="w-full lg:w-1/3 text-left">
-          {/* Left column content */}
           <h1 className="text-3xl lg:text-7xl font-bold mb-2 text-white">
             Find a Healthcare Provider
           </h1>
@@ -77,7 +66,6 @@ const FindNetwork = () => {
           </div>
         </div>
         <div className="w-full lg:w-2/3 text-left pl-4">
-          {/* Right column content */}
           <div className="lg:pl-2">
             <p className="pt-4 lg:pt-0 pb-2">Input address:</p>
             <input
@@ -90,7 +78,7 @@ const FindNetwork = () => {
             {services.map((item) => (
               <button
                 key={item.id}
-                className={`uppercase font-bold justify-between items-center cursor-pointer rounded-md p-2 m-2 text-white min-w-24 transition-colors duration-500  ${
+                className={`uppercase font-bold justify-between items-center cursor-pointer rounded-md p-2 m-2 text-white min-w-24 transition-colors duration-500 ${
                   activeItem === item.id
                     ? "bg-blue-800"
                     : "bg-orange-400 hover:bg-blue-800"
@@ -101,17 +89,12 @@ const FindNetwork = () => {
               </button>
             ))}
           </div>
-
           <div className="h-96 w-full mb-4">
             <Map
               center={mapCenter}
               zoom={defaultProps.zoom}
               markers={companyDetails}
             />
-          </div>
-          <div className="">
-            {/* TODO:
-             */}
           </div>
         </div>
       </div>
