@@ -56,3 +56,13 @@ export const getUserId = async (firebaseUserId: string) => {
     throw error;
   }
 };
+
+export const getCompanyDetails = async () => {
+  try {
+    const response = await axiosInstance.get("/company/companydetails");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching company details:", error);
+    throw error;
+  }
+};

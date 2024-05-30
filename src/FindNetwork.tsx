@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import paperPlane from "../src/img/Paper_plane.png";
 import Map from "./components/GoogleMaps/Map";
+import { getCompanyDetails } from "./Services/data.service";
 
 const services = [
   {
@@ -22,95 +23,37 @@ const services = [
 ];
 
 const FindNetwork = () => {
-  const [activeItem, setActiveItem] = useState(null);
+  const [activeItem, setActiveItem] = useState<number | null>(null);
   const [mapCenter, setMapCenter] = useState({
     lat: -33.894272,
     lng: 18.629438,
   });
+  const [companyDetails, setCompanyDetails] = useState<any[]>([]);
 
-  const toggleItem = (id: any) => {
+  useEffect(() => {
+    const fetchCompanyDetails = async () => {
+      try {
+        const data = await getCompanyDetails();
+        setCompanyDetails(data);
+      } catch (error) {
+        console.error("Failed to fetch company details", error);
+      }
+    };
+
+    fetchCompanyDetails();
+  }, []);
+
+  const toggleItem = (id: number) => {
     setActiveItem(activeItem === id ? null : id);
   };
 
   const defaultProps = {
     zoom: 11,
     center: { lat: -33.9249, lng: 18.4241 },
-    companyDetails: [
-      {
-        id: "1",
-        lat: -33.9539,
-        lng: 20.1234,
-        text: "Rondebosch Local Spot",
-        address: "123 Main St",
-        province: "Western Cape",
-        city: "Cape Town",
-        postcode: 7700,
-        email: "contact@rondebosch.com",
-        tel: 1234567890,
-        providerSurname: "Smith",
-        type: "GP",
-      },
-      {
-        id: "2",
-        lat: -32.9539,
-        lng: 20.1234,
-        text: "Rondebosch Local Spot",
-        address: "123 Main St",
-        province: "Western Cape",
-        city: "Cape Town",
-        postcode: 7700,
-        email: "contact@rondebosch.com",
-        tel: 1234567890,
-        providerSurname: "Smith",
-        type: "GP",
-      },
-      {
-        id: "3",
-        lat: -33.6539,
-        lng: 20.1234,
-        text: "Rondebosch Local Spot",
-        address: "123 Main St",
-        province: "Western Cape",
-        city: "Cape Town",
-        postcode: 7700,
-        email: "contact@rondebosch.com",
-        tel: 1234567890,
-        providerSurname: "Smith",
-        type: "GP",
-      },
-      {
-        id: "4",
-        lat: -33.3539,
-        lng: 20.1234,
-        text: "Rondebosch Local Spot",
-        address: "123 Main St",
-        province: "Western Cape",
-        city: "Cape Town",
-        postcode: 7700,
-        email: "contact@rondebosch.com",
-        tel: 1234567890,
-        providerSurname: "Smith",
-        type: "GP",
-      },
-      {
-        id: "5",
-        lat: -33.1539,
-        lng: 20.1234,
-        text: "Rondebosch Local Spot",
-        address: "123 Main St",
-        province: "Western Cape",
-        city: "Cape Town",
-        postcode: 7700,
-        email: "contact@rondebosch.com",
-        tel: 1234567890,
-        providerSurname: "Smith",
-        type: "GP",
-      },
-    ],
   };
 
   return (
-    <section className=" bg-blue-500 min-h-screen">
+    <section className="bg-blue-500 min-h-screen">
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
         <div className="w-full lg:w-1/3 text-left">
           {/* Left column content */}
@@ -163,7 +106,7 @@ const FindNetwork = () => {
             <Map
               center={mapCenter}
               zoom={defaultProps.zoom}
-              markers={defaultProps.companyDetails}
+              markers={companyDetails}
             />
           </div>
           <div className="">
