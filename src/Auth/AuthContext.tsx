@@ -8,13 +8,11 @@ import React, {
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "../firebase-config";
 
-// Define the shape of the context data
 interface AuthContextType {
   currentUser: User | null;
   loading: boolean;
 }
 
-// Provide a default value matching the context type
 const AuthContext = createContext<AuthContextType>({
   currentUser: null,
   loading: true,

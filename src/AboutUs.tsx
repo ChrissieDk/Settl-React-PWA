@@ -161,14 +161,14 @@ const AboutUs = () => {
         />
       </section>
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
-        <div className="text-4xl lg:text-7xl font-header mb-10 text-gray-600">
+        <div className="text-4xl lg:text-6xl font-header mb-10 text-gray-600">
           Unfold clarity in our FAQ section
         </div>
         <div className="mt-8 lg:px-20 text-xl lg:text-2xl font-header text-left">
           {faqData.map((item) => (
             <div key={item.id} className="mb-4">
               <div
-                className={`flex justify-between items-center cursor-pointer rounded-2xl p-6 lg:p-8 text-white transition-colors duration-500 ${
+                className={`flex justify-between items-center cursor-pointer rounded-2xl p-6 lg:p-7 text-white transition-colors duration-500 ${
                   activeItem === item.id
                     ? "bg-blue-500"
                     : "bg-orange-400 hover:bg-blue-500"
