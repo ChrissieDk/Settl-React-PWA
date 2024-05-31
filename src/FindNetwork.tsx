@@ -98,23 +98,25 @@ const FindNetwork: React.FC = () => {
       </div>
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
         <div className="w-full text-left">
-          <h1 className="text-3xl lg:text-7xl font-bold mb-2 text-white">
-            Find a Healthcare Provider
+          <h1 className="text-3xl lg:text-6xl font-header mb-4 text-blue-500">
+            Finding a Settl provider is a breeze.
+            <br />{" "}
+            <span className="text-orange-500 font-header">Just like that!</span>
           </h1>
-          <p className="lg:text-2xl font-bold">
-            Finding a network provider is as easy as ‘1, 2, 3’ with our online
-            Healthcare Network.
+          <p className="lg:text-xl font-paragraph text-blue-500">
+            <strong>Massive Network:</strong> Over 7 500 GPs, dentists,
+            optometrists and pharmacies nationwide.
           </p>
-          <p className="lg:text-md font-light pt-2 text-white">
-            We boast more than 2 500 network providers across the country which
-            include GPs, dentists, optometrists and pharmacies.
+          <p className="lg:text-xl font-paragraph  text-blue-500 mb-4">
+            <strong>Easy Search:</strong> Find the perfect fit for your needs in
+            seconds.
           </p>
         </div>
-        <div className="w-full lg:w-2/3 text-left pl-4 relative">
-          <div className="lg:pl-2">
+        <div className="w-full text-left relative">
+          <div className="mb-2">
             <p className="pt-4 lg:pt-0 pb-2">Input address:</p>
             <input
-              className="lg:w-1/2 rounded-md p-2"
+              className="w-full lg:w-1/2 rounded-md p-2 bg-gray-200"
               type="text"
               placeholder="Enter your area..."
               value={searchQuery}
@@ -134,14 +136,14 @@ const FindNetwork: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="py-2">
+          <div className="py-2 mb-2">
             {services.map((item) => (
               <button
                 key={item.id}
-                className={`uppercase font-bold justify-between items-center cursor-pointer rounded-md p-2 m-2 text-white min-w-24 transition-colors duration-500 ${
+                className={`uppercase font-bold mx-1 justify-between items-center cursor-pointer rounded-md p-2   text-white min-w-24 transition-colors duration-500 ${
                   activeService === item.type
-                    ? "bg-blue-800"
-                    : "bg-orange-400 hover:bg-blue-800"
+                    ? "bg-orange-400"
+                    : "bg-blue-500 hover:bg-orange-500"
                 }`}
                 onClick={() => toggleItem(item.type)}
               >
@@ -149,7 +151,7 @@ const FindNetwork: React.FC = () => {
               </button>
             ))}
           </div>
-          <div className="h-96 w-full mb-4">
+          <div className="h-[35rem] w-full mb-4">
             <Map
               center={mapCenter}
               zoom={defaultProps.zoom}
