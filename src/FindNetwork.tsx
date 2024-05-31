@@ -140,7 +140,7 @@ const FindNetwork: React.FC = () => {
             {services.map((item) => (
               <button
                 key={item.id}
-                className={`uppercase font-bold mx-1 justify-between items-center cursor-pointer rounded-md p-2   text-white min-w-24 transition-colors duration-500 ${
+                className={`uppercase font-bold mx-1 justify-between items-center cursor-pointer rounded-md p-2 text-white min-w-24 transition-colors duration-500 ${
                   activeService === item.type
                     ? "bg-orange-400"
                     : "bg-blue-500 hover:bg-orange-500"
