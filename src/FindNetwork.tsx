@@ -114,9 +114,9 @@ const FindNetwork: React.FC = () => {
         </div>
         <div className="w-full text-left relative">
           <div className="mb-2">
-            <p className="pt-4 lg:pt-0 pb-2">Input address:</p>
+            <p className="pt-4 lg:pt-0 pb-2 font-paragraph">Input address:</p>
             <input
-              className="w-full lg:w-1/2 rounded-md p-2 bg-gray-200"
+              className="w-full lg:w-1/2 rounded-md p-3 bg-gray-200"
               type="text"
               placeholder="Enter your area..."
               value={searchQuery}
