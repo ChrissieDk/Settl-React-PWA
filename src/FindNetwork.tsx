@@ -4,6 +4,7 @@ import Map from "./components/GoogleMaps/Map";
 import { getCompanyDetails } from "./Services/data.service";
 import { MapProps } from "./types/Types";
 import useDebounce from "./hooks/debounce/useDebounce";
+import needDoc from "../src/img/FindNetwork/needADoc.png";
 
 const services = [
   { id: 1, service: "gp", type: "GP" },
@@ -79,9 +80,24 @@ const FindNetwork: React.FC = () => {
   const searchResults = searchQuery ? filteredResults : filteredMarkers;
 
   return (
-    <section className="bg-blue-500 min-h-screen">
+    <section>
+      <div className="relative">
+        <img src={needDoc} alt="need a doctor" className="h-auto w-full" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="absolute left-48 top-20 lg:top-[42%] lg:left-[calc(35%+8rem)] transform -translate-y-1/2">
+            <span className="text-[1.8rem]  text-white font-button lg:text-7xl">
+              Need a Doc?
+            </span>
+          </div>
+          <div className="absolute left-48 top-28 lg:top-[calc(42.5%+4.5rem)] lg:left-[calc(35%+8rem)] transform -translate-y-1/2">
+            <span className="text-[1.8rem] text-gray-800 lg:text-7xl font-button">
+              We've got you covered!
+            </span>
+          </div>
+        </div>
+      </div>
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
-        <div className="w-full lg:w-1/3 text-left">
+        <div className="w-full text-left">
           <h1 className="text-3xl lg:text-7xl font-bold mb-2 text-white">
             Find a Healthcare Provider
           </h1>
@@ -93,13 +109,6 @@ const FindNetwork: React.FC = () => {
             We boast more than 2 500 network providers across the country which
             include GPs, dentists, optometrists and pharmacies.
           </p>
-          <div className="bg-blue-500">
-            <img
-              src={paperPlane}
-              alt="paper plane illustration"
-              className="absolute h-auto w-auto bottom-0 lg:bottom-auto lg:h-60 lg:w-[30rem] left-0"
-            />
-          </div>
         </div>
         <div className="w-full lg:w-2/3 text-left pl-4 relative">
           <div className="lg:pl-2">
