@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Settl-React-PWA/static/css/main.514b6e49.css",
-    "main.js": "/Settl-React-PWA/static/js/main.a237f444.js",
+    "main.css": "/Settl-React-PWA/static/css/main.a6ac074e.css",
+    "main.js": "/Settl-React-PWA/static/js/main.1d3c4365.js",
     "static/media/FAQ_bg2.png": "/Settl-React-PWA/static/media/FAQ_bg2.98874278fbd35bb6d4fb.png",
     "static/media/girl.png": "/Settl-React-PWA/static/media/girl.9685123c66a1a0c0e453.png",
     "static/media/smiling_people.png": "/Settl-React-PWA/static/media/smiling_people.954a009def57ad52168e.png",
@@ -23,11 +23,11 @@
     "static/media/support icon.png": "/Settl-React-PWA/static/media/support icon.dc2914ad89923cbde590.png",
     "static/media/slider icon.png": "/Settl-React-PWA/static/media/slider icon.4a0e61b7b43abb4ac4d3.png",
     "index.html": "/Settl-React-PWA/index.html",
-    "main.514b6e49.css.map": "/Settl-React-PWA/static/css/main.514b6e49.css.map",
-    "main.a237f444.js.map": "/Settl-React-PWA/static/js/main.a237f444.js.map"
+    "main.a6ac074e.css.map": "/Settl-React-PWA/static/css/main.a6ac074e.css.map",
+    "main.1d3c4365.js.map": "/Settl-React-PWA/static/js/main.1d3c4365.js.map"
   },
   "entrypoints": [
-    "static/css/main.514b6e49.css",
-    "static/js/main.a237f444.js"
+    "static/css/main.a6ac074e.css",
+    "static/js/main.1d3c4365.js"
   ]
 }
