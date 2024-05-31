@@ -5,7 +5,7 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { MapProps } from "../../types/Types"; // Adjust the path as needed
+import { MapProps } from "../../types/Types";
 
 const containerStyle = {
   width: "100%",
@@ -113,7 +113,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
               <p>Postcode: {selectedMarker.postcode}</p>
             )}
             {selectedMarker.email && <p>Email: {selectedMarker.email}</p>}
-            {selectedMarker.tel && <p>Telephone: {selectedMarker.tel}</p>}
+            {selectedMarker.tel && <p>Telephone: 0{selectedMarker.tel}</p>}
             {selectedMarker.providerSurname && (
               <p>Provider Surname: {selectedMarker.providerSurname}</p>
             )}

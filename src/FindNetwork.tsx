@@ -4,6 +4,7 @@ import Map from "./components/GoogleMaps/Map";
 import { getCompanyDetails } from "./Services/data.service";
 import { MapProps } from "./types/Types";
 import useDebounce from "./hooks/debounce/useDebounce";
+import needDoc from "../src/img/FindNetwork/needADoc.png";
 
 const services = [
   { id: 1, service: "gp", type: "GP" },
@@ -79,33 +80,43 @@ const FindNetwork: React.FC = () => {
   const searchResults = searchQuery ? filteredResults : filteredMarkers;
 
   return (
-    <section className="bg-blue-500 min-h-screen">
-      <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
-        <div className="w-full lg:w-1/3 text-left">
-          <h1 className="text-3xl lg:text-7xl font-bold mb-2 text-white">
-            Find a Healthcare Provider
-          </h1>
-          <p className="lg:text-2xl font-bold">
-            Finding a network provider is as easy as ‘1, 2, 3’ with our online
-            Healthcare Network.
-          </p>
-          <p className="lg:text-md font-light pt-2 text-white">
-            We boast more than 2 500 network providers across the country which
-            include GPs, dentists, optometrists and pharmacies.
-          </p>
-          <div className="bg-blue-500">
-            <img
-              src={paperPlane}
-              alt="paper plane illustration"
-              className="absolute h-auto w-auto bottom-0 lg:bottom-auto lg:h-60 lg:w-[30rem] left-0"
-            />
+    <section>
+      <div className="relative">
+        <img src={needDoc} alt="need a doctor" className="h-auto w-full" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="absolute left-48 top-20 lg:top-[42%] lg:left-[calc(35%+8rem)] transform -translate-y-1/2">
+            <span className="text-[1.8rem]  text-white font-button lg:text-7xl">
+              Need a Doc?
+            </span>
+          </div>
+          <div className="absolute left-48 top-28 lg:top-[calc(42.5%+4.5rem)] lg:left-[calc(35%+8rem)] transform -translate-y-1/2">
+            <span className="text-[1.8rem] text-gray-800 lg:text-7xl font-button">
+              We've got you covered!
+            </span>
           </div>
         </div>
-        <div className="w-full lg:w-2/3 text-left pl-4 relative">
-          <div className="lg:pl-2">
-            <p className="pt-4 lg:pt-0 pb-2">Input address:</p>
+      </div>
+      <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
+        <div className="w-full text-left">
+          <h1 className="text-3xl lg:text-6xl font-header mb-4 text-blue-500">
+            Finding a Settl provider is a breeze.
+            <br />{" "}
+            <span className="text-orange-500 font-header">Just like that!</span>
+          </h1>
+          <p className="lg:text-xl font-paragraph text-blue-500">
+            <strong>Massive Network:</strong> Over 7 500 GPs, dentists,
+            optometrists and pharmacies nationwide.
+          </p>
+          <p className="lg:text-xl font-paragraph  text-blue-500 mb-4">
+            <strong>Easy Search:</strong> Find the perfect fit for your needs in
+            seconds.
+          </p>
+        </div>
+        <div className="w-full text-left relative">
+          <div className="mb-2">
+            <p className="pt-4 lg:pt-0 pb-2 font-paragraph">Input address:</p>
             <input
-              className="lg:w-1/2 rounded-md p-2"
+              className="w-full lg:w-1/2 rounded-md p-3 bg-gray-200"
               type="text"
               placeholder="Enter your area..."
               value={searchQuery}
@@ -125,14 +136,14 @@ const FindNetwork: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="py-2">
+          <div className="py-2 mb-2">
             {services.map((item) => (
               <button
                 key={item.id}
-                className={`uppercase font-bold justify-between items-center cursor-pointer rounded-md p-2 m-2 text-white min-w-24 transition-colors duration-500 ${
+                className={`uppercase font-bold mx-1 justify-between items-center cursor-pointer rounded-md p-2 text-white min-w-24 transition-colors duration-500 ${
                   activeService === item.type
-                    ? "bg-blue-800"
-                    : "bg-orange-400 hover:bg-blue-800"
+                    ? "bg-orange-400"
+                    : "bg-blue-500 hover:bg-orange-500"
                 }`}
                 onClick={() => toggleItem(item.type)}
               >
@@ -140,7 +151,7 @@ const FindNetwork: React.FC = () => {
               </button>
             ))}
           </div>
-          <div className="h-96 w-full mb-4">
+          <div className="h-[35rem] w-full mb-4">
             <Map
               center={mapCenter}
               zoom={defaultProps.zoom}
