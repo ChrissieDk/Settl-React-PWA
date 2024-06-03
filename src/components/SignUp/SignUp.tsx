@@ -9,6 +9,7 @@ import { auth, googleProvider } from "../../firebase-config";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { register } from "../../Services/data.service";
+import logoBlur from "../../img/Authflow/settl_blur.png";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -80,17 +81,49 @@ const Signup = () => {
   };
 
   return (
-    <main className="flex h-screen bg-gray-100">
-      <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
+    <main
+      className="flex bg-no-repeat bg-contain bg-center bg-origin-content"
+      style={{ backgroundImage: `url(${logoBlur})`, height: "90vh" }}
+    >
+      <section className="m-auto lg:h-[92%] w-full max-w-md px-8 py-6 bg-teal-50  shadow-md [clip-path:polygon(0%_0%,100%_3%,100%_98%,0%_100%)]">
         <div>
-          <h1 className="text-2xl font-bold text-center text-gray-800">
-            Create an account
+          <h1 className="text-4xl font-bold text-center text-blue-500 mt-2 lg:mt-6">
+            Let’s sign you up
           </h1>
+          <h1 className="text-md font-button text-center text-black mt-2">
+            You're one step closer to unlocking the door to healthcare freedom.
+          </h1>
+          {/* Google and Facebook Login Buttons */}
+          <div className="flex flex-col items-center my-4">
+            <button
+              type="button"
+              className="flex items-center justify-center w-full px-4 py-2 mb-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={signInWithGoogle}
+            >
+              <FcGoogle size={20} className="mr-2" />
+              Log in with Google
+            </button>
+            {/* <button
+              type="button"
+              className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={signInWithFacebook}
+            >
+              <FaFacebookF size={20} className="mr-2 text-blue-600" />
+              Log in with Facebook
+            </button> */}
+          </div>
+
+          <div className="flex items-center my-4">
+            <div className="flex-grow border-t border-orange-500"></div>
+            <span className="mx-4 text-gray-500">OR</span>
+            <div className="flex-grow border-t border-orange-500"></div>
+          </div>
+
           <form onSubmit={onSubmit} className="mt-4">
             <div className="mb-4">
               <label
                 htmlFor="email-address"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-button text-black"
               >
                 Email address
               </label>
@@ -108,7 +141,7 @@ const Signup = () => {
             <div className="mb-6">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-button text-black"
               >
                 Password
               </label>
@@ -125,19 +158,10 @@ const Signup = () => {
 
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="w-[50%] px-4 py-2 mb-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Sign up
             </button>
-            <div className="flex justify-center mt-2">
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 bg-gray-100 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 active:bg-gray-200 focus:outline-none focus:border-gray-200 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                onClick={() => signInWithGoogle()}
-              >
-                <FcGoogle size={25} />
-              </button>
-            </div>
           </form>
 
           <p className=" text-sm text-center text-gray-600">
