@@ -97,8 +97,8 @@ const Login = () => {
   return (
     <>
       <main
-        className="flex min-h-screen bg-cover bg-center"
-        style={{ backgroundImage: `url(${bgLogin})` }}
+        className="flex bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgLogin})`, height: "90vh" }}
       >
         <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
           <img src={settlLogo} alt="Settl Logo" className="h-16 mx-auto mb-4" />
@@ -129,9 +129,9 @@ const Login = () => {
 
           {/* Horizontal Split with 'OR' */}
           <div className="flex items-center my-4">
-            <div className="flex-grow border-t border-gray-300"></div>
+            <div className="flex-grow border-t border-orange-500"></div>
             <span className="mx-4 text-gray-500">OR</span>
-            <div className="flex-grow border-t border-gray-300"></div>
+            <div className="flex-grow border-t border-orange-500"></div>
           </div>
 
           {/* Login Form */}
