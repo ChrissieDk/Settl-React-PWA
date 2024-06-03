@@ -10,6 +10,8 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { getUserId } from "../../Services/data.service";
+import settlLogo from "../../img/Homepage/Settl logo.png";
+import bgLogin from "../../img/Authflow/bg_login.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -94,22 +96,56 @@ const Login = () => {
 
   return (
     <>
-      <main className="flex h-screen bg-gray-100">
+      <main
+        className="flex min-h-screen bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgLogin})` }}
+      >
         <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-center text-gray-800">
-            Login to Your Account
+          <img src={settlLogo} alt="Settl Logo" className="h-16 mx-auto mb-4" />
+          <h2 className="text-md font-button text-center text-black">Log in</h2>
+          <h2 className="text-md font-button text-center text-black">
+            Welcome back!
           </h2>
+
+          {/* Google and Facebook Login Buttons */}
+          <div className="flex flex-col items-center my-4">
+            <button
+              type="button"
+              className="flex items-center justify-center w-full px-4 py-2 mb-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={signInWithGoogle}
+            >
+              <FcGoogle size={20} className="mr-2" />
+              Log in with Google
+            </button>
+            {/* <button
+              type="button"
+              className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              onClick={signInWithFacebook}
+            >
+              <FaFacebookF size={20} className="mr-2 text-blue-600" />
+              Log in with Facebook
+            </button> */}
+          </div>
+
+          {/* Horizontal Split with 'OR' */}
+          <div className="flex items-center my-4">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="mx-4 text-gray-500">OR</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
+
+          {/* Login Form */}
           <form className="mt-4">
             <div className="mb-4">
               <label
                 htmlFor="email-address"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-md font-button text-black"
                 aria-required="true"
               >
                 Email address
               </label>
               <input
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 id="email-address"
                 name="email"
                 type="email"
@@ -122,13 +158,13 @@ const Login = () => {
             <div className="mb-6">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-md font-button text-black"
                 aria-required="true"
               >
                 Password
               </label>
               <input
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 id="password"
                 name="password"
                 type="password"
@@ -147,16 +183,7 @@ const Login = () => {
                 Login
               </button>
             </div>
-            <div className="flex justify-center mt-4">
-              <button
-                type="button"
-                className="inline-flex items-center  bg-gray-100 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-200 active:bg-gray-200 focus:outline-none focus:border-gray-200 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                onClick={() => signInWithGoogle()}
-              >
-                <FcGoogle size={25} />
-              </button>
-            </div>
-            <div className="text-right  inline-flex items-center">
+            <div className=" mt-4">
               <button
                 type="button"
                 className="text-indigo-600 hover:text-indigo-500 text-sm"
@@ -168,7 +195,7 @@ const Login = () => {
             </div>
           </form>
 
-          <p className=" text-sm text-center text-gray-600">
+          <p className="mt-4 text-sm text-center text-gray-600">
             No account yet?
             <NavLink
               to="/signup"
