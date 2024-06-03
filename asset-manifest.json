@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Settl-React-PWA/static/css/main.a7b38827.css",
-    "main.js": "/Settl-React-PWA/static/js/main.d29645e1.js",
+    "main.css": "/Settl-React-PWA/static/css/main.b01c72fc.css",
+    "main.js": "/Settl-React-PWA/static/js/main.4d441654.js",
     "static/media/faqs.png": "/Settl-React-PWA/static/media/faqs.b0eeb41cb1ed6e9b5545.png",
     "static/media/footer.png": "/Settl-React-PWA/static/media/footer.4502a88decb2e1bb20e6.png",
     "static/media/girl.png": "/Settl-React-PWA/static/media/girl.9685123c66a1a0c0e453.png",
@@ -9,6 +9,7 @@
     "static/media/smiling_people.png": "/Settl-React-PWA/static/media/smiling_people.954a009def57ad52168e.png",
     "static/media/image3.png": "/Settl-React-PWA/static/media/image3.e57a5f0e83aa55e20f53.png",
     "static/media/settl bird_blur.png": "/Settl-React-PWA/static/media/settl bird_blur.27838e574dd06b5c5299.png",
+    "static/media/bg_login.png": "/Settl-React-PWA/static/media/bg_login.25e6bd7efb314b8244cd.png",
     "static/media/phones_updated.png": "/Settl-React-PWA/static/media/phones_updated.47c5cce7d883b839b98a.png",
     "static/media/Roboto-Light.ttf": "/Settl-React-PWA/static/media/Roboto-Light.03e629f6348896ffa23a.ttf",
     "static/media/settl see-through.png": "/Settl-React-PWA/static/media/settl see-through.d85ec325911b3bd533bd.png",
@@ -24,11 +25,11 @@
     "static/media/support icon.png": "/Settl-React-PWA/static/media/support icon.dc2914ad89923cbde590.png",
     "static/media/slider icon.png": "/Settl-React-PWA/static/media/slider icon.4a0e61b7b43abb4ac4d3.png",
     "index.html": "/Settl-React-PWA/index.html",
-    "main.a7b38827.css.map": "/Settl-React-PWA/static/css/main.a7b38827.css.map",
-    "main.d29645e1.js.map": "/Settl-React-PWA/static/js/main.d29645e1.js.map"
+    "main.b01c72fc.css.map": "/Settl-React-PWA/static/css/main.b01c72fc.css.map",
+    "main.4d441654.js.map": "/Settl-React-PWA/static/js/main.4d441654.js.map"
   },
   "entrypoints": [
-    "static/css/main.a7b38827.css",
-    "static/js/main.d29645e1.js"
+    "static/css/main.b01c72fc.css",
+    "static/js/main.4d441654.js"
   ]
 }
