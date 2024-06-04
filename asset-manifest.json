@@ -1,7 +1,8 @@
 {
   "files": {
-    "main.css": "/Settl-React-PWA/static/css/main.5abdb838.css",
-    "main.js": "/Settl-React-PWA/static/js/main.c007784b.js",
+    "main.css": "/Settl-React-PWA/static/css/main.b9a9fca6.css",
+    "main.js": "/Settl-React-PWA/static/js/main.00e35c9f.js",
+    "static/media/origamisaur.png": "/Settl-React-PWA/static/media/origamisaur.5db4e46c5fdfce86bc4a.png",
     "static/media/faqs.png": "/Settl-React-PWA/static/media/faqs.b0eeb41cb1ed6e9b5545.png",
     "static/media/footer.png": "/Settl-React-PWA/static/media/footer.4502a88decb2e1bb20e6.png",
     "static/media/girl.png": "/Settl-React-PWA/static/media/girl.9685123c66a1a0c0e453.png",
@@ -26,11 +27,11 @@
     "static/media/support icon.png": "/Settl-React-PWA/static/media/support icon.dc2914ad89923cbde590.png",
     "static/media/slider icon.png": "/Settl-React-PWA/static/media/slider icon.4a0e61b7b43abb4ac4d3.png",
     "index.html": "/Settl-React-PWA/index.html",
-    "main.5abdb838.css.map": "/Settl-React-PWA/static/css/main.5abdb838.css.map",
-    "main.c007784b.js.map": "/Settl-React-PWA/static/js/main.c007784b.js.map"
+    "main.b9a9fca6.css.map": "/Settl-React-PWA/static/css/main.b9a9fca6.css.map",
+    "main.00e35c9f.js.map": "/Settl-React-PWA/static/js/main.00e35c9f.js.map"
   },
   "entrypoints": [
-    "static/css/main.5abdb838.css",
-    "static/js/main.c007784b.js"
+    "static/css/main.b9a9fca6.css",
+    "static/js/main.00e35c9f.js"
   ]
 }
