@@ -130,7 +130,7 @@ const Signup = () => {
             <div className="mb-4">
               <label
                 htmlFor="email-address"
-                className="block text-sm font-button text-black"
+                className="block text-sm font-button text-black "
               >
                 Email address
               </label>
