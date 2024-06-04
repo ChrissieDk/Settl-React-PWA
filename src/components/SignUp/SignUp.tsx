@@ -10,6 +10,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { register } from "../../Services/data.service";
 import logoBlur from "../../img/Authflow/settl_blur.png";
+import dino from "../../img/Authflow/origamisaur.png";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -82,10 +83,16 @@ const Signup = () => {
 
   return (
     <main
-      className="flex bg-no-repeat bg-contain bg-center bg-origin-content"
+      className="relative flex bg-no-repeat bg-contain bg-center bg-origin-content mx-2"
       style={{ backgroundImage: `url(${logoBlur})`, height: "90vh" }}
     >
-      <section className="m-auto lg:h-[92%] w-full max-w-md px-8 py-6 bg-teal-50  shadow-md [clip-path:polygon(0%_0%,100%_3%,100%_98%,0%_100%)]">
+      <img
+        src={dino}
+        alt="Origamisaur"
+        className="absolute left-10 -bottom-6 w-[40%] h-auto hidden md:block"
+        style={{ zIndex: 1 }}
+      />
+      <section className=" m-auto lg:h-[92%] w-full max-w-md px-8 py-6 bg-teal-50 shadow-md [clip-path:polygon(0%_0%,100%_3%,100%_98%,0%_100%)]">
         <div>
           <h1 className="text-4xl font-bold text-center text-blue-500 mt-2 lg:mt-6">
             Let’s sign you up
@@ -104,13 +111,13 @@ const Signup = () => {
               Log in with Google
             </button>
             {/* <button
-              type="button"
-              className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              onClick={signInWithFacebook}
-            >
-              <FaFacebookF size={20} className="mr-2 text-blue-600" />
-              Log in with Facebook
-            </button> */}
+            type="button"
+            className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            onClick={signInWithFacebook}
+          >
+            <FaFacebookF size={20} className="mr-2 text-blue-600" />
+            Log in with Facebook
+          </button> */}
           </div>
 
           <div className="flex items-center my-4">
@@ -123,7 +130,7 @@ const Signup = () => {
             <div className="mb-4">
               <label
                 htmlFor="email-address"
-                className="block text-sm font-button text-black"
+                className="block text-sm font-button text-black "
               >
                 Email address
               </label>
@@ -164,7 +171,7 @@ const Signup = () => {
             </button>
           </form>
 
-          <p className=" text-sm text-center text-gray-600">
+          <p className="text-sm text-center text-gray-600">
             Already have an account?
             <NavLink
               to="/login"
