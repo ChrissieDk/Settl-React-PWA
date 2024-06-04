@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
-import logo from "./img/Homepage/settl icon.png";
+import { useAuth } from "./Auth/AuthContext";
+
+// icons and images
 import { FaInstagram } from "react-icons/fa6";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
+import logo from "./img/Homepage/settl icon.png";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = useState(false);
   const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,14 +73,16 @@ export function StickyNavbar() {
           <h1 className="font-navbar">About Us</h1>
         </a>
       </li>
-      <li className="p-1">
-        <a
-          href="/Settl-React-PWA/"
-          className="flex items-center hover:text-blue-500"
-        >
-          <h1 className="font-navbar">Contact us</h1>
-        </a>
-      </li>
+      {currentUser && (
+        <li className="p-1">
+          <a
+            href="/Settl-React-PWA/Dashboard"
+            className="flex items-center hover:text-blue-500"
+          >
+            <h1 className="font-navbar">Dashboard</h1>
+          </a>
+        </li>
+      )}
 
       {isUserSignedIn ? (
         <li className="p-1">
