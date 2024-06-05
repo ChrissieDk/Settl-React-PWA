@@ -26,7 +26,6 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
   const [filteredMarkers, setFilteredMarkers] = useState<MapProps["markers"]>(
     []
   );
-  console.log("Filtered markers:", filteredMarkers);
 
   const handleOnLoad = (mapInstance: google.maps.Map) => {
     setMap(mapInstance);
@@ -40,17 +39,12 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
   useEffect(() => {
     if (bounds) {
       const { north, south, east, west } = bounds;
-      console.log("Bounds updated:", bounds);
       const visibleMarkers = markers.filter((marker) => {
         if (marker.lat === undefined || marker.lon === undefined) return false;
         const isWithinLat = marker.lat <= north && marker.lat >= south;
         const isWithinLng = marker.lon <= east && marker.lon >= west;
-        console.log(
-          `Marker ${marker.id} - Lat: ${marker.lat}, Lng: ${marker.lon}, WithinLat: ${isWithinLat}, WithinLng: ${isWithinLng}`
-        );
         return isWithinLat && isWithinLng;
       });
-      console.log("Visible markers:", visibleMarkers);
       setFilteredMarkers(visibleMarkers);
     }
   }, [bounds, markers]);
@@ -66,7 +60,6 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
             east: mapBounds.getNorthEast().lng(),
             west: mapBounds.getSouthWest().lng(),
           };
-          console.log("Map bounds changed:", newBounds);
           setBounds(newBounds);
         }
       });
