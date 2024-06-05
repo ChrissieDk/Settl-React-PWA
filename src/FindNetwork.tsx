@@ -5,7 +5,7 @@ import { getCompanyDetails } from "./Services/data.service";
 import { MapProps } from "./types/Types";
 import useDebounce from "./hooks/debounce/useDebounce";
 import needDoc from "../src/img/FindNetwork/needADoc.png";
-import Footer from "./components/footer/footer";
+import Footer from "./components/Footer/footer";
 
 const services = [
   { id: 1, service: "gp", type: "GP" },
