@@ -15,10 +15,10 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <div className="App">
-        <Router basename="/Settl-React-PWA">
+        <Router basename="/">
           <StickyNavbar />
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/Settl-React-PWA" element={<HomePage />} />
             {/* Example protected route */}
             <Route
               path="/Dashboard"
