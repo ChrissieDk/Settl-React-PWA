@@ -43,7 +43,7 @@
     "workbox-streams": "^6.6.0"
   },
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "predeploy": "npm run build",
