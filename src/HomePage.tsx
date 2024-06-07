@@ -68,20 +68,20 @@ const HomePage = () => {
   }, []);
 
   // Check if user is logged in
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        // ...
-        console.log("uid", uid);
-      } else {
-        // User is signed out
-        console.log("user is logged out");
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       // User is signed in, see docs for a list of available properties
+  //       // https://firebase.google.com/docs/reference/js/firebase.User
+  //       const uid = user.uid;
+  //       // ...
+  //       console.log("uid", uid);
+  //     } else {
+  //       // User is signed out
+  //       console.log("user is logged out");
+  //     }
+  //   });
+  // }, []);
 
   return (
     <>
@@ -113,7 +113,7 @@ const HomePage = () => {
               <div className="flex flex-col space-y-4 mt-10">
                 <AnimatePresence>
                   {blockText.map((block) => {
-                    const learnMoreUrl = "/";
+                    const learnMoreUrl = "/Settl-React-PWA";
 
                     return (
                       <motion.div
