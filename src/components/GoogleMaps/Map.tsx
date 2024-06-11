@@ -6,10 +6,18 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { MapProps } from "../../types/Types";
+import marker from "../../img/Location_pin.png";
 
 const containerStyle = {
   width: "100%",
   height: "100%",
+};
+
+const customMarker = {
+  url: marker,
+  scaledSize: new google.maps.Size(30, 40),
+  origin: new google.maps.Point(0, 0),
+  anchor: new google.maps.Point(20, 40),
 };
 
 const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
@@ -83,6 +91,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
         <Marker
           key={marker.id}
           position={{ lat: marker.lat!, lng: marker.lon! }}
+          icon={customMarker}
           onClick={() => {
             setSelectedMarker((prev) =>
               prev && marker.id === prev.id ? null : marker
