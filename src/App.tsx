@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <Router basename="/">
           <StickyNavbar />
           <Routes>
-            <Route path="/Settl-React-PWA" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
             {/* Example protected route */}
             <Route
               path="/Dashboard"

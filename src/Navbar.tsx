@@ -7,7 +7,6 @@ import { useAuth } from "./Auth/AuthContext";
 // icons and images
 import { FaInstagram } from "react-icons/fa6";
 import { FaFacebookF } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
 import logo from "./img/Homepage/settl icon.png";
 
@@ -59,24 +58,21 @@ export function StickyNavbar() {
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <li className="p-1">
         <a
-          href="/Settl-React-PWA/FindNetwork"
+          href="/FindNetwork"
           className="flex items-center hover:text-blue-500"
         >
           <h1 className="font-navbar">Find a network provider</h1>
         </a>
       </li>
       <li className="p-1">
-        <a
-          href="/Settl-React-PWA/AboutUs"
-          className="flex items-center hover:text-blue-500"
-        >
+        <a href="/AboutUs" className="flex items-center hover:text-blue-500">
           <h1 className="font-navbar">About Us</h1>
         </a>
       </li>
       {currentUser && (
         <li className="p-1">
           <a
-            href="/Settl-React-PWA/Dashboard"
+            href="/Dashboard"
             className="flex items-center hover:text-blue-500"
           >
             <h1 className="font-navbar">Dashboard</h1>
@@ -121,7 +117,7 @@ export function StickyNavbar() {
       <div className="max-w-full px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between">
           <div className="flex">
-            <a href="/Settl-React-PWA">
+            <a href="/">
               <img className="h-10 w-auto" src={logo} alt="Settl Logo" />
             </a>
             <div className="flex ml-4 my-auto">
@@ -131,9 +127,6 @@ export function StickyNavbar() {
               <a href="YOUR_TWITTER_URL" className="ml-4">
                 <FaFacebookF className="text-blue-500 h-6 w-6" />
               </a>
-              {/* <a href="YOUR_INSTAGRAM_URL" className="ml-4">
-                <FaXTwitter className="text-blue-500 h-6 w-6" />
-              </a> */}
               <a href="YOUR_INSTAGRAM_URL" className="ml-4">
                 <FaLinkedinIn className="text-blue-500 h-6 w-6" />
               </a>
