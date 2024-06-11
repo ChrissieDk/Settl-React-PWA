@@ -31,7 +31,7 @@ const FindNetwork: React.FC = () => {
     const fetchCompanyDetails = async () => {
       try {
         const data = await getCompanyDetails();
-        // console.log("Fetched company details:", data);
+        console.log("Fetched company details:", data);
         setCompanyDetails(data);
       } catch (error) {
         console.error("Failed to fetch company details", error);

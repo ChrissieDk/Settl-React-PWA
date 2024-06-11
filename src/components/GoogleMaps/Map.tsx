@@ -8,16 +8,18 @@ import {
 import { MapProps } from "../../types/Types";
 import marker from "../../img/Location_pin.png";
 
+// icons
+import { FaLocationDot } from "react-icons/fa6";
+import { FaLocationArrow } from "react-icons/fa";
+import { FaCity } from "react-icons/fa";
+import { FaSignsPost } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaUserDoctor } from "react-icons/fa6";
+
 const containerStyle = {
   width: "100%",
   height: "100%",
-};
-
-const customMarker = {
-  url: marker,
-  scaledSize: new google.maps.Size(30, 40),
-  origin: new google.maps.Point(0, 0),
-  anchor: new google.maps.Point(20, 40),
 };
 
 const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
@@ -34,6 +36,9 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
   const [filteredMarkers, setFilteredMarkers] = useState<MapProps["markers"]>(
     []
   );
+  const [customMarker, setCustomMarker] = useState<
+    google.maps.Icon | undefined
+  >();
 
   const handleOnLoad = (mapInstance: google.maps.Map) => {
     setMap(mapInstance);
@@ -43,6 +48,17 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
+
+  useEffect(() => {
+    if (isLoaded) {
+      setCustomMarker({
+        url: marker,
+        scaledSize: new google.maps.Size(30, 40),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(20, 40),
+      });
+    }
+  }, [isLoaded]);
 
   useEffect(() => {
     if (bounds) {
@@ -104,22 +120,49 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
           position={{ lat: selectedMarker.lat!, lng: selectedMarker.lon! }}
           onCloseClick={() => setSelectedMarker(null)}
         >
-          <div>
-            <h1>{selectedMarker.text}</h1>
-            {selectedMarker.address && <p>Address: {selectedMarker.address}</p>}
+          <div className="p-2 shadow-lg min-w-60">
+            {selectedMarker.address && (
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <FaLocationDot size={20} className="mr-2  text-orange-500" />
+                {selectedMarker.address}
+              </p>
+            )}
             {selectedMarker.province && (
-              <p>Province: {selectedMarker.province}</p>
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <FaLocationArrow size={20} className="mr-2 text-orange-500" />
+                {selectedMarker.province}
+              </p>
             )}
-            {selectedMarker.city && <p>City: {selectedMarker.city}</p>}
+            {selectedMarker.city && (
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <FaCity size={20} className="mr-2 text-orange-500" />
+                {selectedMarker.city}
+              </p>
+            )}
             {selectedMarker.postcode && (
-              <p>Postcode: {selectedMarker.postcode}</p>
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <FaSignsPost size={20} className="mr-2 text-orange-500" />
+                {selectedMarker.postcode}
+              </p>
             )}
-            {selectedMarker.email && <p>Email: {selectedMarker.email}</p>}
-            {selectedMarker.tel && <p>Telephone: 0{selectedMarker.tel}</p>}
+            {selectedMarker.email && (
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <MdEmail size={20} className="mr-2 text-orange-500" />
+                {selectedMarker.email}
+              </p>
+            )}
+            {selectedMarker.tel && (
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <FaPhoneAlt size={20} className="mr-2 text-orange-500" /> 0
+                {selectedMarker.tel}
+              </p>
+            )}
             {selectedMarker.providerSurname && (
-              <p>Provider Surname: {selectedMarker.providerSurname}</p>
+              <p className="text-sm font-button text-black flex flex-row items-center my-1">
+                <FaUserDoctor size={20} className="mr-2 text-orange-500" />
+                {selectedMarker.providerSurname}
+              </p>
             )}
-            {/* {selectedMarker.type && <p>Type: {selectedMarker.type}</p>} */}
           </div>
         </InfoWindow>
       )}
