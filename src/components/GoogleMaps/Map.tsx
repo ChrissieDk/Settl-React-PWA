@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   GoogleMap,
   InfoWindow,
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { MapProps } from "../../types/Types";
-import marker from "../../img/Location_pin.png";
+import markerIcon from "../../img/Location_pin.png";
 
 // icons
 import { FaLocationDot } from "react-icons/fa6";
@@ -52,7 +53,7 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
   useEffect(() => {
     if (isLoaded) {
       setCustomMarker({
-        url: marker,
+        url: markerIcon,
         scaledSize: new google.maps.Size(30, 40),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(20, 40),
@@ -60,18 +61,20 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
     }
   }, [isLoaded]);
 
-  useEffect(() => {
-    if (bounds) {
-      const { north, south, east, west } = bounds;
-      const visibleMarkers = markers.filter((marker) => {
-        if (marker.lat === undefined || marker.lon === undefined) return false;
-        const isWithinLat = marker.lat <= north && marker.lat >= south;
-        const isWithinLng = marker.lon <= east && marker.lon >= west;
-        return isWithinLat && isWithinLng;
-      });
-      setFilteredMarkers(visibleMarkers);
-    }
+  const visibleMarkers = useMemo(() => {
+    if (!bounds) return [];
+    const { north, south, east, west } = bounds;
+    return markers.filter((marker) => {
+      if (marker.lat === undefined || marker.lon === undefined) return false;
+      const isWithinLat = marker.lat <= north && marker.lat >= south;
+      const isWithinLng = marker.lon <= east && marker.lon >= west;
+      return isWithinLat && isWithinLng;
+    });
   }, [bounds, markers]);
+
+  useEffect(() => {
+    setFilteredMarkers(visibleMarkers);
+  }, [visibleMarkers]);
 
   useEffect(() => {
     if (map) {
@@ -94,6 +97,33 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
     }
   }, [map]);
 
+  useEffect(() => {
+    if (map && isLoaded && filteredMarkers.length > 0) {
+      const markerCluster = new MarkerClusterer({ map, markers: [] });
+
+      const mapMarkers = filteredMarkers.map((marker) => {
+        const mapMarker = new google.maps.Marker({
+          position: { lat: marker.lat!, lng: marker.lon! },
+          icon: customMarker,
+        });
+
+        mapMarker.addListener("click", () => {
+          setSelectedMarker((prev) =>
+            prev && marker.id === prev.id ? null : marker
+          );
+        });
+
+        return mapMarker;
+      });
+
+      markerCluster.addMarkers(mapMarkers);
+
+      return () => {
+        markerCluster.clearMarkers();
+      };
+    }
+  }, [map, isLoaded, filteredMarkers, customMarker]);
+
   if (!isLoaded) return null;
 
   return (
@@ -103,18 +133,6 @@ const Map: React.FC<MapProps> = ({ center, zoom, markers }) => {
       zoom={zoom}
       onLoad={handleOnLoad}
     >
-      {filteredMarkers.map((marker) => (
-        <Marker
-          key={marker.id}
-          position={{ lat: marker.lat!, lng: marker.lon! }}
-          icon={customMarker}
-          onClick={() => {
-            setSelectedMarker((prev) =>
-              prev && marker.id === prev.id ? null : marker
-            );
-          }}
-        />
-      ))}
       {selectedMarker && (
         <InfoWindow
           position={{ lat: selectedMarker.lat!, lng: selectedMarker.lon! }}
