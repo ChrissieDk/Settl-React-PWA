@@ -1,10 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import {
-  GoogleMap,
-  InfoWindow,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, useJsApiLoader } from "@react-google-maps/api";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { MapProps } from "../../types/Types";
 import markerIcon from "../../img/Location_pin.png";
