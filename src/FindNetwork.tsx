@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import paperPlane from "../src/img/Paper_plane.png";
+import React, { useState, useEffect, useMemo } from "react";
 import Map from "./components/GoogleMaps/Map";
 import { getCompanyDetails } from "./Services/data.service";
 import { MapProps } from "./types/Types";
@@ -23,15 +22,11 @@ const FindNetwork: React.FC = () => {
   const [companyDetails, setCompanyDetails] = useState<MapProps["markers"]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
-  const [filteredResults, setFilteredResults] = useState<MapProps["markers"]>(
-    []
-  );
 
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       try {
         const data = await getCompanyDetails();
-        // console.log("Fetched company details:", data);
         setCompanyDetails(data);
       } catch (error) {
         console.error("Failed to fetch company details", error);
@@ -53,9 +48,8 @@ const FindNetwork: React.FC = () => {
     );
   };
 
-  useEffect(() => {
-    const results = filterLocations(companyDetails, debouncedSearchQuery);
-    setFilteredResults(results);
+  const filteredResults = useMemo(() => {
+    return filterLocations(companyDetails, debouncedSearchQuery);
   }, [debouncedSearchQuery, companyDetails]);
 
   const toggleItem = (type: string) => {
@@ -68,15 +62,17 @@ const FindNetwork: React.FC = () => {
   };
 
   const defaultProps = {
-    zoom: 13,
+    zoom: 10,
     center: { lat: -33.9249, lng: 18.4241 },
   };
 
-  const filteredMarkers = companyDetails.filter((marker) => {
-    if (!marker.type) return false;
-    if (activeService && marker.type !== activeService) return false;
-    return true;
-  });
+  const filteredMarkers = useMemo(() => {
+    return companyDetails.filter((marker) => {
+      if (!marker.type) return false;
+      if (activeService && marker.type !== activeService) return false;
+      return true;
+    });
+  }, [companyDetails, activeService]);
 
   const searchResults = searchQuery ? filteredResults : filteredMarkers;
 
