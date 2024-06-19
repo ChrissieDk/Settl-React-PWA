@@ -150,6 +150,10 @@ module.exports = withMT({
         paragraph: ["paragraph", "sans-serif"],
         button: ["button", "sans-serif"],
       },
+      backgroundImage: {
+        "geometric-pattern":
+          "url('data:image/svg+xml,%3Csvg width=%2740%27 height=%2740%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cdefs%3E%3Cpattern id=%27geometricPattern%27 patternUnits=%27userSpaceOnUse%27 width=%2740%27 height=%2740%27%3E%3Cpath d=%27M 0 20 L 20 0 L 40 20 L 20 40 Z%27 fill=%27none%27 stroke=%27rgba(255,255,255,0.1)%27 stroke-width=%272%27/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=%27100%25%27 height=%27100%25%27 fill=%27url(%23geometricPattern)%27/%3E%3C/svg%3E')",
+      },
 
       colors: {
         black: "#141520",

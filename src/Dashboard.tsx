@@ -3,6 +3,7 @@ import TokenModal from "./components/TokenModal/TokenModal";
 import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
+import HealthVault from "./components/HealthVault/HealthVault";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -242,15 +243,17 @@ const Dashboard: React.FC = () => {
   }, [itemsPerPage]);
 
   return (
-    <div className="bg-gray-200 px-8 py-8 min-h-screen">
+    <div className="bg-gray-200 px-8 py-4 min-h-screen">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
         <div className="flex items-center justify-between">
           <div className="flex">
             <button
               className={`text-lg font-semibold ${
-                selectedTab === "dashboard" ? "text-blue-600" : "text-gray-600"
+                selectedTab === "healthVault"
+                  ? "text-blue-600"
+                  : "text-gray-600"
               } mr-6`}
-              onClick={() => handleTabChange("dashboard")}
+              onClick={() => handleTabChange("healthVault")}
             >
               Dashboard
             </button>
@@ -270,6 +273,20 @@ const Dashboard: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {selectedTab === "healthVault" && (
+        <HealthVault
+          balance="2000,00"
+          percentage={18}
+          expenses={[
+            { category: "Transfers", amount: "665,00", icon: "bg-orange-200" },
+            { category: "Rent", amount: "1675,00", icon: "bg-orange-200" },
+            { category: "Traveling", amount: "2654,00", icon: "bg-orange-200" },
+            { category: "Education", amount: "189,00", icon: "bg-orange-200" },
+            { category: "Education", amount: "189,00", icon: "bg-orange-200" },
+          ]}
+        />
+      )}
 
       {selectedTab === "transactions" && (
         <div>
