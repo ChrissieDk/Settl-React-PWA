@@ -282,8 +282,9 @@ const Dashboard: React.FC = () => {
 
       {selectedTab === "healthVault" && (
         <HealthVault
-          balance="2000,00"
+          balance="R 2000,00"
           percentage={20}
+          totalValue="R 10000,00"
           expenses={[
             {
               category: "GP",
@@ -305,11 +306,11 @@ const Dashboard: React.FC = () => {
               amount: "1500,00",
               icon: <GiMedicinePills size={30} />,
             },
-            {
-              category: "Total voucher value",
-              amount: "10000,00",
-              icon: <GiMedicinePills size={30} />,
-            },
+            // {
+            //   category: "Total voucher value",
+            //   amount: "10000,00",
+            //   icon: <GiMedicinePills size={30} />,
+            // },
           ]}
         />
       )}
