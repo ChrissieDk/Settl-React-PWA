@@ -5,6 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 
+// icons
+import { FaUserDoctor } from "react-icons/fa6";
+import { FaTooth } from "react-icons/fa";
+import { FaGlasses } from "react-icons/fa";
+import { GiMedicinePills } from "react-icons/gi";
+
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("last7days");
@@ -277,13 +283,33 @@ const Dashboard: React.FC = () => {
       {selectedTab === "healthVault" && (
         <HealthVault
           balance="2000,00"
-          percentage={18}
+          percentage={20}
           expenses={[
-            { category: "Transfers", amount: "665,00", icon: "bg-orange-200" },
-            { category: "Rent", amount: "1675,00", icon: "bg-orange-200" },
-            { category: "Traveling", amount: "2654,00", icon: "bg-orange-200" },
-            { category: "Education", amount: "189,00", icon: "bg-orange-200" },
-            { category: "Education", amount: "189,00", icon: "bg-orange-200" },
+            {
+              category: "GP",
+              amount: "2000,00",
+              icon: <FaUserDoctor size={30} />,
+            },
+            {
+              category: "Dentist",
+              amount: "2500,00",
+              icon: <FaTooth size={30} />,
+            },
+            {
+              category: "Optometrist",
+              amount: "2000,00",
+              icon: <FaGlasses size={30} />,
+            },
+            {
+              category: "OTC",
+              amount: "1500,00",
+              icon: <GiMedicinePills size={30} />,
+            },
+            {
+              category: "Total voucher value",
+              amount: "10000,00",
+              icon: <GiMedicinePills size={30} />,
+            },
           ]}
         />
       )}

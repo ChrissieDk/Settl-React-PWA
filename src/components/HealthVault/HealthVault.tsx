@@ -1,10 +1,10 @@
-// src/components/HealthVault/HealthVault.tsx
-import React from "react";
+import React, { ReactNode } from "react";
+import CircularProgress from "./CircleProgress";
 
 interface Expense {
-  category: string;
-  amount: string;
-  icon: string;
+  category?: string;
+  amount?: string;
+  icon?: ReactNode;
 }
 
 interface HealthVaultProps {
@@ -25,13 +25,6 @@ const HealthVault: React.FC<HealthVaultProps> = ({
         <h1 className="text-2xl lg:text-4xl text-blue-500 font-header">
           Health Vault
         </h1>
-        <button className="text-black">
-          <svg width="40" height="40" fill="currentColor">
-            <circle cx="12" cy="12" r="2"></circle>
-            <circle cx="19" cy="12" r="2"></circle>
-            <circle cx="5" cy="12" r="2"></circle>
-          </svg>
-        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -39,12 +32,16 @@ const HealthVault: React.FC<HealthVaultProps> = ({
           <div className="absolute inset-0 bg-geometric-pattern opacity-60"></div>
           <div className="relative flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-32 h-32 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
-                <span className="text-xl lg:text-4xl">{percentage}%</span>
+              <div className="w-32 h-32 lg:w-48 lg:h-48 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+                <CircularProgress percentage={percentage} />
               </div>
               <div className="ml-4">
-                <h2 className="text-lg lg:text-2xl font-button">My Balance</h2>
-                <p className="text-3xl lg:text-6xl font-paragraph">{balance}</p>
+                <h2 className="text-lg lg:text-2xl font-button text-[#FFFFFF]">
+                  My Balance
+                </h2>
+                <p className="text-3xl lg:text-6xl font-paragraph text-[#FFFFFF]">
+                  {balance}
+                </p>
               </div>
             </div>
           </div>
@@ -55,10 +52,10 @@ const HealthVault: React.FC<HealthVaultProps> = ({
             key={index}
             className="bg-white rounded-lg p-4 flex flex-col items-center shadow-xl"
           >
-            <div
-              className={`w-12 h-12 rounded-full bg-opacity-20 mb-2 ${expense.icon}`}
-            ></div>
-            <p className="text-xl font-medium font-header">${expense.amount}</p>
+            <div className="w-12 h-12 bg-opacity-20 text-black flex items-center justify-center">
+              {expense.icon}
+            </div>
+            <p className="text-xl font-medium font-header">R{expense.amount}</p>
             <p className="text-gray-500 font-paragraph">{expense.category}</p>
           </div>
         ))}

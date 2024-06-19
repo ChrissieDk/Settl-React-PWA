@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { FaArrowUp } from "react-icons/fa";
 import { FaArrowDown } from "react-icons/fa";
-import { Transaction } from "../types/Types";
 import { TransactionModalProps } from "../types/Types";
 
 const ViewTransactions: React.FC<TransactionModalProps> = ({
