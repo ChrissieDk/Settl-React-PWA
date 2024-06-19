@@ -30,7 +30,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-r from-orange-400 to-gray-400 text-white rounded-lg p-6 relative overflow-hidden text-left shadow-xl row-span-2 md:col-span-2">
+        <div className="bg-gradient-to-r from-orange-400 via-orange-400 to-blue-400 text-white rounded-lg p-6 relative overflow-hidden text-left shadow-xl row-span-2 md:col-span-2">
           <div className="absolute inset-0 bg-geometric-pattern opacity-60"></div>
           <div className="relative flex items-center justify-between">
             <div className="flex items-center">
@@ -60,10 +60,10 @@ const HealthVault: React.FC<HealthVaultProps> = ({
             key={index}
             className="bg-white rounded-lg p-2 flex flex-col items-center shadow-xl"
           >
-            <div className="w-12 h-12 bg-opacity-20 text-black flex items-center justify-center">
+            <div className="w-12 h-12 bg-opacity-20 flex items-center justify-center ">
               {expense.icon}
             </div>
-            <p className="text-xl font-medium font-header">R{expense.amount}</p>
+            <p className="text-xl font-medium font-button">R{expense.amount}</p>
             <p className="text-blue-500 font-paragraph">{expense.category}</p>
           </div>
         ))}
