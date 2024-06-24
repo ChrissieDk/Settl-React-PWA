@@ -10,6 +10,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { FaTooth } from "react-icons/fa";
 import { FaGlasses } from "react-icons/fa";
 import { GiMedicinePills } from "react-icons/gi";
+import { TbReportAnalytics } from "react-icons/tb";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -282,35 +283,41 @@ const Dashboard: React.FC = () => {
 
       {selectedTab === "healthVault" && (
         <HealthVault
-          balance="R 2000,00"
+          balance="2000,00"
           percentage={20}
-          totalValue="R 10000,00"
+          totalValue="10000,00"
+          description="Health Vault"
           expenses={[
             {
               category: "GP",
               amount: "2000,00",
               icon: <FaUserDoctor size={30} />,
+              description: "General practitioner voucher value",
             },
             {
               category: "Dentist",
               amount: "2500,00",
               icon: <FaTooth size={30} />,
+              description: "Dentist voucher value",
             },
             {
               category: "Optometrist",
               amount: "2000,00",
               icon: <FaGlasses size={30} />,
+              description: "Optometrist voucher value",
             },
             {
               category: "OTC",
               amount: "1500,00",
               icon: <GiMedicinePills size={30} />,
+              description: "OTC voucher value",
             },
-            // {
-            //   category: "Total voucher value",
-            //   amount: "10000,00",
-            //   icon: <GiMedicinePills size={30} />,
-            // },
+            {
+              category: "Transaction summary",
+              amount: "",
+              icon: <TbReportAnalytics size={30} />,
+              description: "Detailed description of past transactions",
+            },
           ]}
         />
       )}
@@ -425,7 +432,7 @@ const Dashboard: React.FC = () => {
                         <StatusPill status={transaction.status} />
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        R {transaction.amount}
+                        {transaction.amount}
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm">
                         <button

@@ -5,6 +5,7 @@ import App from "./App";
 // @ts-ignore
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { ThemeProvider } from "@material-tailwind/react";
+import "react-tooltip/dist/react-tooltip.css";
 
 const rootElement = document.getElementById("root");
 
