@@ -4,6 +4,8 @@ import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
+import { initiateAuthenticateToken } from "./Services/data.service";
+import { listTokens } from "./Services/data.service";
 
 // icons
 import { FaUserDoctor } from "react-icons/fa6";
@@ -22,6 +24,16 @@ const Dashboard: React.FC = () => {
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  // placeholder for token testing
+  // const handleButtonClick = async () => {
+  //   try {
+  //     const listToken = await listTokens();
+  //     console.log("Token Response:", listToken);
+  //   } catch (error) {
+  //     console.error("Failed to load token:", error);
+  //   }
+  // };
 
   const transactions: Transaction[] = [
     {
@@ -201,12 +213,11 @@ const Dashboard: React.FC = () => {
   };
 
   const openModal = (action: string) => {
-    // Check which modal to open based on the action
     if (action === "generate" || action === "send" || action === "request") {
       setTokenModalOpen(true);
       setSelectedAction(action);
     } else {
-      setIsModalOpen(true); // Open the generic modal for viewing transactions
+      setIsModalOpen(true);
     }
   };
 
@@ -275,7 +286,10 @@ const Dashboard: React.FC = () => {
               Transactions
             </button>
           </div>
-          <button className="bg-blue-500 text-white rounded-lg px-4 py-2">
+          <button
+            className="bg-blue-500 text-white rounded-lg px-4 py-2"
+            // onClick={handleButtonClick}
+          >
             Load
           </button>
         </div>

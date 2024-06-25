@@ -1,5 +1,6 @@
 import axios from "axios";
 import { UserIn } from "../types/Types";
+import { TokenRequestBody, TokenResponse } from "../types/Types";
 
 const BASE_URL = "https://settl-api.azurewebsites.net/api";
 
@@ -60,6 +61,36 @@ export const getUserId = async (firebaseUserId: string) => {
 export const getCompanyDetails = async () => {
   try {
     const response = await axiosInstance.get("/company/companydetails");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching company details:", error);
+    throw error;
+  }
+};
+
+export const initiateAuthenticateToken = async (): Promise<any> => {
+  try {
+    // Get request without specifying a type, using 'any'
+    const { data: requestBody } = await axiosInstance.get<any>(
+      "payment/initiateissuetokenbody"
+    );
+
+    // Post request without specifying a type, using 'any'
+    const response = await axiosInstance.post<any>(
+      "https://uat.traderoot.com:9973/APIV2/initiateissuetoken",
+      requestBody
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error during authentication token initiation:", error);
+    throw error;
+  }
+};
+
+export const listTokens = async () => {
+  try {
+    const response = await axiosInstance.get("/payment/listtokens");
     return response.data;
   } catch (error) {
     console.error("Error fetching company details:", error);
