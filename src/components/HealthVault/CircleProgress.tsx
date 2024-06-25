@@ -8,7 +8,7 @@ interface CircularProgressProps {
 
 const CircularProgress: React.FC<CircularProgressProps> = ({ percentage }) => {
   return (
-    <div className="relative w-32 h-32">
+    <div className="relative w-32 h-32 lg:w-48 lg:h-48">
       {/* <svg width="0" height="0">
         <defs>
           <linearGradient id="gradientColors" gradientTransform="rotate(90)">
@@ -22,7 +22,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({ percentage }) => {
         value={percentage}
         text={`${percentage}%`}
         background
-        backgroundPadding={6}
+        backgroundPadding={8}
         styles={buildStyles({
           pathColor: `white`,
           textColor: "#fff",

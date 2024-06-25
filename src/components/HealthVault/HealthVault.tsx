@@ -53,7 +53,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
                 R {totalValue}
               </h2>
             </div>
-            <div className="w-32 h-32 lg:w-48 lg:h-48 rounded-full bg-white bg-opacity-10 flex items-center justify-center">
+            <div className="w-32 h-32 lg:w-60 lg:h-60 rounded-full bg-white bg-opacity-10 flex items-center justify-center lg:mt-8 lg:mr-5">
               <CircularProgress percentage={percentage} />
             </div>
           </div>
