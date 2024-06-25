@@ -284,7 +284,7 @@ const Dashboard: React.FC = () => {
       {selectedTab === "healthVault" && (
         <HealthVault
           balance="2000,00"
-          percentage={20}
+          percentage={65}
           totalValue="10000,00"
           description="Health Vault"
           expenses={[
