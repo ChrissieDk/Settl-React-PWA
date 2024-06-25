@@ -3,6 +3,16 @@ import TokenModal from "./components/TokenModal/TokenModal";
 import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
+import HealthVault from "./components/HealthVault/HealthVault";
+import { initiateAuthenticateToken } from "./Services/data.service";
+import { listTokens } from "./Services/data.service";
+
+// icons
+import { FaUserDoctor } from "react-icons/fa6";
+import { FaTooth } from "react-icons/fa";
+import { FaGlasses } from "react-icons/fa";
+import { GiMedicinePills } from "react-icons/gi";
+import { TbReportAnalytics } from "react-icons/tb";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -14,6 +24,16 @@ const Dashboard: React.FC = () => {
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  // placeholder for token testing
+  // const handleButtonClick = async () => {
+  //   try {
+  //     const listToken = await listTokens();
+  //     console.log("Token Response:", listToken);
+  //   } catch (error) {
+  //     console.error("Failed to load token:", error);
+  //   }
+  // };
 
   const transactions: Transaction[] = [
     {
@@ -193,12 +213,11 @@ const Dashboard: React.FC = () => {
   };
 
   const openModal = (action: string) => {
-    // Check which modal to open based on the action
     if (action === "generate" || action === "send" || action === "request") {
       setTokenModalOpen(true);
       setSelectedAction(action);
     } else {
-      setIsModalOpen(true); // Open the generic modal for viewing transactions
+      setIsModalOpen(true);
     }
   };
 
@@ -242,15 +261,17 @@ const Dashboard: React.FC = () => {
   }, [itemsPerPage]);
 
   return (
-    <div className="bg-gray-200 px-8 py-8 min-h-screen">
+    <div className="bg-gray-200 px-8 py-4 min-h-screen">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
         <div className="flex items-center justify-between">
           <div className="flex">
             <button
               className={`text-lg font-semibold ${
-                selectedTab === "dashboard" ? "text-blue-600" : "text-gray-600"
+                selectedTab === "healthVault"
+                  ? "text-blue-600"
+                  : "text-gray-600"
               } mr-6`}
-              onClick={() => handleTabChange("dashboard")}
+              onClick={() => handleTabChange("healthVault")}
             >
               Dashboard
             </button>
@@ -265,11 +286,55 @@ const Dashboard: React.FC = () => {
               Transactions
             </button>
           </div>
-          <button className="bg-blue-500 text-white rounded-lg px-4 py-2">
+          <button
+            className="bg-blue-500 text-white rounded-lg px-4 py-2"
+            // onClick={handleButtonClick}
+          >
             Load
           </button>
         </div>
       </div>
+
+      {selectedTab === "healthVault" && (
+        <HealthVault
+          balance="2000,00"
+          percentage={65}
+          totalValue="10000,00"
+          description="Health Vault"
+          expenses={[
+            {
+              category: "GP",
+              amount: "2000,00",
+              icon: <FaUserDoctor size={30} />,
+              description: "General practitioner voucher value",
+            },
+            {
+              category: "Dentist",
+              amount: "2500,00",
+              icon: <FaTooth size={30} />,
+              description: "Dentist voucher value",
+            },
+            {
+              category: "Optometrist",
+              amount: "2000,00",
+              icon: <FaGlasses size={30} />,
+              description: "Optometrist voucher value",
+            },
+            {
+              category: "OTC",
+              amount: "1500,00",
+              icon: <GiMedicinePills size={30} />,
+              description: "OTC voucher value",
+            },
+            {
+              category: "Transaction summary",
+              amount: "",
+              icon: <TbReportAnalytics size={30} />,
+              description: "Detailed description of past transactions",
+            },
+          ]}
+        />
+      )}
 
       {selectedTab === "transactions" && (
         <div>
@@ -381,7 +446,7 @@ const Dashboard: React.FC = () => {
                         <StatusPill status={transaction.status} />
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        R {transaction.amount}
+                        {transaction.amount}
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm">
                         <button
