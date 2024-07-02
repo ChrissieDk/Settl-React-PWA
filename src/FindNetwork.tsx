@@ -3,6 +3,9 @@ import Map from "./components/GoogleMaps/Map";
 import { getCompanyDetails } from "./Services/data.service";
 import { MapProps } from "./types/Types";
 import useDebounce from "./hooks/debounce/useDebounce";
+// import { initiateAuthenticateTokenBody } from "./Services/data.service";
+// import { initiateIssueToken } from "./Services/data.service";
+
 import needDoc from "../src/img/FindNetwork/needADoc.png";
 import Footer from "./components/Footer/footer";
 
@@ -35,6 +38,21 @@ const FindNetwork: React.FC = () => {
 
     fetchCompanyDetails();
   }, []);
+
+  // useEffect(() => {
+  //   const test = async () => {
+  //     try {
+  //       const data = await initiateAuthenticateTokenBody();
+  //       console.log(data);
+  //       const data2 = await initiateIssueToken(data);
+  //       console.log(data2);
+  //     } catch (error) {
+  //       console.error("Failed to fetch company details", error);
+  //     }
+  //   };
+
+  //   test();
+  // }, []);
 
   const filterLocations = (locations: any[], query: string) => {
     if (!query) {
