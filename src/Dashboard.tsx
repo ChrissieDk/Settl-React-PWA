@@ -4,8 +4,8 @@ import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
-import { initiateAuthenticateToken } from "./Services/data.service";
-import { listTokens } from "./Services/data.service";
+// import { initiateAuthenticateToken } from "./Services/data.service";
+// import { listTokens } from "./Services/data.service";
 
 // icons
 import { FaUserDoctor } from "react-icons/fa6";

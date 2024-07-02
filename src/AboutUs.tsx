@@ -3,7 +3,6 @@ import { FaArrowRight, FaArrowUp } from "react-icons/fa";
 import faqsGirl from "../src/img/Faqs/girl.png";
 import gotQuestions from "../src/img/Faqs/faqs.png";
 import faqBg from "../src/img/Faqs/settl see-through.png";
-import Footer from "./components/Footer/footer";
 
 const AboutUs = () => {
   const faqData = [
@@ -190,7 +189,6 @@ const AboutUs = () => {
           ))}
         </div>
       </section>
-      <Footer />
     </>
   );
 };

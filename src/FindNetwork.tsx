@@ -7,7 +7,6 @@ import useDebounce from "./hooks/debounce/useDebounce";
 // import { initiateIssueToken } from "./Services/data.service";
 
 import needDoc from "../src/img/FindNetwork/needADoc.png";
-import Footer from "./components/Footer/footer";
 
 const services = [
   { id: 1, service: "gp", type: "GP" },
@@ -175,7 +174,6 @@ const FindNetwork: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </section>
   );
 };

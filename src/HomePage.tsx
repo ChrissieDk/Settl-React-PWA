@@ -21,7 +21,6 @@ import step1 from "../src/img/Homepage/1.png";
 import step2 from "../src/img/Homepage/2.png";
 import step3 from "../src/img/Homepage/3.png";
 import { get } from "http";
-import Footer from "./components/Footer/footer";
 
 const blockText = [
   {
@@ -323,9 +322,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      <section>
-        <Footer />
-      </section>
+      <section></section>
     </>
   );
 };
