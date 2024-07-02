@@ -68,24 +68,25 @@ export const getCompanyDetails = async () => {
   }
 };
 
-export const initiateAuthenticateToken = async (): Promise<any> => {
+// Repalce <any> in both GET and POST requests.
+export const initiateAuthenticateTokenBody = async (): Promise<any> => {
   try {
-    // Get request without specifying a type, using 'any'
     const { data: requestBody } = await axiosInstance.get<any>(
       "payment/initiateissuetokenbody"
     );
-
-    // Post request without specifying a type, using 'any'
-    const response = await axiosInstance.post<any>(
-      "https://uat.traderoot.com:9973/APIV2/initiateissuetoken",
-      requestBody
-    );
-
-    return response.data;
+    return requestBody;
   } catch (error) {
     console.error("Error during authentication token initiation:", error);
     throw error;
   }
+};
+
+export const initiateIssueToken = async (requestBody: any) => {
+  const response = await axiosInstance.post<any>(
+    "https://uat.traderoot.com:9973/APIV2/initiateissuetoken",
+    requestBody
+  );
+  return response.data;
 };
 
 export const listTokens = async () => {
