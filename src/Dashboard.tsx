@@ -4,8 +4,7 @@ import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
-// import { initiateAuthenticateToken } from "./Services/data.service";
-// import { listTokens } from "./Services/data.service";
+import { initiateIssueToken, listTokens } from "./Services/data.service";
 
 // icons
 import { FaUserDoctor } from "react-icons/fa6";
@@ -13,7 +12,6 @@ import { FaTooth } from "react-icons/fa";
 import { FaGlasses } from "react-icons/fa";
 import { GiMedicinePills } from "react-icons/gi";
 import { TbReportAnalytics } from "react-icons/tb";
-import { initiateIssueToken, listTokens } from "./Services/data.service";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
