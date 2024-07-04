@@ -13,6 +13,7 @@ import { FaTooth } from "react-icons/fa";
 import { FaGlasses } from "react-icons/fa";
 import { GiMedicinePills } from "react-icons/gi";
 import { TbReportAnalytics } from "react-icons/tb";
+import { initiateIssueToken, listTokens } from "./Services/data.service";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -22,18 +23,56 @@ const Dashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
+  const [initiationUrl, setInitiationUrl] = useState<string | null>(null);
+
+  interface ApiResponse {
+    peripheryData: {
+      initiationUrl: string;
+    };
+  }
 
   const navigate = useNavigate();
 
-  // placeholder for token testing
-  // const handleButtonClick = async () => {
-  //   try {
-  //     const listToken = await listTokens();
-  //     console.log("Token Response:", listToken);
-  //   } catch (error) {
-  //     console.error("Failed to load token:", error);
-  //   }
-  // };
+  useEffect(() => {
+    const test = async () => {
+      try {
+        const data = await initiateIssueToken();
+        console.log("API response:", data);
+        if (data && data.peripheryData && data.peripheryData.initiationUrl) {
+          setInitiationUrl(data.peripheryData.initiationUrl);
+          console.log("Initiation URL set:", data.peripheryData.initiationUrl);
+        } else {
+          console.error("API response does not contain initiationUrl:", data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch company details", error);
+      }
+    };
+
+    test();
+  }, []);
+
+  useEffect(() => {
+    const fetchTokens = async () => {
+      try {
+        const data = await listTokens();
+        console.log("Tokens:", data);
+      } catch (err) {
+        console.log("Error fetching tokens:", err);
+      }
+    };
+
+    fetchTokens();
+  }, []);
+
+  const handleButtonClick = () => {
+    if (initiationUrl) {
+      console.log("Navigating to:", initiationUrl);
+      window.location.href = initiationUrl;
+    } else {
+      console.error("Initiation URL is not available");
+    }
+  };
 
   const transactions: Transaction[] = [
     {
@@ -288,7 +327,7 @@ const Dashboard: React.FC = () => {
           </div>
           <button
             className="bg-blue-500 text-white rounded-lg px-4 py-2"
-            // onClick={handleButtonClick}
+            onClick={handleButtonClick}
           >
             Load
           </button>
