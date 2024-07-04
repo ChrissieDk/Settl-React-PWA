@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
-import ViewTransactions from "./ViewTransactions/ViewTransactions";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import { initiateIssueToken, listTokens } from "./Services/data.service";
-
+import Modal from "./CardDetail/CardDetail";
+import { Token } from "./types/Types";
 // icons
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaTooth } from "react-icons/fa";
@@ -22,17 +22,15 @@ const Dashboard: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
   const [initiationUrl, setInitiationUrl] = useState<string | null>(null);
+  const [tokens, setTokens] = useState<Token[]>([]);
+  const [showData, setShowData] = useState(false);
 
-  interface ApiResponse {
-    peripheryData: {
-      initiationUrl: string;
-    };
-  }
+  // move to types late
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const test = async () => {
+    const fetchInitiationUrl = async () => {
       try {
         const data = await initiateIssueToken();
         console.log("API response:", data);
@@ -43,27 +41,47 @@ const Dashboard: React.FC = () => {
           console.error("API response does not contain initiationUrl:", data);
         }
       } catch (error) {
-        console.error("Failed to fetch company details", error);
+        console.error("Redirect failed", error);
       }
     };
 
-    test();
+    fetchInitiationUrl();
   }, []);
 
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const data = await listTokens();
-        console.log("Tokens:", data);
+        const response = await listTokens();
+        console.log("Data received from listTokens:", response);
+
+        // Extract the tokens from the nested structure
+        const tokens = response.additionalData?.paymentTokens || [];
+
+        setTokens(tokens);
+        console.log("Tokens extracted:", tokens);
       } catch (err) {
         console.log("Error fetching tokens:", err);
+        setTokens([]);
       }
     };
 
     fetchTokens();
   }, []);
 
+  useEffect(() => {
+    console.log("Tokens state updated:", tokens);
+  }, [tokens]);
+
+  const handleButtonClicks = () => {
+    setShowData((prevState) => !prevState);
+    console.log("Show data:", showData);
+  };
+
   const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const addCardRedirect = () => {
     if (initiationUrl) {
       console.log("Navigating to:", initiationUrl);
       window.location.href = initiationUrl;
@@ -260,7 +278,7 @@ const Dashboard: React.FC = () => {
 
   const closeModal = () => {
     setTokenModalOpen(false);
-    setIsModalOpen(false); // Close the generic modal for viewing transactions
+    setIsModalOpen(false);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -323,19 +341,35 @@ const Dashboard: React.FC = () => {
               Transactions
             </button>
           </div>
-          <button
-            className="bg-blue-500 text-white rounded-lg px-4 py-2"
-            onClick={handleButtonClick}
-          >
-            Load
-          </button>
+          <div>
+            <button
+              className="bg-blue-500 text-white rounded-lg px-4 py-2 mr-2"
+              onClick={addCardRedirect}
+            >
+              Add Card
+            </button>
+            <button
+              className="bg-blue-500 text-white rounded-lg px-4 py-2 mr-2"
+              onClick={handleButtonClick}
+            >
+              My Cards
+            </button>
+            <Modal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              tokens={tokens}
+            />
+            <button className="bg-blue-500 text-white rounded-lg px-4 py-2">
+              Load
+            </button>
+          </div>
         </div>
       </div>
 
       {selectedTab === "healthVault" && (
         <HealthVault
           balance="2000,00"
-          percentage={65}
+          percentage={75}
           totalValue="10000,00"
           description="Health Vault"
           expenses={[
@@ -441,26 +475,23 @@ const Dashboard: React.FC = () => {
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
                       Id
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
                       Date
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
                       Service
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
                       Transaction Type
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
                       Status
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
                       Amount
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-10">
-                      Action
                     </th>
                   </tr>
                 </thead>
@@ -484,21 +515,6 @@ const Dashboard: React.FC = () => {
                       </td>
                       <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                         {transaction.amount}
-                      </td>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm">
-                        <button
-                          onClick={() => setIsModalOpen(true)}
-                          className="px-4 py-2 text-blue-500  hover:text-blue-900"
-                        >
-                          View Transactions
-                        </button>
-                        {isModalOpen && (
-                          <ViewTransactions
-                            isOpen={isModalOpen}
-                            transactions={transactions}
-                            onClose={closeModal}
-                          />
-                        )}
                       </td>
                     </tr>
                   ))}

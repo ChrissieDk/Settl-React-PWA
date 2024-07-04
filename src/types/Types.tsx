@@ -66,57 +66,73 @@ export interface UserIn {
   username: string;
 }
 
-export interface TokenResponse {
-  transmissionDateTime: string;
-  systemTraceNumber?: string;
-  tokenRequesterId: string;
-  responseCode: string;
-  responseMessage: string;
-  retrievalReferenceNumberExtended?: string;
-  sessionId: string;
-  peripheryData?: {
-    initiationUrl?: string;
-  };
-  paymentToken?: string;
-  paymentTokenExpiryDateTime?: string;
-  paymentTokenStatus?: string;
-  truncatedPaymentInstrumentNumber?: string;
-  paymentInstrumentAssociationName?: string;
-  paymentInstrumentType?: string;
-  paymentInstrumentMessageSequence?: string;
-  defaultPaymentInstrument?: boolean;
-  paymentInstrumentExpiryDate?: string;
-  additionalPaymentTokenInformation?: string;
-}
+// export interface TokenResponse {
+//   transmissionDateTime: string;
+//   systemTraceNumber?: string;
+//   tokenRequesterId: string;
+//   responseCode: string;
+//   responseMessage: string;
+//   retrievalReferenceNumberExtended?: string;
+//   sessionId: string;
+//   peripheryData?: {
+//     initiationUrl?: string;
+//   };
+//   paymentToken?: string;
+//   paymentTokenExpiryDateTime?: string;
+//   paymentTokenStatus?: string;
+//   truncatedPaymentInstrumentNumber?: string;
+//   paymentInstrumentAssociationName?: string;
+//   paymentInstrumentType?: string;
+//   paymentInstrumentMessageSequence?: string;
+//   defaultPaymentInstrument?: boolean;
+//   paymentInstrumentExpiryDate?: string;
+//   additionalPaymentTokenInformation?: string;
+// }
 
-export interface TokenRequestBody {
-  echoData?: string;
-  sessionId: string;
-  transmissionDateTime: string;
-  transactionAmount?: number;
-  currencyCode?: string;
-  paymentToken?: string;
-  tokenRequesterId: string;
-  additionalData?: {
-    paymentTokens?: Array<{
-      mandateCategory: string;
-      paymentInstrumentValidityPeriod: number;
-    }>;
-    recurringPaymentData?: {
-      recurringPaymentCategory: string;
-      firstPaymentDate?: string;
-      lastPaymentDate?: string;
-      paymentFrequency: number;
-      regularPaymentDay?: number;
-      recurringPaymentAmount?: number;
-      recurringPaymentAmountLimit?: number;
-    };
-  };
-  peripheryData?: {
-    notificationUrl?: string;
-  };
-  assuranceData?: string;
-  structuredData?: {
-    stylesheetId?: string;
-  };
+// export interface TokenRequestBody {
+//   echoData?: string;
+//   sessionId: string;
+//   transmissionDateTime: string;
+//   transactionAmount?: number;
+//   currencyCode?: string;
+//   paymentToken?: string;
+//   tokenRequesterId: string;
+//   additionalData?: {
+//     paymentTokens?: Array<{
+//       mandateCategory: string;
+//       paymentInstrumentValidityPeriod: number;
+//     }>;
+//     recurringPaymentData?: {
+//       recurringPaymentCategory: string;
+//       firstPaymentDate?: string;
+//       lastPaymentDate?: string;
+//       paymentFrequency: number;
+//       regularPaymentDay?: number;
+//       recurringPaymentAmount?: number;
+//       recurringPaymentAmountLimit?: number;
+//     };
+//   };
+//   peripheryData?: {
+//     notificationUrl?: string;
+//   };
+//   assuranceData?: string;
+//   structuredData?: {
+//     stylesheetId?: string;
+//   };
+// }
+
+// Card
+export interface Token {
+  paymentInstrumentCategoryCode: string;
+  issueDate: string;
+  paymentToken: string;
+  paymentTokenExpiryDateTime: string;
+  paymentTokenStatus: string;
+  truncatedPaymentInstrument: string;
+  paymentInstrumentAssociationName: string;
+  paymentInstrumentType: string;
+  paymentInstrumentMessageSequence: string;
+  defaultPaymentInstrument: boolean;
+  paymentInstrumentExpiryDate: string;
+  additionalPaymentTokenInformation: string;
 }
