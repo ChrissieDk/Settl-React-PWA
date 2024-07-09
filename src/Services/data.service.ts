@@ -120,3 +120,20 @@ export const initiateAuthenticateToken = async (
     throw error;
   }
 };
+
+export const payment = async (
+  paymentToken: string,
+  createOrderResponse: any
+) => {
+  try {
+    const response = await axiosInstance.post(
+      `/payment/payment/${paymentToken}`,
+      createOrderResponse
+    );
+    console.log("payment completed", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("fokop payment", error);
+    throw error;
+  }
+};

@@ -8,6 +8,7 @@ import {
   listTokens,
   createOrder,
   initiateAuthenticateToken,
+  payment,
 } from "./Services/data.service";
 import Modal from "./CardDetail/CardDetail";
 // icons
@@ -110,6 +111,7 @@ const Dashboard: React.FC = () => {
     fetchTokens();
   }, []);
 
+  // payment flow
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!selectedToken) {
@@ -117,25 +119,32 @@ const Dashboard: React.FC = () => {
       return;
     }
     try {
-      const orderResponse = await createOrder(amount);
-      console.log("Order created:", orderResponse);
-
-      const authTokenResponse = await initiateAuthenticateToken(
-        selectedToken,
-        amount
-      );
-      console.log("Token authenticated:", authTokenResponse);
-
-      const authInitiationUrl = authTokenResponse.peripheryData?.initiationUrl;
-      if (authInitiationUrl) {
-        window.location.href = authInitiationUrl; // Redirect to 3D secure URL
-      } else {
-        console.error("Auth initiation URL not found in response");
-      }
+      await createOrder(amount).then(async (orderResponse) => {
+        let x = orderResponse;
+        await initiateAuthenticateToken(selectedToken, amount).then(
+          async (authResponse) => {
+            const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
+            if (authInitiationUrl) {
+              console.log("Auth initiation URL:", authInitiationUrl);
+              window.location.href = authInitiationUrl;
+            } else {
+              console.error("Auth initiation URL not found in response");
+            }
+          }
+        );
+        console.log("Order created:", orderResponse);
+      });
     } catch (error) {
       console.error("Error processing order:", error);
     }
   };
+  // await payment(selectedToken, orderResponse).then(
+  //   async (paymentResponse) => {
+  //     debugger;
+  //     window.location.href = authInitiationUrl;
+  //     console.log("Payment request:", paymentResponse);
+  //   }
+  // );
 
   const transactions: Transaction[] = [
     {
