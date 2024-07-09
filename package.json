@@ -1,5 +1,5 @@
 {
-  "homepage": "https://ChrissieDk.github.io/Settl-React-PWA/",
+  "homepage": "https://ChrissieDk.github.io/http://127.0.0.1:5173//",
   "name": "cra1-pwa",
   "version": "0.1.0",
   "private": true,
@@ -76,6 +76,7 @@
     "@types/firebase": "^3.2.1",
     "@types/google-map-react": "^2.1.10",
     "@types/node": "^20.11.13",
-    "tailwindcss": "^3.4.4"
+    "tailwindcss": "^3.4.4",
+    "vite-plugin-pwa": "^0.20.0"
   }
 }
