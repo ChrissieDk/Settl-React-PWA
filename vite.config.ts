@@ -14,20 +14,20 @@ export default defineConfig({
     VitePWA({
       manifest: {
         short_name: "React App",
-        name: "Create React App Sample",
+        name: "Settl",
         icons: [
           {
-            src: "favicon.ico",
+            src: "settl icon.png",
             sizes: "64x64 32x32 24x24 16x16",
-            type: "image/x-icon",
+            type: "image/png",
           },
           {
-            src: "logo192.png",
+            src: "settl icon.png",
             type: "image/png",
             sizes: "192x192",
           },
           {
-            src: "logo512.png",
+            src: "settl icon.png",
             type: "image/png",
             sizes: "512x512",
           },
