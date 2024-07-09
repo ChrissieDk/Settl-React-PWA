@@ -93,12 +93,9 @@ export const listTokens = async () => {
 };
 
 // create order flow
-export const createOrder = async (orderRequest: any): Promise<any> => {
+export const createOrder = async (amount: number) => {
   try {
-    const response = await axiosInstance.post<any>(
-      "payment/createorder",
-      orderRequest
-    );
+    const response = await axiosInstance.get(`/payment/createorder/${amount}`);
     console.log("Order created:", response.data);
     return response.data;
   } catch (error) {
@@ -108,52 +105,18 @@ export const createOrder = async (orderRequest: any): Promise<any> => {
 };
 
 // 3DS authentication
-export const initiateAuthenticateToken = async (request: any): Promise<any> => {
+export const initiateAuthenticateToken = async (
+  paymentToken: string,
+  amount: number
+) => {
   try {
-    const response = await axiosInstance.post<any>(
-      "payment/initiateauthenticatetoken",
-      request
+    const response = await axiosInstance.get(
+      `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`
     );
-    console.log("Authentication token initiated:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error initiating authentication token:", error);
-    throw error;
-  }
-};
-
-// non 3DS authentication
-export const authenticateToken = async (sessionId: string): Promise<any> => {
-  try {
-    const body = {
-      echoData: "123",
-      sessionId: sessionId,
-    };
-    const response = await axiosInstance.post<any>("/authenticatetoken", body);
     console.log("Token authenticated:", response.data);
-    return response.data;
+    return response.data; // Ensure this returns the full response object
   } catch (error) {
     console.error("Error authenticating token:", error);
-    throw error;
-  }
-};
-
-// payments
-export const payment = async (paymentRequest: any): Promise<any> => {
-  try {
-    const body = {
-      transactionInfo: {
-        transactionTypeCode: "00",
-        tenderTypeCode: "00",
-      },
-      ...paymentRequest,
-    };
-
-    const response = await axiosInstance.post<any>("/payment", body);
-    console.log("Payment response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error making payment:", error);
     throw error;
   }
 };

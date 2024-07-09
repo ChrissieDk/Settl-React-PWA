@@ -3,9 +3,13 @@ import TokenModal from "./components/TokenModal/TokenModal";
 import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
-import { initiateIssueToken, listTokens } from "./Services/data.service";
+import {
+  initiateIssueToken,
+  listTokens,
+  createOrder,
+  initiateAuthenticateToken,
+} from "./Services/data.service";
 import Modal from "./CardDetail/CardDetail";
-import { Token } from "./types/Types";
 // icons
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaTooth } from "react-icons/fa";
@@ -22,10 +26,9 @@ const Dashboard: React.FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
   const [initiationUrl, setInitiationUrl] = useState<string | null>(null);
-  const [tokens, setTokens] = useState<Token[]>([]);
-  const [showData, setShowData] = useState(false);
-
-  // move to types late
+  const [amount, setAmount] = useState<number>(0);
+  const [tokens, setTokens] = useState<any[]>([]);
+  const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -48,34 +51,38 @@ const Dashboard: React.FC = () => {
     fetchInitiationUrl();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchTokens = async () => {
+  //     try {
+  //       const response = await listTokens();
+  //       console.log("Data received from listTokens:", response);
+
+  //       // Extract the tokens from the nested structure
+  //       const tokens = response.additionalData?.paymentTokens || [];
+
+  //       setTokens(tokens);
+  //       console.log("Tokens extracted:", tokens);
+  //     } catch (err) {
+  //       console.log("Error fetching tokens:", err);
+  //       setTokens([]);
+  //     }
+  //   };
+
+  //   fetchTokens();
+  // }, []);
+
   useEffect(() => {
-    const fetchTokens = async () => {
+    const testCreateOrder = async () => {
       try {
-        const response = await listTokens();
-        console.log("Data received from listTokens:", response);
-
-        // Extract the tokens from the nested structure
-        const tokens = response.additionalData?.paymentTokens || [];
-
-        setTokens(tokens);
-        console.log("Tokens extracted:", tokens);
+        const response = await createOrder(amount);
+        console.log("Data received from createOrder:", response);
       } catch (err) {
-        console.log("Error fetching tokens:", err);
-        setTokens([]);
+        console.log("Error creating order:", err);
       }
     };
 
-    fetchTokens();
+    testCreateOrder();
   }, []);
-
-  useEffect(() => {
-    console.log("Tokens state updated:", tokens);
-  }, [tokens]);
-
-  const handleButtonClicks = () => {
-    setShowData((prevState) => !prevState);
-    console.log("Show data:", showData);
-  };
 
   const handleButtonClick = () => {
     setIsModalOpen(true);
@@ -87,6 +94,46 @@ const Dashboard: React.FC = () => {
       window.location.href = initiationUrl;
     } else {
       console.error("Initiation URL is not available");
+    }
+  };
+
+  useEffect(() => {
+    const fetchTokens = async () => {
+      try {
+        const response = await listTokens();
+        setTokens(response.additionalData.paymentTokens);
+      } catch (error) {
+        console.error("Error fetching tokens:", error);
+      }
+    };
+
+    fetchTokens();
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!selectedToken) {
+      console.log("No token selected");
+      return;
+    }
+    try {
+      const orderResponse = await createOrder(amount);
+      console.log("Order created:", orderResponse);
+
+      const authTokenResponse = await initiateAuthenticateToken(
+        selectedToken,
+        amount
+      );
+      console.log("Token authenticated:", authTokenResponse);
+
+      const authInitiationUrl = authTokenResponse.peripheryData?.initiationUrl;
+      if (authInitiationUrl) {
+        window.location.href = authInitiationUrl; // Redirect to 3D secure URL
+      } else {
+        console.error("Auth initiation URL not found in response");
+      }
+    } catch (error) {
+      console.error("Error processing order:", error);
     }
   };
 
@@ -328,17 +375,25 @@ const Dashboard: React.FC = () => {
               } mr-6`}
               onClick={() => handleTabChange("healthVault")}
             >
-              Dashboard
+              Health Vault
             </button>
             <button
               className={`text-lg font-semibold ${
                 selectedTab === "transactions"
                   ? "text-blue-600"
                   : "text-gray-600"
-              }`}
+              } mr-6`}
               onClick={() => handleTabChange("transactions")}
             >
               Transactions
+            </button>
+            <button
+              className={`text-lg font-semibold ${
+                selectedTab === "orders" ? "text-blue-600" : "text-gray-600"
+              }`}
+              onClick={() => handleTabChange("orders")}
+            >
+              Orders
             </button>
           </div>
           <div>
@@ -366,6 +421,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* HealthVault tab */}
       {selectedTab === "healthVault" && (
         <HealthVault
           balance="2000,00"
@@ -407,6 +463,7 @@ const Dashboard: React.FC = () => {
         />
       )}
 
+      {/* Orders tab */}
       {selectedTab === "transactions" && (
         <div>
           <div className="flex justify-between items-center mt-4">
@@ -560,6 +617,53 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Orders tab */}
+      {selectedTab === "orders" && (
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 max-w-sm mx-auto bg-white rounded-lg shadow-md"
+        >
+          <div className="mb-4">
+            <label htmlFor="amount" className="block text-gray-700">
+              Amount:
+            </label>
+            <input
+              type="number"
+              id="amount"
+              value={amount}
+              onChange={(e) => setAmount(Number(e.target.value))}
+              required
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="token" className="block text-gray-700">
+              Select Token:
+            </label>
+            <select
+              id="token"
+              onChange={(e) => setSelectedToken(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              required
+            >
+              <option value="">Select a token</option>
+              {tokens.map((token, index) => (
+                <option key={index} value={token.token}>
+                  {token.paymentInstrumentAssociationName} -{" "}
+                  {token.truncatedPaymentInstrument}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+          >
+            Create Order
+          </button>
+        </form>
       )}
     </div>
   );
