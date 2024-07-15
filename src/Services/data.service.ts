@@ -114,7 +114,7 @@ export const initiateAuthenticateToken = async (
       `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`
     );
     console.log("Token authenticated:", response.data);
-    return response.data; // Ensure this returns the full response object
+    return response.data;
   } catch (error) {
     console.error("Error authenticating token:", error);
     throw error;

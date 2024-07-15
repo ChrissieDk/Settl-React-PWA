@@ -52,26 +52,6 @@ const Dashboard: React.FC = () => {
     fetchInitiationUrl();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchTokens = async () => {
-  //     try {
-  //       const response = await listTokens();
-  //       console.log("Data received from listTokens:", response);
-
-  //       // Extract the tokens from the nested structure
-  //       const tokens = response.additionalData?.paymentTokens || [];
-
-  //       setTokens(tokens);
-  //       console.log("Tokens extracted:", tokens);
-  //     } catch (err) {
-  //       console.log("Error fetching tokens:", err);
-  //       setTokens([]);
-  //     }
-  //   };
-
-  //   fetchTokens();
-  // }, []);
-
   useEffect(() => {
     const testCreateOrder = async () => {
       try {
@@ -126,7 +106,13 @@ const Dashboard: React.FC = () => {
             const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
             if (authInitiationUrl) {
               console.log("Auth initiation URL:", authInitiationUrl);
-              window.location.href = authInitiationUrl;
+              // await payment(selectedToken, orderResponse).then(
+              //   async (paymentResponse) => {
+              //     debugger;
+              //     window.location.href = authInitiationUrl;
+              //     console.log("Payment request:", paymentResponse);
+              //   }
+              // );
             } else {
               console.error("Auth initiation URL not found in response");
             }
@@ -627,7 +613,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       )}
-
       {/* Orders tab */}
       {selectedTab === "orders" && (
         <form
