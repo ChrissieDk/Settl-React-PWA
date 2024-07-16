@@ -98,28 +98,17 @@ const Dashboard: React.FC = () => {
       console.log("No token selected");
       return;
     }
+
     try {
-      await createOrder(amount).then(async (orderResponse) => {
-        let x = orderResponse;
-        await initiateAuthenticateToken(selectedToken, amount).then(
-          async (authResponse) => {
-            const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
-            if (authInitiationUrl) {
-              console.log("Auth initiation URL:", authInitiationUrl);
-              // await payment(selectedToken, orderResponse).then(
-              //   async (paymentResponse) => {
-              //     debugger;
-              //     window.location.href = authInitiationUrl;
-              //     console.log("Payment request:", paymentResponse);
-              //   }
-              // );
-            } else {
-              console.error("Auth initiation URL not found in response");
-            }
-          }
-        );
-        console.log("Order created:", orderResponse);
-      });
+      const orderResponse = await createOrder(amount);
+
+      const authResponse = await initiateAuthenticateToken(
+        selectedToken,
+        amount
+      );
+      console.log("Order created:", orderResponse);
+      const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
+      window.location.href = authInitiationUrl;
     } catch (error) {
       console.error("Error processing order:", error);
     }
@@ -133,166 +122,166 @@ const Dashboard: React.FC = () => {
   // );
 
   const transactions: Transaction[] = [
-    {
-      id: 1,
-      date: "2024-01-01",
-      type: "Token Redeemed",
-      amount: 100,
-      status: "Success",
-      service: "GP",
-    },
-    {
-      id: 2,
-      date: "2024-01-01",
-      type: "Token Transfer",
-      amount: 100,
-      status: "Success",
-      service: "Transfer",
-    },
-    {
-      id: 3,
-      date: "2024-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "Dentistry",
-    },
-    {
-      id: 4,
-      date: "2024-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "GP",
-    },
-    {
-      id: 5,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "GP",
-    },
-    {
-      id: 6,
-      date: "2023-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Optometry",
-    },
-    {
-      id: 7,
-      date: "2023-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Failed",
-      service: "Optometry",
-    },
-    {
-      id: 8,
-      date: "2023-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "GP",
-    },
-    {
-      id: 9,
-      date: "2023-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Optometry",
-    },
-    {
-      id: 10,
-      date: "2023-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Success",
-      service: "Request",
-    },
-    {
-      id: 11,
-      date: "2021-01-01",
-      type: "Token Redeemed",
-      amount: 100,
-      status: "Success",
-      service: "Dentistry",
-    },
-    {
-      id: 12,
-      date: "2021-01-01",
-      type: "Token Transfer",
-      amount: 100,
-      status: "Success",
-      service: "Transfer",
-    },
-    {
-      id: 13,
-      date: "2021-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "Optometry",
-    },
-    {
-      id: 14,
-      date: "2024-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "GP",
-    },
-    {
-      id: 15,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 16,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 17,
-      date: "2024-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Failed",
-      service: "Request",
-    },
-    {
-      id: 18,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 19,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 20,
-      date: "2024-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Success",
-      service: "Request",
-    },
+    // {
+    //   id: 1,
+    //   date: "2024-01-01",
+    //   type: "Token Redeemed",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 2,
+    //   date: "2024-01-01",
+    //   type: "Token Transfer",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "Transfer",
+    // },
+    // {
+    //   id: 3,
+    //   date: "2024-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "Dentistry",
+    // },
+    // {
+    //   id: 4,
+    //   date: "2024-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 5,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 6,
+    //   date: "2023-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 7,
+    //   date: "2023-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Failed",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 8,
+    //   date: "2023-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 9,
+    //   date: "2023-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 10,
+    //   date: "2023-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Request",
+    // },
+    // {
+    //   id: 11,
+    //   date: "2021-01-01",
+    //   type: "Token Redeemed",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "Dentistry",
+    // },
+    // {
+    //   id: 12,
+    //   date: "2021-01-01",
+    //   type: "Token Transfer",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "Transfer",
+    // },
+    // {
+    //   id: 13,
+    //   date: "2021-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 14,
+    //   date: "2024-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 15,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 16,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 17,
+    //   date: "2024-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Failed",
+    //   service: "Request",
+    // },
+    // {
+    //   id: 18,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 19,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 20,
+    //   date: "2024-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Request",
+    // },
   ];
 
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
@@ -522,95 +511,101 @@ const Dashboard: React.FC = () => {
               onClose={closeModal}
             />
           )}
-          <div className="mt-4 bg-white shadow-lg rounded-lg p-4">
-            <div className="overflow-y-auto max-h-96">
-              <table className="min-w-full leading-normal">
-                <thead>
-                  <tr>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
-                      Id
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
-                      Date
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
-                      Service
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
-                      Transaction Type
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
-                      Status
-                    </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
-                      Amount
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentData.map((transaction) => (
-                    <tr key={transaction.id}>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        {transaction.id}
-                      </td>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        {transaction.date}
-                      </td>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        {transaction.service}
-                      </td>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        {transaction.type}
-                      </td>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        <StatusPill status={transaction.status} />
-                      </td>
-                      <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                        {transaction.amount}
-                      </td>
+          <div className="mt-4 bg-white shadow-lg rounded-lg p-4 ">
+            {transactions.length === 0 ? (
+              <div className="text-center py-8 flex items-center justify-center h-64">
+                <p className="text-gray-500 text-lg">No transactions yet</p>
+              </div>
+            ) : (
+              <div className="overflow-y-auto max-h-96">
+                <table className="min-w-full leading-normal">
+                  <thead>
+                    <tr>
+                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
+                        Id
+                      </th>
+                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
+                        Date
+                      </th>
+                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
+                        Service
+                      </th>
+                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
+                        Transaction Type
+                      </th>
+                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
+                        Status
+                      </th>
+                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5">
+                        Amount
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {currentData.map((transaction) => (
+                      <tr key={transaction.id}>
+                        <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                          {transaction.id}
+                        </td>
+                        <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                          {transaction.date}
+                        </td>
+                        <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                          {transaction.service}
+                        </td>
+                        <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                          {transaction.type}
+                        </td>
+                        <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                          <StatusPill status={transaction.status} />
+                        </td>
+                        <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                          {transaction.amount}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
-          {/* Pagination + ItemsPerPage */}
-          <div className="flex flex-row justify-center">
-            <div className="flex justify-center mt-4">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`mx-1 px-4 py-2 rounded border border-blue-500 ${
-                      page === currentPage
-                        ? "bg-blue-500 text-white"
-                        : "bg-white border"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
-              )}
+          {transactions.length > 0 && (
+            <div className="flex flex-row justify-center">
+              <div className="flex justify-center mt-4">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`mx-1 px-4 py-2 rounded border border-blue-500 ${
+                        page === currentPage
+                          ? "bg-blue-500 text-white"
+                          : "bg-white border"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
+              </div>
+              <div>
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                  className="ml-2 rounded px-2 py-1 mt-6 border border-blue-500 "
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="150">150</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <select
-                id="itemsPerPage"
-                value={itemsPerPage}
-                onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                className="ml-2 rounded px-2 py-1 mt-6 border border-blue-500 "
-              >
-                {/* TODO: Make more dynamic  */}
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="150">150</option>
-              </select>
-            </div>
-          </div>
+          )}
         </div>
       )}
       {/* Orders tab */}
