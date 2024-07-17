@@ -37,10 +37,10 @@ const Dashboard: React.FC = () => {
     const fetchInitiationUrl = async () => {
       try {
         const data = await initiateIssueToken();
-        console.log("API response:", data);
+        // console.log("API response:", data);
         if (data && data.peripheryData && data.peripheryData.initiationUrl) {
           setInitiationUrl(data.peripheryData.initiationUrl);
-          console.log("Initiation URL set:", data.peripheryData.initiationUrl);
+          // console.log("Initiation URL set:", data.peripheryData.initiationUrl);
         } else {
           console.error("API response does not contain initiationUrl:", data);
         }
@@ -50,19 +50,6 @@ const Dashboard: React.FC = () => {
     };
 
     fetchInitiationUrl();
-  }, []);
-
-  useEffect(() => {
-    const testCreateOrder = async () => {
-      try {
-        const response = await createOrder(amount);
-        console.log("Data received from createOrder:", response);
-      } catch (err) {
-        console.log("Error creating order:", err);
-      }
-    };
-
-    testCreateOrder();
   }, []);
 
   const handleButtonClick = () => {
