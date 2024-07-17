@@ -93,12 +93,9 @@ export const listTokens = async () => {
 };
 
 // create order flow
-export const createOrder = async (orderRequest: any): Promise<any> => {
+export const createOrder = async (amount: number) => {
   try {
-    const response = await axiosInstance.post<any>(
-      "payment/createorder",
-      orderRequest
-    );
+    const response = await axiosInstance.get(`/payment/createorder/${amount}`);
     console.log("Order created:", response.data);
     return response.data;
   } catch (error) {
@@ -108,28 +105,14 @@ export const createOrder = async (orderRequest: any): Promise<any> => {
 };
 
 // 3DS authentication
-export const initiateAuthenticateToken = async (request: any): Promise<any> => {
+export const initiateAuthenticateToken = async (
+  paymentToken: string,
+  amount: number
+) => {
   try {
-    const response = await axiosInstance.post<any>(
-      "payment/initiateauthenticatetoken",
-      request
+    const response = await axiosInstance.get(
+      `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`
     );
-    console.log("Authentication token initiated:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error initiating authentication token:", error);
-    throw error;
-  }
-};
-
-// non 3DS authentication
-export const authenticateToken = async (sessionId: string): Promise<any> => {
-  try {
-    const body = {
-      echoData: "123",
-      sessionId: sessionId,
-    };
-    const response = await axiosInstance.post<any>("/authenticatetoken", body);
     console.log("Token authenticated:", response.data);
     return response.data;
   } catch (error) {
@@ -138,22 +121,19 @@ export const authenticateToken = async (sessionId: string): Promise<any> => {
   }
 };
 
-// payments
-export const payment = async (paymentRequest: any): Promise<any> => {
+export const payment = async (
+  paymentToken: string,
+  createOrderResponse: any
+) => {
   try {
-    const body = {
-      transactionInfo: {
-        transactionTypeCode: "00",
-        tenderTypeCode: "00",
-      },
-      ...paymentRequest,
-    };
-
-    const response = await axiosInstance.post<any>("/payment", body);
-    console.log("Payment response:", response.data);
+    const response = await axiosInstance.post(
+      `/payment/payment/${paymentToken}`,
+      createOrderResponse
+    );
+    console.log("payment completed", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error making payment:", error);
+    console.error("fokop payment", error);
     throw error;
   }
 };
