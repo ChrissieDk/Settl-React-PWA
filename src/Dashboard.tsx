@@ -88,7 +88,6 @@ const Dashboard: React.FC = () => {
 
     try {
       const orderResponse = await createOrder(amount);
-
       const authResponse = await initiateAuthenticateToken(
         selectedToken,
         amount
@@ -336,7 +335,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="bg-gray-200 px-8 py-4 min-h-screen">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 md:justify-between sm:space-x-0">
           <div className="flex">
             <button
               className={`text-lg font-semibold ${
@@ -367,27 +366,27 @@ const Dashboard: React.FC = () => {
               Orders
             </button>
           </div>
-          <div>
+          <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0">
             <button
-              className="bg-blue-500 text-white rounded-lg px-4 py-2 mr-2"
+              className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2"
               onClick={addCardRedirect}
             >
               Add Card
-            </button>
-            <button
-              className="bg-blue-500 text-white rounded-lg px-4 py-2 mr-2"
-              onClick={handleButtonClick}
-            >
-              My Cards
             </button>
             <Modal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               tokens={tokens}
             />
-            <button className="bg-blue-500 text-white rounded-lg px-4 py-2">
-              Load
+            <button
+              className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2 lg:mx-2"
+              onClick={handleButtonClick}
+            >
+              My Cards
             </button>
+            {/* <button className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2">
+              Load
+            </button> */}
           </div>
         </div>
       </div>
@@ -397,30 +396,30 @@ const Dashboard: React.FC = () => {
         <HealthVault
           balance="2000,00"
           percentage={75}
-          totalValue="10000,00"
+          totalValue="5000,00"
           description="Health Vault"
           expenses={[
             {
               category: "GP",
-              amount: "2000,00",
+              amount: "550,00",
               icon: <FaUserDoctor size={30} />,
               description: "General practitioner voucher value",
             },
             {
               category: "Dentist",
-              amount: "2500,00",
+              amount: "500,00",
               icon: <FaTooth size={30} />,
               description: "Dentist voucher value",
             },
             {
               category: "Optometrist",
-              amount: "2000,00",
+              amount: "500,00",
               icon: <FaGlasses size={30} />,
               description: "Optometrist voucher value",
             },
             {
               category: "OTC",
-              amount: "1500,00",
+              amount: "250,00",
               icon: <GiMedicinePills size={30} />,
               description: "OTC voucher value",
             },
