@@ -62,15 +62,15 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export const getUserById = async (id = 1) => {
-  try {
-    const response = await axiosInstance.get(`/user/${id}`);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+// export const getUserById = async (id = 1) => {
+//   try {
+//     const response = await axiosInstance.get(`/user/${id}`);
+//     console.log(response.data);
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 export const register = async (user: UserIn) => {
   try {
