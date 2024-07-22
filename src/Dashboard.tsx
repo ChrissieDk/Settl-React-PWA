@@ -433,7 +433,7 @@ const Dashboard: React.FC = () => {
         />
       )}
 
-      {/* Orders tab */}
+      {/* Transactions tab */}
       {selectedTab === "transactions" && (
         <div>
           <div className="flex justify-between items-center mt-4">
