@@ -48,16 +48,19 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(error.config);
         } else {
           // No user is signed in, redirect to login
+          console.log("No user signed in, redirecting to login");
           window.location.href = "/login"; // Adjust the path as needed
+          return Promise.reject(error);
         }
-        console.log("Token refreshed successfully");
       } catch (refreshError) {
         // If token refresh fails, redirect to login
         console.error("Failed to refresh token:", refreshError);
         localStorage.removeItem("bearer");
         window.location.href = "/login"; // Adjust the path as needed
+        return Promise.reject(refreshError);
       }
     }
+    // If the error is not 401, reject the promise with the original error
     return Promise.reject(error);
   }
 );
