@@ -31,13 +31,20 @@ const Dashboard: React.FC = () => {
   const [tokens, setTokens] = useState<any[]>([]);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [activeCircle, setActiveCircle] = useState(0);
-  const circleTexts = [
-    "Fast payments.",
-    "Safe payments.",
-    "Reliable payments.",
-  ];
 
-  const navigate = useNavigate();
+  const circleTexts = [
+    "Secure Payments.",
+    "Reliable Transactions.",
+    "Swift Service.",
+  ];
+  const cycleInterval = 4000;
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveCircle((prevActive) => (prevActive + 1) % circleTexts.length);
+    }, cycleInterval);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const fetchInitiationUrl = async () => {
@@ -634,14 +641,14 @@ const Dashboard: React.FC = () => {
                     SecurePay
                   </h1>
                 </div>
-                <h2 className="text-4xl font-header text-gray-800 mb-6">
+                <h2 className="text-2xl lg:text-4xl font-header text-gray-800 mb-6">
                   Get started
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label
                       htmlFor="amount"
-                      className="block text-md font-paragraph text-black mb-1"
+                      className="block text-md font-paragraph text-black mb-1 text-left"
                     >
                       Amount
                     </label>
@@ -657,7 +664,7 @@ const Dashboard: React.FC = () => {
                   <div>
                     <label
                       htmlFor="token"
-                      className="block text-md font-paragraph text-black mb-1"
+                      className="block text-md font-paragraph text-black mb-1 text-left"
                     >
                       My Cards
                     </label>
@@ -678,14 +685,14 @@ const Dashboard: React.FC = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-orange-400 hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
                   >
                     Secure Payment
                   </button>
                 </form>
               </div>
-              <div className="bg-orange-100 p-8">
-                <div className="text-4xl font-semibold font-header text-black mb-4 text-left">
+              <div className="bg-gray-300 p-8">
+                <div className="text-2xl lg:text-3xl font-semibold font-header text-black mb-4 text-left transition-opacity duration-500 ease-in-out">
                   {circleTexts[activeCircle]}
                 </div>
                 <div className="flex flex-col space-y-4">
@@ -693,10 +700,8 @@ const Dashboard: React.FC = () => {
                     {[0, 1, 2].map((index) => (
                       <button
                         key={index}
-                        className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                          activeCircle === index
-                            ? "bg-orange-400"
-                            : "bg-gray-300"
+                        className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-500 ease-in-out ${
+                          activeCircle === index ? "bg-orange-400" : "bg-white"
                         }`}
                         onClick={() => setActiveCircle(index)}
                       />
