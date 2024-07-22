@@ -30,6 +30,12 @@ const Dashboard: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [tokens, setTokens] = useState<any[]>([]);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
+  const [activeCircle, setActiveCircle] = useState(0);
+  const circleTexts = [
+    "Fast payments.",
+    "Safe payments.",
+    "Reliable payments.",
+  ];
 
   const navigate = useNavigate();
 
@@ -596,49 +602,111 @@ const Dashboard: React.FC = () => {
       )}
       {/* Orders tab */}
       {selectedTab === "orders" && (
-        <form
-          onSubmit={handleSubmit}
-          className="p-4 max-w-sm mx-auto bg-white rounded-lg shadow-md"
-        >
-          <div className="mb-4">
-            <label htmlFor="amount" className="block text-gray-700">
-              Amount:
-            </label>
-            <input
-              type="number"
-              id="amount"
-              value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
-              required
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+        <div className="flex justify-center items-center ">
+          <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
+            {/* Left section for image or content */}
+            <div className="w-1/3 bg-blue-400 p-8  flex-col justify-between hidden lg:block">
+              <div>
+                <h2 className="text-3xl font-bold text-white mb-4 text-left font-header">
+                  Your voucher, your way!
+                </h2>
+                <p className="text-white text-left font-paragraph mb-8">
+                  Easily manage and process payments with our intuitive
+                  platform.
+                </p>
+              </div>
+              <div className="mt-auto">
+                {/* You can replace this with an actual image */}
+                <div className="w-full h-64 bg-orange-400 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-lg">
+                    Placeholder for image ?
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right section with the form */}
+            <div className="w-full lg:w-2/3 bg-white">
+              <div className="p-8">
+                <div className="flex items-center mb-6">
+                  <div className="w-8 h-8 bg-orange-400 rounded-full mr-3"></div>
+                  <h1 className="text-2xl font-bold text-gray-800 ">
+                    SecurePay
+                  </h1>
+                </div>
+                <h2 className="text-4xl font-header text-gray-800 mb-6">
+                  Get started
+                </h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label
+                      htmlFor="amount"
+                      className="block text-md font-paragraph text-black mb-1"
+                    >
+                      Amount
+                    </label>
+                    <input
+                      type="number"
+                      id="amount"
+                      value={amount}
+                      onChange={(e) => setAmount(Number(e.target.value))}
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="token"
+                      className="block text-md font-paragraph text-black mb-1"
+                    >
+                      My Cards
+                    </label>
+                    <select
+                      id="token"
+                      onChange={(e) => setSelectedToken(e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      required
+                    >
+                      <option value="">Select a card</option>
+                      {tokens.map((token, index) => (
+                        <option key={index} value={token.token}>
+                          {token.paymentInstrumentAssociationName} -{" "}
+                          {token.truncatedPaymentInstrument}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-orange-400 hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                  >
+                    Secure Payment
+                  </button>
+                </form>
+              </div>
+              <div className="bg-orange-100 p-8">
+                <div className="text-4xl font-semibold font-header text-black mb-4 text-left">
+                  {circleTexts[activeCircle]}
+                </div>
+                <div className="flex flex-col space-y-4">
+                  <div className="flex space-x-2">
+                    {[0, 1, 2].map((index) => (
+                      <button
+                        key={index}
+                        className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                          activeCircle === index
+                            ? "bg-orange-400"
+                            : "bg-gray-300"
+                        }`}
+                        onClick={() => setActiveCircle(index)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="token" className="block text-gray-700">
-              Select Token:
-            </label>
-            <select
-              id="token"
-              onChange={(e) => setSelectedToken(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            >
-              <option value="">Select a token</option>
-              {tokens.map((token, index) => (
-                <option key={index} value={token.token}>
-                  {token.paymentInstrumentAssociationName} -{" "}
-                  {token.truncatedPaymentInstrument}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
-          >
-            Create Order
-          </button>
-        </form>
+        </div>
       )}
     </div>
   );
