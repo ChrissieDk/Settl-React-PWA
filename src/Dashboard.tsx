@@ -17,6 +17,7 @@ import { FaTooth } from "react-icons/fa";
 import { FaGlasses } from "react-icons/fa";
 import { GiMedicinePills } from "react-icons/gi";
 import { TbReportAnalytics } from "react-icons/tb";
+import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("transactions");
@@ -30,17 +31,29 @@ const Dashboard: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [tokens, setTokens] = useState<any[]>([]);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
-  const [activeCircle, setActiveCircle] = useState(0);
+  const [activeText, setActiveText] = useState(0);
+  const [activeImage, setActiveImage] = useState(0);
 
   const circleTexts = [
     "Secure Payments.",
     "Reliable Transactions.",
     "Swift Service.",
   ];
+
+  const circleImages = [blurredBird, blurredBird, blurredBird];
+
   const cycleInterval = 4000;
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setActiveCircle((prevActive) => (prevActive + 1) % circleTexts.length);
+      setActiveText((prevActive) => (prevActive + 1) % circleTexts.length);
+    }, cycleInterval);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveImage((prevActive) => (prevActive + 1) % circleImages.length);
     }, cycleInterval);
 
     return () => clearInterval(intervalId);
@@ -623,11 +636,23 @@ const Dashboard: React.FC = () => {
                 </p>
               </div>
               <div className="mt-auto">
-                {/* You can replace this with an actual image */}
-                <div className="w-full h-64 bg-orange-400 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-lg">
-                    Placeholder for image ?
-                  </span>
+                <div className="w-full h-64 rounded-lg flex items-center justify-center">
+                  <img
+                    src={circleImages[activeImage]}
+                    alt={`Slide ${activeImage + 1}`}
+                    className="object-cover w-full h-full rounded-lg transition-opacity duration-500 ease-in-out"
+                  />
+                </div>
+                <div className="flex space-x-2 mt-[2.2rem]">
+                  {[0, 1, 2].map((index) => (
+                    <button
+                      key={index}
+                      className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-500 ease-in-out ${
+                        activeImage === index ? "bg-orange-400" : "bg-white"
+                      }`}
+                      onClick={() => setActiveImage(index)}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -637,12 +662,12 @@ const Dashboard: React.FC = () => {
               <div className="p-8">
                 <div className="flex items-center mb-6">
                   <div className="w-8 h-8 bg-orange-400 rounded-full mr-3"></div>
-                  <h1 className="text-2xl font-bold text-gray-800 ">
-                    SecurePay
+                  <h1 className="text-2xl font-button text-gray-800 ">
+                    SettlPay
                   </h1>
                 </div>
                 <h2 className="text-2xl lg:text-4xl font-header text-gray-800 mb-6">
-                  Get started
+                  Let's Settl it!
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
@@ -691,9 +716,9 @@ const Dashboard: React.FC = () => {
                   </button>
                 </form>
               </div>
-              <div className="bg-gray-300 p-8">
+              <div className="bg-gray-300 p-[2.2rem]">
                 <div className="text-2xl lg:text-3xl font-semibold font-header text-black mb-4 text-left transition-opacity duration-500 ease-in-out">
-                  {circleTexts[activeCircle]}
+                  {circleTexts[activeText]}
                 </div>
                 <div className="flex flex-col space-y-4">
                   <div className="flex space-x-2">
@@ -701,9 +726,9 @@ const Dashboard: React.FC = () => {
                       <button
                         key={index}
                         className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-500 ease-in-out ${
-                          activeCircle === index ? "bg-orange-400" : "bg-white"
+                          activeText === index ? "bg-orange-400" : "bg-white"
                         }`}
-                        onClick={() => setActiveCircle(index)}
+                        onClick={() => setActiveText(index)}
                       />
                     ))}
                   </div>
