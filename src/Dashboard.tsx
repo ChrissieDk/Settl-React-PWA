@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
-import { useNavigate } from "react-router-dom";
 import { Transaction } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import {
@@ -662,7 +661,7 @@ const Dashboard: React.FC = () => {
               <div className="p-8">
                 <div className="flex items-center mb-6">
                   <div className="w-8 h-8 bg-orange-400 rounded-full mr-3"></div>
-                  <h1 className="text-2xl font-button text-gray-800 ">
+                  <h1 className="text-2xl font-header text-gray-800 ">
                     SettlPay
                   </h1>
                 </div>

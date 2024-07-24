@@ -38,7 +38,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-gradient-to-r from-orange-400 via-orange-400 to-blue-400 text-white rounded-lg p-6 relative overflow-hidden text-left shadow-xl row-span-2 md:col-span-2">
           <div className="relative flex items-center justify-between">
-            <div className="ml-4 space-y-2">
+            <div className="lg:ml-4 space-y-2">
               <MdOutlineAccountBalanceWallet className="w-[3.5rem] h-[3.5rem] bg-white bg-opacity-20 rounded-full flex items-center justify-center p-2" />
               <h2 className="text-lg lg:text-2xl font-button text-[#FFFFFF]">
                 My Balance
