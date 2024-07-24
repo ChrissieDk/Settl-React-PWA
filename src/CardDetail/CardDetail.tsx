@@ -1,7 +1,9 @@
 import React from "react";
 import { Token } from "../types/Types";
-import { MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+
+import { MdInfoOutline } from "react-icons/md";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface CardModalProps {
   isOpen: boolean;
@@ -57,9 +59,10 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
                     borderRadius: "8px",
                     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
                     padding: "8px 12px",
-                    maxWidth: "600px",
+                    maxWidth: "350px",
                     width: "auto",
                     zIndex: 9999,
+                    opacity: 1000,
                   }}
                 />
               </div>
@@ -87,8 +90,29 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
                     <p className="text-gray-600 text-left">
                       {token.truncatedPaymentInstrument}
                     </p>
-                    <p className="text-sm text-gray-500 text-left">
+                    <p className="flex flex-row text-sm text-gray-500 text-left justify-between">
                       Expires: {token.paymentInstrumentExpiryDate}
+                      <FaTrashAlt
+                        className="text-red-500 hover:text-red-300"
+                        id="remove-card"
+                      />
+                      <ReactTooltip
+                        anchorId="remove-card"
+                        place="left"
+                        content="Remove card"
+                        style={{
+                          backgroundColor: "white",
+                          color: "#222",
+                          fontFamily: "Montserrat, sans-serif",
+                          borderRadius: "8px",
+                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                          padding: "8px 12px",
+                          maxWidth: "600px",
+                          width: "auto",
+                          zIndex: 9999,
+                          opacity: 1000,
+                        }}
+                      />
                     </p>
                   </div>
                 ))
