@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import CircularProgress from "./CircleProgress";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { MdInfoOutline, MdOutlineAccountBalanceWallet } from "react-icons/md";
 
 interface Expense {
   category?: string;
@@ -30,16 +30,38 @@ const HealthVault: React.FC<HealthVaultProps> = ({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl lg:text-4xl text-blue-500 font-header">
+        <h1 className="text-2xl lg:text-4xl text-blue-500 font-header flex items-center">
+          <MdOutlineAccountBalanceWallet className="mr-2" />
           Health Vault
         </h1>
+        <div>
+          <MdInfoOutline
+            id="info-icon"
+            className="text-blue-500 cursor-pointer text-xl lg:text-2xl"
+          />
+          <ReactTooltip
+            anchorId="info-icon"
+            place="left"
+            content="Prices shown are general estimates to help guide your health voucher budgeting. Actual costs may vary by provider."
+            style={{
+              backgroundColor: "white",
+              color: "#222",
+              fontFamily: "Montserrat, sans-serif",
+              borderRadius: "8px",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+              padding: "8px 12px",
+              maxWidth: "600px",
+              width: "auto",
+              zIndex: 9999,
+            }}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-gradient-to-r from-orange-400 via-orange-400 to-blue-400 text-white rounded-lg p-6 relative overflow-hidden text-left shadow-xl row-span-2 md:col-span-2">
           <div className="relative flex items-center justify-between">
-            <div className="ml-4 space-y-2">
-              <MdOutlineAccountBalanceWallet className="w-[3.5rem] h-[3.5rem] bg-white bg-opacity-20 rounded-full flex items-center justify-center p-2" />
+            <div className="lg:ml-4 space-y-2">
               <h2 className="text-lg lg:text-2xl font-button text-[#FFFFFF]">
                 My Balance
               </h2>
@@ -79,20 +101,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
                 data-tooltip-id={`tooltip-${index}`}
                 data-tooltip-content={expense.description}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="w-4 h-4 text-white"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 6h12M6 12h12m-7 6h7"
-                  />
-                </svg>
+                <MdInfoOutline className="cursor-pointer text-xl" />
               </div>
               <ReactTooltip
                 id={`tooltip-${index}`}
@@ -101,6 +110,10 @@ const HealthVault: React.FC<HealthVaultProps> = ({
                   backgroundColor: "white",
                   color: "#222",
                   fontFamily: "Montserrat, sans-serif",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                  padding: "8px 12px",
+                  zIndex: 9999,
                 }}
               />
             </div>
