@@ -426,7 +426,7 @@ const Dashboard: React.FC = () => {
           expenses={[
             {
               category: "GP",
-              amount: "550,00",
+              amount: "500,00",
               icon: <FaUserDoctor size={30} />,
               description: "General practitioner voucher value",
             },
@@ -443,10 +443,11 @@ const Dashboard: React.FC = () => {
               description: "Optometrist voucher value",
             },
             {
-              category: "OTC",
-              amount: "250,00",
+              category: "Over the counter medication",
+              amount: "",
               icon: <GiMedicinePills size={30} />,
-              description: "OTC voucher value",
+              description:
+                "Over-the-counter medication voucher value - can be any custom value",
             },
             {
               category: "Transaction summary",
