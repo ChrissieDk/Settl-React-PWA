@@ -113,6 +113,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
                   borderRadius: "8px",
                   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
                   padding: "8px 12px",
+                  zIndex: 9999,
                 }}
               />
             </div>

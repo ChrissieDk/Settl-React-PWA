@@ -1,4 +1,7 @@
+import React from "react";
 import { Token } from "../types/Types";
+import { MdInfoOutline } from "react-icons/md";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface CardModalProps {
   isOpen: boolean;
@@ -8,42 +11,96 @@ interface CardModalProps {
 
 const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
   if (!isOpen) return null;
-  console.log("Modal rendered with tokens:", tokens);
 
   return (
-    <div
-      className="fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10"
-      id="my-modal"
-    >
-      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <div className="mt-3 text-center">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            My Cards
-          </h3>
-          <div className="mt-2 px-7 py-3 z-50">
-            {tokens.length > 0 ? (
-              tokens.map((token, index) => (
-                <div key={index} className="mb-4 p-4 border rounded text-left">
-                  <p>Name: {token.additionalPaymentTokenInformation}</p>
-                  <p>Type: {token.paymentInstrumentType}</p>
-                  <p>Association: {token.paymentInstrumentAssociationName}</p>
-                  <p>Card Number: {token.truncatedPaymentInstrument}</p>
-                  <p>Expiry Date: {token.paymentInstrumentExpiryDate}</p>
-                  <p>
-                    Status:{" "}
-                    {token.paymentTokenStatus === "00" ? "Active" : "Inactive"}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p>No cards found.</p>
-            )}
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10 flex justify-center items-center">
+      <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
+        {/* Left section for image or content */}
+        <div className="w-1/3 bg-blue-400 p-8 flex-col justify-between hidden lg:flex">
+          <div>
+            <h2 className="text-3xl font-bold text-white mb-4 text-left font-header">
+              Your Cards
+            </h2>
+            <p className="text-white text-left font-paragraph mb-4">
+              Manage your payment methods securely and easily.
+            </p>
+            <h2 className="text-xl text-white text-left font-header mb-2">
+              Card not appearing ?{" "}
+              <span className="text-orange-400 font-bold">No stress!</span>
+            </h2>
+            <p className="text-white text-left font-paragraph mb-8">
+              Card details are not stored, but rather tied to user sessions.
+              This ensures that your card details are secure and private.
+            </p>
           </div>
-          <div className="items-center px-4 py-3">
+        </div>
+
+        {/* Right section with the card list */}
+        <div className="w-full lg:w-2/3 bg-white">
+          <div className="p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between">
+                <div className="w-8 h-8 bg-orange-400 rounded-full mr-3"></div>
+                <h1 className="text-2xl font-header text-gray-800">My Cards</h1>
+                <MdInfoOutline
+                  className="text-blue-500 cursor-pointer ml-2"
+                  id="card-info"
+                />
+                <ReactTooltip
+                  anchorId="card-info"
+                  place="right"
+                  content="Card details are not stored, but rather tied to user sessions. This ensures that your card details are secure and private."
+                  style={{
+                    backgroundColor: "white",
+                    color: "#222",
+                    fontFamily: "Montserrat, sans-serif",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                    padding: "8px 12px",
+                    maxWidth: "600px",
+                    width: "auto",
+                    zIndex: 9999,
+                  }}
+                />
+              </div>
+            </div>
+            <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+              {tokens.length > 0 ? (
+                tokens.map((token, index) => (
+                  <div key={index} className="bg-gray-50 p-3 rounded-lg shadow">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-lg font-semibold text-gray-800">
+                        {token.paymentInstrumentAssociationName}
+                      </span>
+                      <span
+                        className={`px-2 py-1 rounded text-sm ${
+                          token.paymentTokenStatus === "00"
+                            ? "bg-green-200 text-green-800"
+                            : "bg-red-200 text-red-800"
+                        }`}
+                      >
+                        {token.paymentTokenStatus === "00"
+                          ? "Active"
+                          : "Inactive"}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 text-left">
+                      {token.truncatedPaymentInstrument}
+                    </p>
+                    <p className="text-sm text-gray-500 text-left">
+                      Expires: {token.paymentInstrumentExpiryDate}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500">No cards found.</p>
+              )}
+            </div>
+          </div>
+          <div className="bg-gray-100 p-8">
             <button
-              id="ok-btn"
-              className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
               onClick={onClose}
+              className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             >
               Close
             </button>
