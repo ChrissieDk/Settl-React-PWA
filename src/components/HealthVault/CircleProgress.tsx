@@ -1,26 +1,45 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 interface CircularProgressProps {
   percentage: number;
+  duration?: number;
 }
 
-const CircularProgress: React.FC<CircularProgressProps> = ({ percentage }) => {
+const CircularProgress: React.FC<CircularProgressProps> = ({
+  percentage,
+  duration = 2500,
+}) => {
+  const [currentPercentage, setCurrentPercentage] = useState(0);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (!hasAnimated.current) {
+      hasAnimated.current = true;
+
+      const animationInterval = setInterval(() => {
+        setCurrentPercentage((prev) => {
+          if (prev < percentage) {
+            return Math.min(prev + 1, percentage);
+          } else {
+            clearInterval(animationInterval);
+            return prev;
+          }
+        });
+      }, duration / percentage);
+
+      return () => clearInterval(animationInterval);
+    } else {
+      setCurrentPercentage(percentage);
+    }
+  }, [percentage, duration]);
+
   return (
     <div className="relative w-32 h-32 lg:w-48 lg:h-48">
-      {/* <svg width="0" height="0">
-        <defs>
-          <linearGradient id="gradientColors" gradientTransform="rotate(90)">
-            <stop offset="0%" stopColor="#66B2C2" />
-            <stop offset="45%" stopColor="#338FAD" />
-            <stop offset="100%" stopColor="#0B809A" />
-          </linearGradient>
-        </defs>
-      </svg> */}
       <CircularProgressbar
-        value={percentage}
-        text={`${percentage}%`}
+        value={currentPercentage}
+        text={`${currentPercentage}%`}
         background
         backgroundPadding={8}
         styles={buildStyles({
