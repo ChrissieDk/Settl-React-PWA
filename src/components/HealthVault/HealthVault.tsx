@@ -42,6 +42,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
           <ReactTooltip
             anchorId="info-icon"
             place="left"
+            opacity={1}
             content="Prices shown are general estimates to help guide your health voucher budgeting. Actual costs may vary by provider."
             style={{
               backgroundColor: "white",
@@ -106,6 +107,7 @@ const HealthVault: React.FC<HealthVaultProps> = ({
               <ReactTooltip
                 id={`tooltip-${index}`}
                 place="top"
+                opacity={1}
                 style={{
                   backgroundColor: "white",
                   color: "#222",

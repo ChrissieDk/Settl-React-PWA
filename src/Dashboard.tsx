@@ -358,7 +358,7 @@ const Dashboard: React.FC = () => {
   }, [itemsPerPage]);
 
   return (
-    <div className="bg-gray-200 px-8 py-4 min-h-screen">
+    <div className="bg-gray-200 px-4 lg:px-8 py-4 min-h-screen">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 md:justify-between sm:space-x-0">
           <div className="flex">
@@ -462,7 +462,7 @@ const Dashboard: React.FC = () => {
       {/* Transactions tab */}
       {selectedTab === "transactions" && (
         <div>
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
             <div>
               <button
                 onClick={() => openModal("generate")}
@@ -483,7 +483,7 @@ const Dashboard: React.FC = () => {
                 Request
               </button>
             </div>
-            <div>
+            <div className="mt-2 lg:mt-0">
               <button
                 className={`text-sm ${
                   selectedTimePeriod === "last7days"

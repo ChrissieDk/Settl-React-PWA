@@ -51,6 +51,7 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
                 <ReactTooltip
                   anchorId="card-info"
                   place="right"
+                  opacity={1}
                   content="Card details are not stored, but rather tied to user sessions. This ensures that your card details are secure and private."
                   style={{
                     backgroundColor: "white",
@@ -62,7 +63,6 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
                     maxWidth: "350px",
                     width: "auto",
                     zIndex: 9999,
-                    opacity: 1000,
                   }}
                 />
               </div>
@@ -87,33 +87,35 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
                           : "Inactive"}
                       </span>
                     </div>
-                    <p className="text-gray-600 text-left">
-                      {token.truncatedPaymentInstrument}
-                    </p>
-                    <p className="flex flex-row text-sm text-gray-500 text-left justify-between">
-                      Expires: {token.paymentInstrumentExpiryDate}
-                      <FaTrashAlt
-                        className="text-red-500 hover:text-red-300"
-                        id="remove-card"
-                      />
-                      <ReactTooltip
-                        anchorId="remove-card"
-                        place="left"
-                        content="Remove card"
-                        style={{
-                          backgroundColor: "white",
-                          color: "#222",
-                          fontFamily: "Montserrat, sans-serif",
-                          borderRadius: "8px",
-                          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-                          padding: "8px 12px",
-                          maxWidth: "600px",
-                          width: "auto",
-                          zIndex: 9999,
-                          opacity: 1000,
-                        }}
-                      />
-                    </p>
+                    <div>
+                      <p className="text-gray-600 text-left">
+                        {token.truncatedPaymentInstrument}
+                      </p>
+                      <p className="flex flex-row text-sm text-gray-500 text-left justify-between">
+                        Expires: {token.paymentInstrumentExpiryDate}
+                        <FaTrashAlt
+                          className="text-red-500 hover:text-red-300"
+                          id="remove-card"
+                        />
+                        <ReactTooltip
+                          anchorId="remove-card"
+                          place="left"
+                          opacity={1}
+                          content="Remove card"
+                          style={{
+                            backgroundColor: "white",
+                            color: "#222",
+                            fontFamily: "Montserrat, sans-serif",
+                            borderRadius: "8px",
+                            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                            padding: "8px 12px",
+                            maxWidth: "600px",
+                            width: "auto",
+                            zIndex: 9999,
+                          }}
+                        />
+                      </p>
+                    </div>
                   </div>
                 ))
               ) : (
