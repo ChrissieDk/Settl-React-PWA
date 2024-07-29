@@ -7,13 +7,13 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   // If you're deploying to a subdirectory, uncomment the next line and set the correct path
-  // base: '/Settl-React-PWA/',
+  base: "/Settl-React-PWA",
   plugins: [
     react(),
     tsconfigPaths(),
     VitePWA({
       manifest: {
-        short_name: "React App",
+        short_name: "Settl React PWA",
         name: "Settl",
         icons: [
           {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { useAuth } from "./Auth/AuthContext";
@@ -57,26 +57,26 @@ export function StickyNavbar() {
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <li className="p-1">
-        <a
-          href="/FindNetwork"
+        <Link
+          to="/FindNetwork"
           className="flex items-center hover:text-blue-500"
         >
           <h1 className="font-navbar">Find a network provider</h1>
-        </a>
+        </Link>
       </li>
       <li className="p-1">
-        <a href="/AboutUs" className="flex items-center hover:text-blue-500">
+        <Link to="/AboutUs" className="flex items-center hover:text-blue-500">
           <h1 className="font-navbar">About Us</h1>
-        </a>
+        </Link>
       </li>
       {currentUser && (
         <li className="p-1">
-          <a
-            href="/Dashboard"
+          <Link
+            to="/Dashboard"
             className="flex items-center hover:text-blue-500"
           >
             <h1 className="font-navbar">Dashboard</h1>
-          </a>
+          </Link>
         </li>
       )}
 
@@ -117,7 +117,7 @@ export function StickyNavbar() {
       <div className="max-w-full px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between">
           <div className="flex">
-            <a href="/">
+            <a href="/ChrissieDk/Settl-React-PWA">
               <img className="h-10 w-auto" src={logo} alt="Settl Logo" />
             </a>
             <div className="flex ml-4 my-auto">
