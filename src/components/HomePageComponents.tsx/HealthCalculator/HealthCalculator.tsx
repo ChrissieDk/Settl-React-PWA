@@ -31,9 +31,9 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
   setOtcMeds,
 }) => {
   return (
-    <div className="space-y-4 p-4 text-left">
+    <div className="space-y-4 p-2 sm:p-4 text-left">
       <div>
-        <h3 className="font-paragraph">GP Visits</h3>
+        <h3 className="font-paragraph text-sm sm:text-base">GP Visits</h3>
         <div className="flex items-center">
           <Slider
             min={0}
@@ -52,13 +52,15 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
             }}
             railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
           />
-          <div className="w-16 h-10 flex items-center justify-center ml-4 bg-orange-400 text-white rounded">
+          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
             {gpVisits / GP_COST_PER_VISIT}
           </div>
         </div>
       </div>
       <div>
-        <h3>Dental Consultations</h3>
+        <h3 className="font-paragraph text-sm sm:text-base">
+          Dental Consultations
+        </h3>
         <div className="flex items-center">
           <Slider
             min={0}
@@ -77,13 +79,15 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
             }}
             railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
           />
-          <div className="w-16 h-10 flex items-center justify-center ml-4 bg-orange-400 text-white rounded">
+          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
             {dental / DENTAL_COST_PER_VISIT}
           </div>
         </div>
       </div>
       <div>
-        <h3>Optometry Appointments</h3>
+        <h3 className="font-paragraph text-sm sm:text-base">
+          Optometry Appointments
+        </h3>
         <div className="flex items-center">
           <Slider
             min={0}
@@ -102,13 +106,13 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
             }}
             railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
           />
-          <div className="w-16 h-10 flex items-center justify-center ml-4 bg-orange-400 text-white rounded">
+          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
             {optometry / OPTOMETRY_COST_PER_VISIT}
           </div>
         </div>
       </div>
       <div>
-        <h3>OTC Medication</h3>
+        <h3 className="font-paragraph text-sm sm:text-base">OTC Medication</h3>
         <div className="flex items-center">
           <Slider
             defaultValue={otcMeds}
@@ -124,7 +128,7 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
             }}
             railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
           />
-          <div className="w-16 h-10 flex items-center justify-center ml-4 bg-orange-400 text-white rounded">
+          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
             R {otcMeds}
           </div>
         </div>

@@ -133,166 +133,166 @@ const Dashboard: React.FC = () => {
   // );
 
   const transactions: Transaction[] = [
-    // {
-    //   id: 1,
-    //   date: "2024-01-01",
-    //   type: "Token Redeemed",
-    //   amount: 100,
-    //   status: "Success",
-    //   service: "GP",
-    // },
-    // {
-    //   id: 2,
-    //   date: "2024-01-01",
-    //   type: "Token Transfer",
-    //   amount: 100,
-    //   status: "Success",
-    //   service: "Transfer",
-    // },
-    // {
-    //   id: 3,
-    //   date: "2024-01-02",
-    //   type: "Token Generate",
-    //   amount: 50,
-    //   status: "Pending",
-    //   service: "Dentistry",
-    // },
-    // {
-    //   id: 4,
-    //   date: "2024-01-02",
-    //   type: "Token Generate",
-    //   amount: 50,
-    //   status: "Pending",
-    //   service: "GP",
-    // },
-    // {
-    //   id: 5,
-    //   date: "2024-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "GP",
-    // },
-    // {
-    //   id: 6,
-    //   date: "2023-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Optometry",
-    // },
-    // {
-    //   id: 7,
-    //   date: "2023-01-03",
-    //   type: "Token Request",
-    //   amount: 200,
-    //   status: "Failed",
-    //   service: "Optometry",
-    // },
-    // {
-    //   id: 8,
-    //   date: "2023-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "GP",
-    // },
-    // {
-    //   id: 9,
-    //   date: "2023-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Optometry",
-    // },
-    // {
-    //   id: 10,
-    //   date: "2023-01-03",
-    //   type: "Token Request",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Request",
-    // },
-    // {
-    //   id: 11,
-    //   date: "2021-01-01",
-    //   type: "Token Redeemed",
-    //   amount: 100,
-    //   status: "Success",
-    //   service: "Dentistry",
-    // },
-    // {
-    //   id: 12,
-    //   date: "2021-01-01",
-    //   type: "Token Transfer",
-    //   amount: 100,
-    //   status: "Success",
-    //   service: "Transfer",
-    // },
-    // {
-    //   id: 13,
-    //   date: "2021-01-02",
-    //   type: "Token Generate",
-    //   amount: 50,
-    //   status: "Pending",
-    //   service: "Optometry",
-    // },
-    // {
-    //   id: 14,
-    //   date: "2024-01-02",
-    //   type: "Token Generate",
-    //   amount: 50,
-    //   status: "Pending",
-    //   service: "GP",
-    // },
-    // {
-    //   id: 15,
-    //   date: "2024-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Deposit",
-    // },
-    // {
-    //   id: 16,
-    //   date: "2024-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Deposit",
-    // },
-    // {
-    //   id: 17,
-    //   date: "2024-01-03",
-    //   type: "Token Request",
-    //   amount: 200,
-    //   status: "Failed",
-    //   service: "Request",
-    // },
-    // {
-    //   id: 18,
-    //   date: "2024-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Deposit",
-    // },
-    // {
-    //   id: 19,
-    //   date: "2024-01-03",
-    //   type: "Wallet deposit",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Deposit",
-    // },
-    // {
-    //   id: 20,
-    //   date: "2024-01-03",
-    //   type: "Token Request",
-    //   amount: 200,
-    //   status: "Success",
-    //   service: "Request",
-    // },
+    {
+      id: 1,
+      date: "2024-01-01",
+      type: "Token Redeemed",
+      amount: 100,
+      status: "Success",
+      service: "GP",
+    },
+    {
+      id: 2,
+      date: "2024-01-01",
+      type: "Token Transfer",
+      amount: 100,
+      status: "Success",
+      service: "Transfer",
+    },
+    {
+      id: 3,
+      date: "2024-01-02",
+      type: "Token Generate",
+      amount: 50,
+      status: "Pending",
+      service: "Dentistry",
+    },
+    {
+      id: 4,
+      date: "2024-01-02",
+      type: "Token Generate",
+      amount: 50,
+      status: "Pending",
+      service: "GP",
+    },
+    {
+      id: 5,
+      date: "2024-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "GP",
+    },
+    {
+      id: 6,
+      date: "2023-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "Optometry",
+    },
+    {
+      id: 7,
+      date: "2023-01-03",
+      type: "Token Request",
+      amount: 200,
+      status: "Failed",
+      service: "Optometry",
+    },
+    {
+      id: 8,
+      date: "2023-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "GP",
+    },
+    {
+      id: 9,
+      date: "2023-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "Optometry",
+    },
+    {
+      id: 10,
+      date: "2023-01-03",
+      type: "Token Request",
+      amount: 200,
+      status: "Success",
+      service: "Request",
+    },
+    {
+      id: 11,
+      date: "2021-01-01",
+      type: "Token Redeemed",
+      amount: 100,
+      status: "Success",
+      service: "Dentistry",
+    },
+    {
+      id: 12,
+      date: "2021-01-01",
+      type: "Token Transfer",
+      amount: 100,
+      status: "Success",
+      service: "Transfer",
+    },
+    {
+      id: 13,
+      date: "2021-01-02",
+      type: "Token Generate",
+      amount: 50,
+      status: "Pending",
+      service: "Optometry",
+    },
+    {
+      id: 14,
+      date: "2024-01-02",
+      type: "Token Generate",
+      amount: 50,
+      status: "Pending",
+      service: "GP",
+    },
+    {
+      id: 15,
+      date: "2024-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "Deposit",
+    },
+    {
+      id: 16,
+      date: "2024-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "Deposit",
+    },
+    {
+      id: 17,
+      date: "2024-01-03",
+      type: "Token Request",
+      amount: 200,
+      status: "Failed",
+      service: "Request",
+    },
+    {
+      id: 18,
+      date: "2024-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "Deposit",
+    },
+    {
+      id: 19,
+      date: "2024-01-03",
+      type: "Wallet deposit",
+      amount: 200,
+      status: "Success",
+      service: "Deposit",
+    },
+    {
+      id: 20,
+      date: "2024-01-03",
+      type: "Token Request",
+      amount: 200,
+      status: "Success",
+      service: "Request",
+    },
   ];
 
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
@@ -310,7 +310,8 @@ const Dashboard: React.FC = () => {
   };
 
   const openModal = (action: string) => {
-    if (action === "generate" || action === "send" || action === "request") {
+    //  || action === "send" || action === "request"
+    if (action === "redeem") {
       setTokenModalOpen(true);
       setSelectedAction(action);
     } else {
@@ -465,12 +466,12 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
             <div>
               <button
-                onClick={() => openModal("generate")}
+                onClick={() => openModal("redeem")}
                 className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                Generate
+                Redeem
               </button>
-              <button
+              {/* <button
                 className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
                 onClick={() => openModal("send")}
               >
@@ -481,7 +482,7 @@ const Dashboard: React.FC = () => {
                 onClick={() => openModal("request")}
               >
                 Request
-              </button>
+              </button> */}
             </div>
             <div className="mt-2 lg:mt-0">
               <button

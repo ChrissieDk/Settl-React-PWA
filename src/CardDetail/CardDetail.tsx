@@ -15,7 +15,7 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10 flex justify-center items-center">
+    <div className="p-2 fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10 flex justify-center items-center">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
         {/* Left section for image or content */}
         <div className="w-1/3 bg-blue-400 p-8 flex-col justify-between hidden lg:flex">
