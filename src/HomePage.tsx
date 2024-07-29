@@ -289,10 +289,10 @@ const HomePage = () => {
       </section>
 
       {/* Health Calculator - slider */}
-      <section className="bg-gray-300 h-[30rem]">
-        <div className="p-8 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+      <section className="bg-gray-300">
+        <div className="p-4 lg:p-8 lg:px-20 2xl:px-0 2xl:max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row bg-gray-300">
-            <div className="lg:w-2/5">
+            <div className="w-full lg:w-2/5 mb-8 lg:mb-0">
               <HealthCalculator
                 gpVisits={gpVisits}
                 setGpVisits={setGpVisits}
@@ -304,25 +304,26 @@ const HomePage = () => {
                 setOtcMeds={setOtcMeds}
               />
             </div>
-            <div
-              className="bg-cover bg-center lg:w-3/5 lg:m-[-7rem] lg:ml-[1rem] lg:mr-[-6rem] relative"
-              style={{ backgroundImage: `url(${planBg})` }}
-            >
-              <IconList
-                gpVisits={gpVisits}
-                dental={dental}
-                optometry={optometry}
-                otcMeds={otcMeds}
-              />
-              {/* Centered Button below IconList */}
-              <button className="absolute bottom-16 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
-                I'M INTERESTED
-              </button>
+            <div className="w-full lg:w-3/5 relative">
+              <div
+                className="bg-cover bg-center h-[40rem] lg:m-[-7rem] lg:ml-[1rem] lg:mr-[-10rem]"
+                style={{ backgroundImage: `url(${planBg})` }}
+              >
+                <IconList
+                  gpVisits={gpVisits}
+                  dental={dental}
+                  optometry={optometry}
+                  otcMeds={otcMeds}
+                />
+                {/* Centered Button below IconList */}
+                <button className="absolute bottom-16 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
+                  I'M INTERESTED
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
-      <section></section>
     </>
   );
 };
