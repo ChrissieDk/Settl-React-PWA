@@ -46,7 +46,7 @@ const AddBeneficiaryButton: React.FC = () => (
 // Main UserProfile component
 const UserProfile: React.FC = () => {
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div className="flex bg-gray-200 min-h-screen">
       {/* Main content */}
       <main className="flex-1 p-8">
         <h1 className="text-2xl font-header mb-6 text-left text-blue-500">

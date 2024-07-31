@@ -385,11 +385,11 @@ const Dashboard: React.FC = () => {
             </button>
             <button
               className={`text-lg font-semibold ${
-                selectedTab === "orders" ? "text-blue-600" : "text-gray-600"
+                selectedTab === "load" ? "text-blue-600" : "text-gray-600"
               }`}
-              onClick={() => handleTabChange("orders")}
+              onClick={() => handleTabChange("load")}
             >
-              Orders
+              Load
             </button>
           </div>
           <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0">
@@ -621,8 +621,8 @@ const Dashboard: React.FC = () => {
           )}
         </div>
       )}
-      {/* Orders tab */}
-      {selectedTab === "orders" && (
+      {/* Load tab */}
+      {selectedTab === "load" && (
         <div className="flex justify-center items-center ">
           <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
             {/* Left section for image or content */}
@@ -632,8 +632,8 @@ const Dashboard: React.FC = () => {
                   Your voucher, your way!
                 </h2>
                 <p className="text-white text-left font-paragraph mb-8">
-                  Easily manage and process payments with our intuitive
-                  platform.
+                  Load your Health Vault and start your journey to simpler
+                  healthcare.
                 </p>
               </div>
               <div className="mt-auto">
