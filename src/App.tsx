@@ -8,6 +8,7 @@ import AboutUs from "./AboutUs";
 import FindNetwork from "./FindNetwork";
 import Login from "./components/SignIn/Login";
 import Signup from "./components/SignUp/SignUp";
+import UserProfile from "./UserProfile";
 import { AuthProvider } from "./Auth/AuthContext";
 import { ProtectedRoute } from "./Auth/ProtectedRoute";
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/FindNetwork" element={<FindNetwork />} />
+            <Route path="/UserProfile" element={<UserProfile />} />
           </Routes>
         </Router>
       </div>

@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { useAuth } from "./Auth/AuthContext";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 // icons and images
 import { FaInstagram } from "react-icons/fa6";
-import { FaFacebookF } from "react-icons/fa";
+import { FaFacebookF, FaUserCircle } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 import logo from "./img/Homepage/settl icon.png";
 
@@ -80,6 +81,34 @@ export function StickyNavbar() {
         </li>
       )}
 
+      {isUserSignedIn && (
+        <li className="p-1">
+          <a
+            href="/UserProfile"
+            className="flex items-center hover:text-blue-500"
+          >
+            <FaUserCircle className="h-6 w-6 mr-2" id="my profile" />
+          </a>
+        </li>
+      )}
+      <ReactTooltip
+        anchorId="my-profile"
+        place="right"
+        opacity={1}
+        content="Redeem your token by entering the merchant details and voucher code."
+        style={{
+          backgroundColor: "white",
+          color: "#222",
+          fontFamily: "Montserrat, sans-serif",
+          borderRadius: "8px",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+          padding: "8px 12px",
+          maxWidth: "350px",
+          width: "auto",
+          zIndex: 9999,
+        }}
+      />
+
       {isUserSignedIn ? (
         <li className="p-1">
           <button
@@ -136,12 +165,20 @@ export function StickyNavbar() {
             <div className="hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
               {isUserSignedIn ? (
-                <button
-                  className="hidden lg:block bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </button>
+                <>
+                  {/* <a
+                    href="/profile"
+                    className="hidden lg:block text-blue-500 hover:text-blue-700 mr-4"
+                  >
+                    <FaUserCircle className="h-6 w-6" />
+                  </a> */}
+                  <button
+                    className="hidden lg:block bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </button>
+                </>
               ) : (
                 <>
                   <button
