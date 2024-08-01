@@ -33,7 +33,14 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/FindNetwork" element={<FindNetwork />} />
-            <Route path="/UserProfile" element={<UserProfile />} />
+            <Route
+              path="/UserProfile"
+              element={
+                <ProtectedRoute>
+                  <UserProfile />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Router>
       </div>

@@ -78,7 +78,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   anchorId="token-info"
                   place="right"
                   opacity={1}
-                  content="Redeem your token by entering the merchant details and voucher code."
+                  content="Redeem your token by entering the merchant details, service and voucher details."
                   style={{
                     backgroundColor: "white",
                     color: "#222",
@@ -100,7 +100,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                     htmlFor="merchant"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
-                    Merchant
+                    Select Merchant
                   </label>
                   <input
                     id="merchant"
@@ -114,10 +114,10 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 <div className="mb-4">
                   <label
-                    htmlFor="voucher"
+                    htmlFor="Service"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
-                    Voucher number
+                    Select Service
                   </label>
                   <input
                     id="voucher"
@@ -125,7 +125,41 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                     value={amount}
                     onChange={handleAmountChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Select your voucher"
+                    placeholder="Select service"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="Service"
+                    className="block text-sm font-semibold mb-2 text-gray-700"
+                  >
+                    Voucher Code
+                  </label>
+                  <input
+                    id="voucher"
+                    type="Voucher Code"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    className="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter your Voucher Code"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="Service"
+                    className="block text-sm font-semibold mb-2 text-gray-700"
+                  >
+                    OTP
+                  </label>
+                  <input
+                    id="voucher"
+                    type="Voucher Code"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    className="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter your voucher OTP"
                     required
                   />
                 </div>
