@@ -32,12 +32,60 @@ const Dashboard: React.FC = () => {
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [activeText, setActiveText] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
+  const [data, setData] = useState<UrlData | null>(null);
 
   const circleTexts = [
     "Secure Payments.",
     "Reliable Transactions.",
     "Swift Service.",
   ];
+
+  interface UrlData {
+    echoData: string;
+    sessionId: string;
+    responseCode: string;
+    responseMessage: string;
+  }
+
+  useEffect(() => {
+    // Get the current URL from the browser
+    const url = window.location.href;
+    // Check if the URL contains the 'data' parameter
+    if (url.includes("data=")) {
+      const urlParams = new URLSearchParams(new URL(url).search);
+      const base64Data = urlParams.get("data");
+
+      if (base64Data) {
+        try {
+          // Decode the Base64 string
+          const decodedString = atob(base64Data);
+
+          // Parse the decoded string as JSON
+          const jsonData: UrlData = JSON.parse(decodedString);
+          debugger;
+          if (jsonData.responseCode == "00") {
+            pay(jsonData);
+          }
+          console.log("Parsed data:", jsonData);
+          // Set the parsed data to state
+        } catch (error) {
+          console.error("Invalid JSON string", error);
+        }
+      } else {
+        console.error("No data found in the URL");
+      }
+    }
+  }, []);
+
+  const pay = async (jsonData: any) => {
+    const paymentResponse = await payment(
+      "9876541837865810",
+      // hardcoded payment token for now
+      jsonData.echoData
+    ).then(async (paymentResponse) => {
+      console.log("Payment request:", paymentResponse);
+    });
+  };
 
   const circleImages = [blurredBird, blurredBird, blurredBird];
 
@@ -113,186 +161,184 @@ const Dashboard: React.FC = () => {
 
     try {
       const orderResponse = await createOrder(amount);
+      console.log("Order created:", orderResponse);
       const authResponse = await initiateAuthenticateToken(
         selectedToken,
-        amount
+        amount,
+        orderResponse
       );
-      console.log("Order created:", orderResponse);
-      const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
-      window.location.href = authInitiationUrl;
+      if (orderResponse.responseCode === "00") {
+        const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
+        window.location.href = authInitiationUrl;
+      } else {
+        console.log("Order failed:", orderResponse.responseMessage);
+      }
     } catch (error) {
       console.error("Error processing order:", error);
     }
   };
-  // await payment(selectedToken, orderResponse).then(
-  //   async (paymentResponse) => {
-  //     debugger;
-  //     window.location.href = authInitiationUrl;
-  //     console.log("Payment request:", paymentResponse);
-  //   }
-  // );
 
   const transactions: Transaction[] = [
-    {
-      id: 1,
-      date: "2024-01-01",
-      type: "Token Redeemed",
-      amount: 100,
-      status: "Success",
-      service: "GP",
-    },
-    {
-      id: 2,
-      date: "2024-01-01",
-      type: "Token Transfer",
-      amount: 100,
-      status: "Success",
-      service: "Transfer",
-    },
-    {
-      id: 3,
-      date: "2024-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "Dentistry",
-    },
-    {
-      id: 4,
-      date: "2024-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "GP",
-    },
-    {
-      id: 5,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "GP",
-    },
-    {
-      id: 6,
-      date: "2023-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Optometry",
-    },
-    {
-      id: 7,
-      date: "2023-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Failed",
-      service: "Optometry",
-    },
-    {
-      id: 8,
-      date: "2023-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "GP",
-    },
-    {
-      id: 9,
-      date: "2023-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Optometry",
-    },
-    {
-      id: 10,
-      date: "2023-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Success",
-      service: "Request",
-    },
-    {
-      id: 11,
-      date: "2021-01-01",
-      type: "Token Redeemed",
-      amount: 100,
-      status: "Success",
-      service: "Dentistry",
-    },
-    {
-      id: 12,
-      date: "2021-01-01",
-      type: "Token Transfer",
-      amount: 100,
-      status: "Success",
-      service: "Transfer",
-    },
-    {
-      id: 13,
-      date: "2021-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "Optometry",
-    },
-    {
-      id: 14,
-      date: "2024-01-02",
-      type: "Token Generate",
-      amount: 50,
-      status: "Pending",
-      service: "GP",
-    },
-    {
-      id: 15,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 16,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 17,
-      date: "2024-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Failed",
-      service: "Request",
-    },
-    {
-      id: 18,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 19,
-      date: "2024-01-03",
-      type: "Wallet deposit",
-      amount: 200,
-      status: "Success",
-      service: "Deposit",
-    },
-    {
-      id: 20,
-      date: "2024-01-03",
-      type: "Token Request",
-      amount: 200,
-      status: "Success",
-      service: "Request",
-    },
+    // {
+    //   id: 1,
+    //   date: "2024-01-01",
+    //   type: "Token Redeemed",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 2,
+    //   date: "2024-01-01",
+    //   type: "Token Transfer",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "Transfer",
+    // },
+    // {
+    //   id: 3,
+    //   date: "2024-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "Dentistry",
+    // },
+    // {
+    //   id: 4,
+    //   date: "2024-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 5,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 6,
+    //   date: "2023-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 7,
+    //   date: "2023-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Failed",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 8,
+    //   date: "2023-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 9,
+    //   date: "2023-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 10,
+    //   date: "2023-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Request",
+    // },
+    // {
+    //   id: 11,
+    //   date: "2021-01-01",
+    //   type: "Token Redeemed",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "Dentistry",
+    // },
+    // {
+    //   id: 12,
+    //   date: "2021-01-01",
+    //   type: "Token Transfer",
+    //   amount: 100,
+    //   status: "Success",
+    //   service: "Transfer",
+    // },
+    // {
+    //   id: 13,
+    //   date: "2021-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "Optometry",
+    // },
+    // {
+    //   id: 14,
+    //   date: "2024-01-02",
+    //   type: "Token Generate",
+    //   amount: 50,
+    //   status: "Pending",
+    //   service: "GP",
+    // },
+    // {
+    //   id: 15,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 16,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 17,
+    //   date: "2024-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Failed",
+    //   service: "Request",
+    // },
+    // {
+    //   id: 18,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 19,
+    //   date: "2024-01-03",
+    //   type: "Wallet deposit",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Deposit",
+    // },
+    // {
+    //   id: 20,
+    //   date: "2024-01-03",
+    //   type: "Token Request",
+    //   amount: 200,
+    //   status: "Success",
+    //   service: "Request",
+    // },
   ];
 
   const totalPages = Math.ceil(transactions.length / itemsPerPage);

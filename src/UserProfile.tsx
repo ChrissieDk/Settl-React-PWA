@@ -11,6 +11,15 @@ type UserProfile = {
   postalCode: string;
 };
 
+type Beneficiaries = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  cityState: string;
+  postalCode: string;
+};
+
 // Mock data
 const mockUserProfile: UserProfile = {
   firstName: "Christiaan",
@@ -20,7 +29,7 @@ const mockUserProfile: UserProfile = {
   cityState: "Cape Town, Western Cape",
   postalCode: "7550",
 };
-const Beneficiaries: UserProfile = {
+const mockBeneficiaries: Beneficiaries = {
   firstName: "Hayley",
   lastName: "Moosa",
   email: "hayley@gmail.com",
@@ -130,19 +139,19 @@ const UserProfile: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-gray-600">First Name</p>
-              <p>{Beneficiaries.firstName}</p>
+              <p>{mockBeneficiaries.firstName}</p>
             </div>
             <div>
               <p className="text-gray-600">Last Name</p>
-              <p>{Beneficiaries.lastName}</p>
+              <p>{mockBeneficiaries.lastName}</p>
             </div>
             <div>
               <p className="text-gray-600">Email address</p>
-              <p>{Beneficiaries.email}</p>
+              <p>{mockBeneficiaries.email}</p>
             </div>
             <div>
               <p className="text-gray-600">Phone</p>
-              <p>{Beneficiaries.phone}</p>
+              <p>{mockBeneficiaries.phone}</p>
             </div>
           </div>
         </div>

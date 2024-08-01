@@ -146,12 +146,13 @@ export const createOrder = async (amount: number) => {
 // 3DS authentication
 export const initiateAuthenticateToken = async (
   paymentToken: string,
-  amount: number
+  amount: number,
+  createOrderResponse: any
 ) => {
   try {
-    const response = await axiosInstance.get(
-      `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`
-    );
+    const response = await axiosInstance.post(
+      `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`, createOrderResponse
+    )
     console.log("Token authenticated:", response.data);
     return response.data;
   } catch (error) {
@@ -172,7 +173,7 @@ export const payment = async (
     console.log("payment completed", response.data);
     return response.data;
   } catch (error) {
-    console.error("fokop payment", error);
+    console.error("payment failed", error);
     throw error;
   }
 };
