@@ -136,3 +136,11 @@ export interface Token {
   paymentInstrumentExpiryDate: string;
   additionalPaymentTokenInformation: string;
 }
+
+// Type for fetching data from url
+export interface UrlData {
+  echoData: string;
+  sessionId: string;
+  responseCode: string;
+  responseMessage: string;
+}

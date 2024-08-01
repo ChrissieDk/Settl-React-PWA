@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
-import { Transaction } from "./types/Types";
+import { Transaction, UrlData } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import {
   initiateIssueToken,
@@ -40,39 +40,33 @@ const Dashboard: React.FC = () => {
     "Swift Service.",
   ];
 
-  interface UrlData {
-    echoData: string;
-    sessionId: string;
-    responseCode: string;
-    responseMessage: string;
-  }
-
+  // Extract and convert data from base64 to a JSON object.
+  // This is used to carry over responses needed to complete a payment.
   useEffect(() => {
-    // Get the current URL from the browser
+    // Get the current URL from the browser.
     const url = window.location.href;
-    // Check if the URL contains the 'data' parameter
+    // Check if the URL contains the 'data' parameter.
     if (url.includes("data=")) {
       const urlParams = new URLSearchParams(new URL(url).search);
       const base64Data = urlParams.get("data");
 
       if (base64Data) {
         try {
-          // Decode the Base64 string
+          // Decode the base64 string.
           const decodedString = atob(base64Data);
-
-          // Parse the decoded string as JSON
+          // Parse the decoded string as a JSON object.
           const jsonData: UrlData = JSON.parse(decodedString);
-          debugger;
+          // If the response code indicates success ("00"), initiate payment.
           if (jsonData.responseCode == "00") {
             pay(jsonData);
           }
           console.log("Parsed data:", jsonData);
-          // Set the parsed data to state
+          setData(jsonData);
         } catch (error) {
-          console.error("Invalid JSON string", error);
+          console.error("Error parsing JSON data:", error);
         }
       } else {
-        console.error("No data found in the URL");
+        console.error("No 'data' parameter found in the URL.");
       }
     }
   }, []);
@@ -158,7 +152,6 @@ const Dashboard: React.FC = () => {
       console.log("No token selected");
       return;
     }
-
     try {
       const orderResponse = await createOrder(amount);
       console.log("Order created:", orderResponse);

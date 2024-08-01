@@ -151,6 +151,23 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                     htmlFor="Service"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
+                    Amount
+                  </label>
+                  <input
+                    id="voucher"
+                    type="Voucher Code"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    className="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter Amount to be redeemed"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="Service"
+                    className="block text-sm font-semibold mb-2 text-gray-700"
+                  >
                     OTP
                   </label>
                   <input
