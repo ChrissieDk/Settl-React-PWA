@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TokenModal from "./components/TokenModal/TokenModal";
-import { Transaction, UrlData } from "./types/Types";
+import { VoucherOldTransaction, UrlData } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import {
   initiateIssueToken,
@@ -10,6 +10,7 @@ import {
   payment,
 } from "./Services/data.service";
 import Modal from "./CardDetail/CardDetail";
+import Vouchers from "./components/Vouchers/Vouchers";
 // icons
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaTooth } from "react-icons/fa";
@@ -72,13 +73,11 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const pay = async (jsonData: any) => {
-    const paymentResponse = await payment(
-      "9876541837865810",
-      // hardcoded payment token for now
-      jsonData.echoData
-    ).then(async (paymentResponse) => {
-      console.log("Payment request:", paymentResponse);
-    });
+    const paymentResponse = await payment(jsonData.echoData).then(
+      async (paymentResponse) => {
+        console.log("Payment request:", paymentResponse);
+      }
+    );
   };
 
   const circleImages = [blurredBird, blurredBird, blurredBird];
@@ -157,8 +156,7 @@ const Dashboard: React.FC = () => {
       console.log("Order created:", orderResponse);
       const authResponse = await initiateAuthenticateToken(
         selectedToken,
-        amount,
-        orderResponse
+        orderResponse.orderId
       );
       if (orderResponse.responseCode === "00") {
         const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
@@ -171,7 +169,7 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const transactions: Transaction[] = [
+  const transactions: VoucherOldTransaction[] = [
     // {
     //   id: 1,
     //   date: "2024-01-01",
@@ -429,6 +427,14 @@ const Dashboard: React.FC = () => {
               onClick={() => handleTabChange("load")}
             >
               Load
+            </button>
+            <button
+              className={`text-lg font-semibold ${
+                selectedTab === "vouchers" ? "text-blue-600" : "text-gray-600"
+              }`}
+              onClick={() => handleTabChange("vouchers")}
+            >
+              Vouchers
             </button>
           </div>
           <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0">
@@ -778,6 +784,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       )}
+      {selectedTab === "vouchers" && <Vouchers />}
     </div>
   );
 };

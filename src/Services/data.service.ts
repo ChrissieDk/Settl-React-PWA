@@ -27,53 +27,43 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response && error.response.status === 401) {
-      console.log("Token expired, attempting to refresh...");
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          // Force refresh the token
-          const newIdToken = await user.getIdToken(true);
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     if (error.response && error.response.status === 401) {
+//       console.log("Token expired, attempting to refresh...");
+//       try {
+//         const user = auth.currentUser;
+//         if (user) {
+//           // Force refresh the token
+//           const newIdToken = await user.getIdToken(true);
 
-          // Update localStorage with the new token
-          localStorage.setItem("bearer", newIdToken);
+//           // Update localStorage with the new token
+//           localStorage.setItem("bearer", newIdToken);
 
-          // Update the original request with the new token
-          error.config.headers["Authorization"] = `Bearer ${newIdToken}`;
+//           // Update the original request with the new token
+//           error.config.headers["Authorization"] = `Bearer ${newIdToken}`;
 
-          // Retry the original request with the new token
-          return axiosInstance(error.config);
-        } else {
-          // No user is signed in, redirect to login
-          console.log("No user signed in, redirecting to login");
-          window.location.href = "/login"; // Adjust the path as needed
-          return Promise.reject(error);
-        }
-      } catch (refreshError) {
-        // If token refresh fails, redirect to login
-        console.error("Failed to refresh token:", refreshError);
-        localStorage.removeItem("bearer");
-        window.location.href = "/login"; // Adjust the path as needed
-        return Promise.reject(refreshError);
-      }
-    }
-    // If the error is not 401, reject the promise with the original error
-    return Promise.reject(error);
-  }
-);
-
-// export const getUserById = async (id = 1) => {
-//   try {
-//     const response = await axiosInstance.get(`/user/${id}`);
-//     console.log(response.data);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
+//           // Retry the original request with the new token
+//           return axiosInstance(error.config);
+//         } else {
+//           // No user is signed in, redirect to login
+//           console.log("No user signed in, redirecting to login");
+//           window.location.href = "/login"; // Adjust the path as needed
+//           return Promise.reject(error);
+//         }
+//       } catch (refreshError) {
+//         // If token refresh fails, redirect to login
+//         console.error("Failed to refresh token:", refreshError);
+//         localStorage.removeItem("bearer");
+//         window.location.href = "/login"; // Adjust the path as needed
+//         return Promise.reject(refreshError);
+//       }
+//     }
+//     // If the error is not 401, reject the promise with the original error
+//     return Promise.reject(error);
 //   }
-// };
+// );
 
 export const register = async (user: UserIn) => {
   try {
@@ -146,13 +136,12 @@ export const createOrder = async (amount: number) => {
 // 3DS authentication
 export const initiateAuthenticateToken = async (
   paymentToken: string,
-  amount: number,
-  createOrderResponse: any
+  orderId: string
 ) => {
   try {
-    const response = await axiosInstance.post(
-      `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`, createOrderResponse
-    )
+    const response = await axiosInstance.get(
+      `/payment/initiateauthenticatetoken/${paymentToken}/${orderId}`
+    );
     console.log("Token authenticated:", response.data);
     return response.data;
   } catch (error) {
@@ -161,12 +150,23 @@ export const initiateAuthenticateToken = async (
   }
 };
 
-export const payment = async (
+export const payment = async (orderId: string) => {
+  try {
+    const response = await axiosInstance.get(`/payment/payment/${orderId}`);
+    console.log("payment completed", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("payment failed", error);
+    throw error;
+  }
+};
+
+export const cancelPayment = async (
   paymentToken: string,
   createOrderResponse: any
 ) => {
   try {
-    const response = await axiosInstance.post(
+    const response = await axiosInstance.get(
       `/payment/payment/${paymentToken}`,
       createOrderResponse
     );
@@ -174,6 +174,27 @@ export const payment = async (
     return response.data;
   } catch (error) {
     console.error("payment failed", error);
+    throw error;
+  }
+};
+
+export const getVouchers = async () => {
+  try {
+    const response = await axiosInstance.get("/payment/vouchers");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching vouchers:", error);
+    throw error;
+  }
+};
+
+export const redeem = async (voucher: any) => {
+  try {
+    const response = await axiosInstance.post(`/payment/redeem`, voucher);
+    console.log("Voucher redeemed:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error redeeming voucher:", error);
     throw error;
   }
 };

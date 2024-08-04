@@ -2,30 +2,63 @@ import React, { useState } from "react";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { TokenModalProps } from "../../types/Types";
+import { redeem } from "../../Services/data.service";
 
 const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
-  const [merchant, setMerchant] = useState("");
-  const [amount, setAmount] = useState("");
+  const [merchantId, setMerchantId] = useState("");
+  const [service, setService] = useState("");
+  const [transactionAmount, setTransactionAmount] = useState("");
+  const [voucherCode, setVoucherCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
 
-  const handleMerchantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMerchant(e.target.value);
+  const handleMerchantIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMerchantId(e.target.value);
   };
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(e.target.value);
+  const handleServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setService(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleTransactionAmountChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setTransactionAmount(e.target.value);
+  };
+
+  const handleVoucherCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVoucherCode(e.target.value);
+  };
+
+  const handleVerificationCodeChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setVerificationCode(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(
-      "Redeeming token for merchant:",
-      merchant,
-      "Amount:",
-      amount,
-      "ZAR"
-    );
-    // Add your redeem logic here
-    onClose();
+    const payload = {
+      MerchantId: merchantId,
+      Service: service,
+      transactionAmount: parseInt(transactionAmount, 10),
+      vouchers: [
+        {
+          voucherCode: voucherCode,
+          verificationCode: verificationCode,
+        },
+      ],
+    };
+
+    try {
+      const response = await redeem(payload);
+      console.log("Redeem response:", response);
+      // Handle success (e.g., show a success message, close the modal, etc.)
+    } catch (error) {
+      console.error("Error redeeming voucher:", error);
+      // Handle error (e.g., show an error message)
+    } finally {
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
@@ -78,7 +111,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   anchorId="token-info"
                   place="right"
                   opacity={1}
-                  content="Redeem your token by entering the merchant details, service and voucher details."
+                  content="Redeem your token by entering the merchant details, service, and voucher details."
                   style={{
                     backgroundColor: "white",
                     color: "#222",
@@ -97,16 +130,16 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label
-                    htmlFor="merchant"
+                    htmlFor="merchantId"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
-                    Select Merchant
+                    Merchant ID
                   </label>
                   <input
-                    id="merchant"
+                    id="merchantId"
                     type="text"
-                    value={merchant}
-                    onChange={handleMerchantChange}
+                    value={merchantId}
+                    onChange={handleMerchantIdChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
                     placeholder="Enter merchant ID"
                     required
@@ -114,69 +147,69 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 <div className="mb-4">
                   <label
-                    htmlFor="Service"
+                    htmlFor="service"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
-                    Select Service
+                    Service
                   </label>
                   <input
-                    id="voucher"
-                    type="Voucher Code"
-                    value={amount}
-                    onChange={handleAmountChange}
+                    id="service"
+                    type="text"
+                    value={service}
+                    onChange={handleServiceChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Select service"
+                    placeholder="Enter service name"
                     required
                   />
                 </div>
                 <div className="mb-4">
                   <label
-                    htmlFor="Service"
+                    htmlFor="transactionAmount"
+                    className="block text-sm font-semibold mb-2 text-gray-700"
+                  >
+                    Transaction Amount
+                  </label>
+                  <input
+                    id="transactionAmount"
+                    type="number"
+                    value={transactionAmount}
+                    onChange={handleTransactionAmountChange}
+                    className="border border-gray-300 rounded-md p-2 w-full"
+                    placeholder="Enter transaction amount"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="voucherCode"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
                     Voucher Code
                   </label>
                   <input
-                    id="voucher"
-                    type="Voucher Code"
-                    value={amount}
-                    onChange={handleAmountChange}
+                    id="voucherCode"
+                    type="text"
+                    value={voucherCode}
+                    onChange={handleVoucherCodeChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter your Voucher Code"
+                    placeholder="Enter your voucher code"
                     required
                   />
                 </div>
                 <div className="mb-4">
                   <label
-                    htmlFor="Service"
+                    htmlFor="verificationCode"
                     className="block text-sm font-semibold mb-2 text-gray-700"
                   >
-                    Amount
+                    Verification Code (OTP)
                   </label>
                   <input
-                    id="voucher"
-                    type="Voucher Code"
-                    value={amount}
-                    onChange={handleAmountChange}
+                    id="verificationCode"
+                    type="text"
+                    value={verificationCode}
+                    onChange={handleVerificationCodeChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter Amount to be redeemed"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="Service"
-                    className="block text-sm font-semibold mb-2 text-gray-700"
-                  >
-                    OTP
-                  </label>
-                  <input
-                    id="voucher"
-                    type="Voucher Code"
-                    value={amount}
-                    onChange={handleAmountChange}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter your voucher OTP"
+                    placeholder="Enter your verification code (OTP)"
                     required
                   />
                 </div>
