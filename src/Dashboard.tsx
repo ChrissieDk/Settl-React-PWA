@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TokenModal from "./components/TokenModal/TokenModal";
+import RedeemModal from "./components/TokenModal/RedeemModal";
 import { VoucherOldTransaction, UrlData } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import {
@@ -563,10 +563,11 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           {tokenModalOpen && (
-            <TokenModal
+            <RedeemModal
               action={selectedAction}
               isOpen={tokenModalOpen}
               onClose={closeModal}
+              vouchers={tokens}
             />
           )}
           <div className="mt-4 bg-white shadow-lg rounded-lg p-4 ">

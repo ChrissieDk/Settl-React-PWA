@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { TokenModalProps } from "../../types/Types";
-import { redeem } from "../../Services/data.service";
+import { redeem, getVouchers } from "../../Services/data.service";
+import { TokenModalProps, Voucher } from "../../types/Types";
 
-const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
-  const [merchantId, setMerchantId] = useState("");
+const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
+  const [merchantId, setMerchantId] = useState("TBUY64665380465");
   const [service, setService] = useState("");
   const [transactionAmount, setTransactionAmount] = useState("");
   const [voucherCode, setVoucherCode] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [vouchers, setVouchers] = useState<Voucher[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleMerchantIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Sample data for dropdowns
+  const merchantIds = ["TBUY64665380465"];
+  const services = ["GP", "Dentist", "Optometrist", "OTC"];
+
+  useEffect(() => {
+    const fetchVouchers = async () => {
+      try {
+        const response = await getVouchers();
+        setVouchers(response);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching vouchers:", err);
+        setError("Error fetching vouchers. Please try again later.");
+        setLoading(false);
+      }
+    };
+
+    if (isOpen) {
+      fetchVouchers();
+    }
+  }, [isOpen]);
+
+  const handleMerchantIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setMerchantId(e.target.value);
   };
 
-  const handleServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setService(e.target.value);
   };
 
@@ -25,14 +50,12 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     setTransactionAmount(e.target.value);
   };
 
-  const handleVoucherCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVoucherCode(e.target.value);
-  };
-
-  const handleVerificationCodeChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setVerificationCode(e.target.value);
+  const handleVoucherCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedVoucher = vouchers.find(
+      (v) => v.voucherCode === e.target.value
+    );
+    setVoucherCode(selectedVoucher?.voucherCode || "");
+    setVerificationCode(selectedVoucher?.verificationCode || "");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,6 +85,9 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   };
 
   if (!isOpen) return null;
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="p-2 fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10 flex justify-center items-center">
@@ -135,15 +161,19 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   >
                     Merchant ID
                   </label>
-                  <input
+                  <select
                     id="merchantId"
-                    type="text"
                     value={merchantId}
                     onChange={handleMerchantIdChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter merchant ID"
                     required
-                  />
+                  >
+                    {merchantIds.map((id) => (
+                      <option key={id} value={id}>
+                        {id}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="mb-4">
                   <label
@@ -152,15 +182,20 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   >
                     Service
                   </label>
-                  <input
+                  <select
                     id="service"
-                    type="text"
                     value={service}
                     onChange={handleServiceChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter service name"
                     required
-                  />
+                  >
+                    <option value="">Select a service</option>
+                    {services.map((service) => (
+                      <option key={service} value={service}>
+                        {service}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="mb-4">
                   <label
@@ -186,15 +221,23 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   >
                     Voucher Code
                   </label>
-                  <input
+                  <select
                     id="voucherCode"
-                    type="text"
                     value={voucherCode}
                     onChange={handleVoucherCodeChange}
                     className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter your voucher code"
                     required
-                  />
+                  >
+                    <option value="">Select a voucher code</option>
+                    {vouchers.map((voucher: Voucher) => (
+                      <option
+                        key={voucher.voucherCode}
+                        value={voucher.voucherCode}
+                      >
+                        {voucher.voucherCode}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="mb-4">
                   <label
@@ -207,9 +250,9 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                     id="verificationCode"
                     type="text"
                     value={verificationCode}
-                    onChange={handleVerificationCodeChange}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter your verification code (OTP)"
+                    readOnly
+                    className="border border-gray-300 rounded-md p-2 w-full bg-gray-100"
+                    placeholder="Verification code will be auto-filled"
                     required
                   />
                 </div>
@@ -230,4 +273,4 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default TokenModal;
+export default RedeemModal;

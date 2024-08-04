@@ -3,18 +3,7 @@ import { MdInfoOutline } from "react-icons/md";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { getVouchers } from "../../Services/data.service";
-
-interface Voucher {
-  pluCode: string;
-  voucherCode: string;
-  amount: number;
-  status: string;
-  expiryDate: string;
-  balance: number;
-  verificationCode: string;
-  pluName: string;
-  createdDate: string;
-}
+import { Voucher } from "../../types/Types";
 
 const Vouchers: React.FC = () => {
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
@@ -105,9 +94,9 @@ const Vouchers: React.FC = () => {
             <p className="text-3xl text-left font-header text-white">
               R{voucher.amount / 100}
             </p>
-            {/* <p className="text-sm font-medium text-left text-white opacity-75">
-              {voucher.pluName}
-            </p> */}
+            <p className="text-sm font-medium text-left text-white opacity-75">
+              {voucher.balance}
+            </p>
             <div className="flex flex-row">
               <p className="text-md font-paragraph text-left text-white mt-2 mr-2">
                 Code: {voucher.voucherCode}

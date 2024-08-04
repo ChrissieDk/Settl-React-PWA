@@ -69,6 +69,7 @@ export interface TokenModalProps {
   action: string;
   isOpen: boolean;
   onClose: () => void;
+  vouchers: Voucher[];
 }
 
 export interface UserIn {
@@ -112,4 +113,16 @@ export interface redeem {
 export interface voucher {
   voucherCode: string;
   verificationCode: string;
+}
+
+export interface Voucher {
+  pluCode: string;
+  voucherCode: string;
+  amount: number;
+  status: string;
+  expiryDate: string;
+  balance: number;
+  verificationCode: string;
+  pluName: string;
+  createdDate: string;
 }
