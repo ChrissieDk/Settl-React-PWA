@@ -1,5 +1,5 @@
 {
-  "short_name": "React App",
+  "short_name": "Settl",
   "name": "Settl",
   "icons": [
     {
@@ -18,7 +18,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/Settl-React-PWA/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

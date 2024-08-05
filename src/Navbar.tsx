@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { useAuth } from "./Auth/AuthContext";
@@ -58,37 +58,37 @@ export function StickyNavbar() {
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <li className="p-1">
-        <a
-          href="/FindNetwork"
+        <Link
+          to="/FindNetwork"
           className="flex items-center hover:text-blue-500"
         >
           <h1 className="font-navbar">Find a network provider</h1>
-        </a>
+        </Link>
       </li>
       <li className="p-1">
-        <a href="/AboutUs" className="flex items-center hover:text-blue-500">
+        <Link to="/AboutUs" className="flex items-center hover:text-blue-500">
           <h1 className="font-navbar">About Us</h1>
-        </a>
+        </Link>
       </li>
       {currentUser && (
         <li className="p-1">
-          <a
-            href="/Dashboard"
+          <Link
+            to="/Dashboard"
             className="flex items-center hover:text-blue-500"
           >
             <h1 className="font-navbar">Dashboard</h1>
-          </a>
+          </Link>
         </li>
       )}
 
       {isUserSignedIn && (
         <li className="p-1">
-          <a
-            href="/UserProfile"
+          <Link
+            to="/UserProfile"
             className="flex items-center hover:text-blue-500"
           >
-            <FaUserCircle className="h-6 w-6 mr-2" id="my profile" />
-          </a>
+            <FaUserCircle className="h-6 w-6 mr-2" id="my-profile" />
+          </Link>
         </li>
       )}
       <ReactTooltip

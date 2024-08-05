@@ -16,7 +16,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <div className="App">
-        <Router basename="/">
+        <Router basename="/Settl-React-PWA">
           <StickyNavbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -41,6 +41,7 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
+            {/* <Route path="*" element={<NotFoundPage />}  */}
           </Routes>
         </Router>
       </div>
