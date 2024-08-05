@@ -98,10 +98,10 @@ const Vouchers: React.FC = () => {
               {voucher.balance}
             </p>
             <div className="flex flex-row">
-              <p className="text-md font-paragraph text-left text-white mt-2 mr-2">
+              <p className="text-md font-paragraph text-left text-black mt-2 mr-2">
                 Code: {voucher.voucherCode}
               </p>
-              <p className="text-md font-paragraph text-left text-white  mt-2">
+              <p className="text-md font-paragraph text-left text-black  mt-2">
                 Code: {voucher.verificationCode}
               </p>
             </div>

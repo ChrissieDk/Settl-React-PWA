@@ -6,8 +6,7 @@ import autoprefixer from "autoprefixer";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-  // If you're deploying to a subdirectory, uncomment the next line and set the correct path
-  // base: '/Settl-React-PWA/',
+  base: "/Settl-React-PWA/",
   plugins: [
     react(),
     tsconfigPaths(),
@@ -32,7 +31,7 @@ export default defineConfig({
             sizes: "512x512",
           },
         ],
-        start_url: ".",
+        start_url: "/Settl-React-PWA/",
         display: "standalone",
         theme_color: "#000000",
         background_color: "#ffffff",
@@ -40,6 +39,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
       },
     }),
   ],
@@ -50,5 +50,8 @@ export default defineConfig({
   },
   server: {
     open: true,
+  },
+  build: {
+    outDir: "dist",
   },
 });
