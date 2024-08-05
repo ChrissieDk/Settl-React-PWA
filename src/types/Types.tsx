@@ -81,6 +81,7 @@ export interface UserIn {
 
 // Card
 export interface Token {
+  token: string;
   paymentInstrumentCategoryCode: string;
   issueDate: string;
   paymentToken: string;

@@ -3,6 +3,9 @@ import { MdClose, MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { redeem, getVouchers } from "../../Services/data.service";
 import { TokenModalProps, Voucher } from "../../types/Types";
+import Lottie from "lottie-react";
+import successAnimation from "../../successAnimation.json";
+import failureAnimation from "../../failureAnimation.json";
 
 const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   const [merchantId, setMerchantId] = useState("TBUY64665380465");
@@ -13,6 +16,9 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [redeemStatus, setRedeemStatus] = useState<
+    "idle" | "success" | "failure"
+  >("idle");
 
   // Sample data for dropdowns
   const merchantIds = ["TBUY64665380465"];
@@ -75,12 +81,163 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     try {
       const response = await redeem(payload);
       console.log("Redeem response:", response);
-      // Handle success (e.g., show a success message, close the modal, etc.)
+      if (response.responseCode === "00") {
+        setRedeemStatus("success");
+      } else {
+        setRedeemStatus("failure");
+      }
+      // Don't close the modal immediately to show the animation
+      setTimeout(() => {
+        onClose();
+        setRedeemStatus("idle");
+      }, 3000);
     } catch (error) {
       console.error("Error redeeming voucher:", error);
-      // Handle error (e.g., show an error message)
-    } finally {
-      onClose();
+      setRedeemStatus("failure");
+      setTimeout(() => {
+        setRedeemStatus("idle");
+      }, 3000);
+    }
+  };
+
+  const renderContent = () => {
+    switch (redeemStatus) {
+      case "success":
+        return (
+          <div className="flex flex-col items-center">
+            <Lottie
+              animationData={successAnimation}
+              style={{ width: 200, height: 200 }}
+            />
+            <p className="text-xl font-semibold text-green-600">
+              Redemption Successful!
+            </p>
+          </div>
+        );
+      case "failure":
+        return (
+          <div className="flex flex-col items-center">
+            <Lottie
+              animationData={failureAnimation}
+              style={{ width: 200, height: 200 }}
+            />
+            <p className="text-xl font-semibold text-red-600">
+              Redemption Failed
+            </p>
+          </div>
+        );
+      default:
+        return (
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label
+                htmlFor="merchantId"
+                className="block text-sm font-semibold mb-2 text-gray-700"
+              >
+                Merchant ID
+              </label>
+              <select
+                id="merchantId"
+                value={merchantId}
+                onChange={handleMerchantIdChange}
+                className="border border-gray-300 rounded-md p-2 w-full"
+                required
+              >
+                {merchantIds.map((id) => (
+                  <option key={id} value={id}>
+                    {id}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="service"
+                className="block text-sm font-semibold mb-2 text-gray-700"
+              >
+                Service
+              </label>
+              <select
+                id="service"
+                value={service}
+                onChange={handleServiceChange}
+                className="border border-gray-300 rounded-md p-2 w-full"
+                required
+              >
+                <option value="">Select a service</option>
+                {services.map((service) => (
+                  <option key={service} value={service}>
+                    {service}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="transactionAmount"
+                className="block text-sm font-semibold mb-2 text-gray-700"
+              >
+                Transaction Amount
+              </label>
+              <input
+                id="transactionAmount"
+                type="number"
+                value={transactionAmount}
+                onChange={handleTransactionAmountChange}
+                className="border border-gray-300 rounded-md p-2 w-full"
+                placeholder="Enter transaction amount"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="voucherCode"
+                className="block text-sm font-semibold mb-2 text-gray-700"
+              >
+                Voucher Code
+              </label>
+              <select
+                id="voucherCode"
+                value={voucherCode}
+                onChange={handleVoucherCodeChange}
+                className="border border-gray-300 rounded-md p-2 w-full"
+                required
+              >
+                <option value="">Select a voucher code</option>
+                {vouchers.map((voucher: Voucher) => (
+                  <option key={voucher.voucherCode} value={voucher.voucherCode}>
+                    {voucher.voucherCode}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="verificationCode"
+                className="block text-sm font-semibold mb-2 text-gray-700"
+              >
+                Verification Code (OTP)
+              </label>
+              <input
+                id="verificationCode"
+                type="text"
+                value={verificationCode}
+                readOnly
+                className="border border-gray-300 rounded-md p-2 w-full bg-gray-100"
+                placeholder="Verification code will be auto-filled"
+                required
+              />
+            </div>
+            <div className="mt-6">
+              <button
+                type="submit"
+                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+              >
+                Redeem Token
+              </button>
+            </div>
+          </form>
+        );
     }
   };
 
@@ -153,118 +310,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto text-left">
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label
-                    htmlFor="merchantId"
-                    className="block text-sm font-semibold mb-2 text-gray-700"
-                  >
-                    Merchant ID
-                  </label>
-                  <select
-                    id="merchantId"
-                    value={merchantId}
-                    onChange={handleMerchantIdChange}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    required
-                  >
-                    {merchantIds.map((id) => (
-                      <option key={id} value={id}>
-                        {id}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="service"
-                    className="block text-sm font-semibold mb-2 text-gray-700"
-                  >
-                    Service
-                  </label>
-                  <select
-                    id="service"
-                    value={service}
-                    onChange={handleServiceChange}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    required
-                  >
-                    <option value="">Select a service</option>
-                    {services.map((service) => (
-                      <option key={service} value={service}>
-                        {service}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="transactionAmount"
-                    className="block text-sm font-semibold mb-2 text-gray-700"
-                  >
-                    Transaction Amount
-                  </label>
-                  <input
-                    id="transactionAmount"
-                    type="number"
-                    value={transactionAmount}
-                    onChange={handleTransactionAmountChange}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    placeholder="Enter transaction amount"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="voucherCode"
-                    className="block text-sm font-semibold mb-2 text-gray-700"
-                  >
-                    Voucher Code
-                  </label>
-                  <select
-                    id="voucherCode"
-                    value={voucherCode}
-                    onChange={handleVoucherCodeChange}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    required
-                  >
-                    <option value="">Select a voucher code</option>
-                    {vouchers.map((voucher: Voucher) => (
-                      <option
-                        key={voucher.voucherCode}
-                        value={voucher.voucherCode}
-                      >
-                        {voucher.voucherCode}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="verificationCode"
-                    className="block text-sm font-semibold mb-2 text-gray-700"
-                  >
-                    Verification Code (OTP)
-                  </label>
-                  <input
-                    id="verificationCode"
-                    type="text"
-                    value={verificationCode}
-                    readOnly
-                    className="border border-gray-300 rounded-md p-2 w-full bg-gray-100"
-                    placeholder="Verification code will be auto-filled"
-                    required
-                  />
-                </div>
-                <div className="mt-6">
-                  <button
-                    type="submit"
-                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                  >
-                    Redeem Token
-                  </button>
-                </div>
-              </form>
+              {renderContent()}
             </div>
           </div>
         </div>
