@@ -65,16 +65,6 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// export const getUserById = async (id = 1) => {
-//   try {
-//     const response = await axiosInstance.get(`/user/${id}`);
-//     console.log(response.data);
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
 export const register = async (user: UserIn) => {
   try {
     const response = await axiosInstance.post("/user/register", user);
@@ -146,13 +136,12 @@ export const createOrder = async (amount: number) => {
 // 3DS authentication
 export const initiateAuthenticateToken = async (
   paymentToken: string,
-  amount: number,
-  createOrderResponse: any
+  orderId: string
 ) => {
   try {
-    const response = await axiosInstance.post(
-      `/payment/initiateauthenticatetoken/${paymentToken}/${amount}`, createOrderResponse
-    )
+    const response = await axiosInstance.get(
+      `/payment/initiateauthenticatetoken/${paymentToken}/${orderId}`
+    );
     console.log("Token authenticated:", response.data);
     return response.data;
   } catch (error) {
@@ -161,12 +150,23 @@ export const initiateAuthenticateToken = async (
   }
 };
 
-export const payment = async (
+export const payment = async (orderId: string) => {
+  try {
+    const response = await axiosInstance.get(`/payment/payment/${orderId}`);
+    console.log("payment completed", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("payment failed", error);
+    throw error;
+  }
+};
+
+export const cancelPayment = async (
   paymentToken: string,
   createOrderResponse: any
 ) => {
   try {
-    const response = await axiosInstance.post(
+    const response = await axiosInstance.get(
       `/payment/payment/${paymentToken}`,
       createOrderResponse
     );
@@ -174,6 +174,27 @@ export const payment = async (
     return response.data;
   } catch (error) {
     console.error("payment failed", error);
+    throw error;
+  }
+};
+
+export const getVouchers = async () => {
+  try {
+    const response = await axiosInstance.get("/payment/vouchers");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching vouchers:", error);
+    throw error;
+  }
+};
+
+export const redeem = async (voucher: any) => {
+  try {
+    const response = await axiosInstance.post(`/payment/redeem`, voucher);
+    console.log("Voucher redeemed:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error redeeming voucher:", error);
     throw error;
   }
 };

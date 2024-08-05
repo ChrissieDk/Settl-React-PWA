@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TokenModal from "./components/TokenModal/TokenModal";
-import { Transaction, UrlData } from "./types/Types";
+import RedeemModal from "./components/RedeemModal/RedeemModal";
+import { VoucherOldTransaction, UrlData } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import {
   initiateIssueToken,
@@ -10,6 +10,8 @@ import {
   payment,
 } from "./Services/data.service";
 import Modal from "./CardDetail/CardDetail";
+import Vouchers from "./components/Vouchers/Vouchers";
+import Load from "./components/Load/Load";
 // icons
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaTooth } from "react-icons/fa";
@@ -40,65 +42,7 @@ const Dashboard: React.FC = () => {
     "Swift Service.",
   ];
 
-  // Extract and convert data from base64 to a JSON object.
-  // This is used to carry over responses needed to complete a payment.
-  useEffect(() => {
-    // Get the current URL from the browser.
-    const url = window.location.href;
-    // Check if the URL contains the 'data' parameter.
-    if (url.includes("data=")) {
-      const urlParams = new URLSearchParams(new URL(url).search);
-      const base64Data = urlParams.get("data");
-
-      if (base64Data) {
-        try {
-          // Decode the base64 string.
-          const decodedString = atob(base64Data);
-          // Parse the decoded string as a JSON object.
-          const jsonData: UrlData = JSON.parse(decodedString);
-          // If the response code indicates success ("00"), initiate payment.
-          if (jsonData.responseCode == "00") {
-            pay(jsonData);
-          }
-          console.log("Parsed data:", jsonData);
-          setData(jsonData);
-        } catch (error) {
-          console.error("Error parsing JSON data:", error);
-        }
-      } else {
-        console.error("No 'data' parameter found in the URL.");
-      }
-    }
-  }, []);
-
-  const pay = async (jsonData: any) => {
-    const paymentResponse = await payment(
-      "9876541837865810",
-      // hardcoded payment token for now
-      jsonData.echoData
-    ).then(async (paymentResponse) => {
-      console.log("Payment request:", paymentResponse);
-    });
-  };
-
   const circleImages = [blurredBird, blurredBird, blurredBird];
-
-  const cycleInterval = 4000;
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setActiveText((prevActive) => (prevActive + 1) % circleTexts.length);
-    }, cycleInterval);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setActiveImage((prevActive) => (prevActive + 1) % circleImages.length);
-    }, cycleInterval);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   useEffect(() => {
     const fetchInitiationUrl = async () => {
@@ -145,33 +89,7 @@ const Dashboard: React.FC = () => {
     fetchTokens();
   }, []);
 
-  // payment flow
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!selectedToken) {
-      console.log("No token selected");
-      return;
-    }
-    try {
-      const orderResponse = await createOrder(amount);
-      console.log("Order created:", orderResponse);
-      const authResponse = await initiateAuthenticateToken(
-        selectedToken,
-        amount,
-        orderResponse
-      );
-      if (orderResponse.responseCode === "00") {
-        const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
-        window.location.href = authInitiationUrl;
-      } else {
-        console.log("Order failed:", orderResponse.responseMessage);
-      }
-    } catch (error) {
-      console.error("Error processing order:", error);
-    }
-  };
-
-  const transactions: Transaction[] = [
+  const transactions: VoucherOldTransaction[] = [
     // {
     //   id: 1,
     //   date: "2024-01-01",
@@ -430,6 +348,14 @@ const Dashboard: React.FC = () => {
             >
               Load
             </button>
+            <button
+              className={`text-lg font-semibold ${
+                selectedTab === "vouchers" ? "text-blue-600" : "text-gray-600"
+              }`}
+              onClick={() => handleTabChange("vouchers")}
+            >
+              Vouchers
+            </button>
           </div>
           <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0">
             <button
@@ -557,10 +483,11 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
           {tokenModalOpen && (
-            <TokenModal
+            <RedeemModal
               action={selectedAction}
               isOpen={tokenModalOpen}
               onClose={closeModal}
+              vouchers={tokens}
             />
           )}
           <div className="mt-4 bg-white shadow-lg rounded-lg p-4 ">
@@ -662,122 +589,15 @@ const Dashboard: React.FC = () => {
       )}
       {/* Load tab */}
       {selectedTab === "load" && (
-        <div className="flex justify-center items-center ">
-          <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
-            {/* Left section for image or content */}
-            <div className="w-1/3 bg-blue-400 p-8  flex-col justify-between hidden lg:block">
-              <div>
-                <h2 className="text-3xl font-bold text-white mb-4 text-left font-header">
-                  Your voucher, your way!
-                </h2>
-                <p className="text-white text-left font-paragraph mb-8">
-                  Load your Health Vault and start your journey to simpler
-                  healthcare.
-                </p>
-              </div>
-              <div className="mt-auto">
-                <div className="w-full h-64 rounded-lg flex items-center justify-center">
-                  <img
-                    src={circleImages[activeImage]}
-                    alt={`Slide ${activeImage + 1}`}
-                    className="object-cover w-full h-full rounded-lg transition-opacity duration-500 ease-in-out"
-                  />
-                </div>
-                <div className="flex space-x-2 mt-[2.2rem]">
-                  {[0, 1, 2].map((index) => (
-                    <button
-                      key={index}
-                      className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-500 ease-in-out ${
-                        activeImage === index ? "bg-orange-400" : "bg-white"
-                      }`}
-                      onClick={() => setActiveImage(index)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Right section with the form */}
-            <div className="w-full lg:w-2/3 bg-white">
-              <div className="p-8">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-orange-400 rounded-full mr-3"></div>
-                  <h1 className="text-2xl font-header text-gray-800 ">
-                    SettlPay
-                  </h1>
-                </div>
-                <h2 className="text-2xl lg:text-4xl font-header text-gray-800 mb-6">
-                  Let's Settl it!
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="amount"
-                      className="block text-md font-paragraph text-black mb-1 text-left"
-                    >
-                      Amount
-                    </label>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={amount}
-                      onChange={(e) => setAmount(Number(e.target.value))}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="token"
-                      className="block text-md font-paragraph text-black mb-1 text-left"
-                    >
-                      My Cards
-                    </label>
-                    <select
-                      id="token"
-                      onChange={(e) => setSelectedToken(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      required
-                    >
-                      <option value="">Select a card</option>
-                      {tokens.map((token, index) => (
-                        <option key={index} value={token.token}>
-                          {token.paymentInstrumentAssociationName} -{" "}
-                          {token.truncatedPaymentInstrument}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-                  >
-                    Secure Payment
-                  </button>
-                </form>
-              </div>
-              <div className="bg-gray-300 p-[2.2rem]">
-                <div className="text-2xl lg:text-3xl font-semibold font-header text-black mb-4 text-left transition-opacity duration-500 ease-in-out">
-                  {circleTexts[activeText]}
-                </div>
-                <div className="flex flex-col space-y-4">
-                  <div className="flex space-x-2">
-                    {[0, 1, 2].map((index) => (
-                      <button
-                        key={index}
-                        className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-500 ease-in-out ${
-                          activeText === index ? "bg-orange-400" : "bg-white"
-                        }`}
-                        onClick={() => setActiveText(index)}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Load
+          tokens={tokens}
+          circleImages={circleImages}
+          circleTexts={circleTexts}
+          setTokens={setTokens}
+          setSelectedToken={setSelectedToken}
+        />
       )}
+      {selectedTab === "vouchers" && <Vouchers />}
     </div>
   );
 };

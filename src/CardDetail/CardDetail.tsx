@@ -8,16 +8,19 @@ import { FaTrashAlt } from "react-icons/fa";
 interface CardModalProps {
   isOpen: boolean;
   onClose: () => void;
-  tokens: Token[];
+  tokens: Token[]; // Ensure Token is defined with all required properties
 }
 
-const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
+const CardModal: React.FC<CardModalProps> = ({
+  isOpen,
+  onClose,
+  tokens = [],
+}) => {
   if (!isOpen) return null;
 
   return (
     <div className="p-2 fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10 flex justify-center items-center">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex">
-        {/* Left section for image or content */}
         <div className="w-1/3 bg-blue-400 p-8 flex-col justify-between hidden lg:flex">
           <div>
             <h2 className="text-3xl font-bold text-white mb-4 text-left font-header">
@@ -27,7 +30,7 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
               Manage your payment methods securely and easily.
             </p>
             <h2 className="text-xl text-white text-left font-header mb-2">
-              Card not appearing ?{" "}
+              Card not appearing?{" "}
               <span className="text-orange-400 font-bold">No stress!</span>
             </h2>
             <p className="text-white text-left font-paragraph mb-8">
@@ -37,7 +40,6 @@ const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, tokens }) => {
           </div>
         </div>
 
-        {/* Right section with the card list */}
         <div className="w-full lg:w-2/3 bg-white">
           <div className="p-8">
             <div className="flex items-center justify-between mb-6">

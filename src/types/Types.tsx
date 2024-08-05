@@ -1,5 +1,5 @@
 // View Transactions
-export interface Transaction {
+export interface VoucherOldTransaction {
   id: number;
   date: string;
   type: string;
@@ -8,9 +8,21 @@ export interface Transaction {
   service: string;
 }
 
+// {
+//   "pluCode": "2/gsv/gsvvouchers",
+//   "voucherCode": "6789017019475589",
+//   "amount": 8000,
+//   "status": "01",
+//   "expiryDate": "2024-08-18T14:02:01+00:00",
+//   "balance": 8000,
+//   "verificationCode": "6694",
+//   "pluName": "GetSavvi Vouchers",
+//   "createdDate": "2024-08-04T14:02:17.764593+00:00"
+// },
+
 export interface TransactionModalProps {
   isOpen: boolean;
-  transactions: Transaction[];
+  transactions: VoucherOldTransaction[];
   onClose: () => void;
 }
 
@@ -57,6 +69,7 @@ export interface TokenModalProps {
   action: string;
   isOpen: boolean;
   onClose: () => void;
+  vouchers: Voucher[];
 }
 
 export interface UserIn {
@@ -66,63 +79,9 @@ export interface UserIn {
   username: string;
 }
 
-// export interface TokenResponse {
-//   transmissionDateTime: string;
-//   systemTraceNumber?: string;
-//   tokenRequesterId: string;
-//   responseCode: string;
-//   responseMessage: string;
-//   retrievalReferenceNumberExtended?: string;
-//   sessionId: string;
-//   peripheryData?: {
-//     initiationUrl?: string;
-//   };
-//   paymentToken?: string;
-//   paymentTokenExpiryDateTime?: string;
-//   paymentTokenStatus?: string;
-//   truncatedPaymentInstrumentNumber?: string;
-//   paymentInstrumentAssociationName?: string;
-//   paymentInstrumentType?: string;
-//   paymentInstrumentMessageSequence?: string;
-//   defaultPaymentInstrument?: boolean;
-//   paymentInstrumentExpiryDate?: string;
-//   additionalPaymentTokenInformation?: string;
-// }
-
-// export interface TokenRequestBody {
-//   echoData?: string;
-//   sessionId: string;
-//   transmissionDateTime: string;
-//   transactionAmount?: number;
-//   currencyCode?: string;
-//   paymentToken?: string;
-//   tokenRequesterId: string;
-//   additionalData?: {
-//     paymentTokens?: Array<{
-//       mandateCategory: string;
-//       paymentInstrumentValidityPeriod: number;
-//     }>;
-//     recurringPaymentData?: {
-//       recurringPaymentCategory: string;
-//       firstPaymentDate?: string;
-//       lastPaymentDate?: string;
-//       paymentFrequency: number;
-//       regularPaymentDay?: number;
-//       recurringPaymentAmount?: number;
-//       recurringPaymentAmountLimit?: number;
-//     };
-//   };
-//   peripheryData?: {
-//     notificationUrl?: string;
-//   };
-//   assuranceData?: string;
-//   structuredData?: {
-//     stylesheetId?: string;
-//   };
-// }
-
 // Card
 export interface Token {
+  token: string;
   paymentInstrumentCategoryCode: string;
   issueDate: string;
   paymentToken: string;
@@ -143,4 +102,28 @@ export interface UrlData {
   sessionId: string;
   responseCode: string;
   responseMessage: string;
+}
+
+// even if only one coucher, still need to be an array
+export interface redeem {
+  merchantId: string;
+  transactionAmount: number;
+  vouchers: voucher[];
+}
+
+export interface voucher {
+  voucherCode: string;
+  verificationCode: string;
+}
+
+export interface Voucher {
+  pluCode: string;
+  voucherCode: string;
+  amount: number;
+  status: string;
+  expiryDate: string;
+  balance: number;
+  verificationCode: string;
+  pluName: string;
+  createdDate: string;
 }
