@@ -8,7 +8,7 @@ import { FaTrashAlt } from "react-icons/fa";
 interface CardModalProps {
   isOpen: boolean;
   onClose: () => void;
-  tokens: Token[]; // Ensure Token is defined with all required properties
+  tokens: Token[];
 }
 
 const CardModal: React.FC<CardModalProps> = ({
@@ -70,7 +70,7 @@ const CardModal: React.FC<CardModalProps> = ({
               </div>
             </div>
             <div className="space-y-2 max-h-[60vh] overflow-y-auto">
-              {tokens.length > 0 ? (
+              {tokens?.length > 0 ? (
                 tokens.map((token, index) => (
                   <div key={index} className="bg-gray-50 p-3 rounded-lg shadow">
                     <div className="flex justify-between items-center mb-2">

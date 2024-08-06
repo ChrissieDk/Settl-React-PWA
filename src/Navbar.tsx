@@ -93,9 +93,9 @@ export function StickyNavbar() {
       )}
       <ReactTooltip
         anchorId="my-profile"
-        place="right"
+        place="bottom"
         opacity={1}
-        content="Redeem your token by entering the merchant details and voucher code."
+        content="View and manage your personal details"
         style={{
           backgroundColor: "white",
           color: "#222",

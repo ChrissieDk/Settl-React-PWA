@@ -8,6 +8,7 @@ import {
 import Lottie from "lottie-react";
 import successAnimation from "../../successAnimation.json";
 import failureAnimation from "../../failureAnimation.json";
+import processingAnimation from "../../processingAnimation.json";
 
 interface LoadProps {
   tokens: Token[];
@@ -21,7 +22,7 @@ const Load: React.FC<LoadProps> = ({
   tokens,
   circleImages,
   circleTexts,
-  setTokens,
+
   setSelectedToken,
 }) => {
   const [amount, setAmount] = useState<number>(0);
@@ -30,31 +31,44 @@ const Load: React.FC<LoadProps> = ({
   const [activeImage, setActiveImage] = useState(0);
   const [data, setData] = useState<UrlData | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<
-    "idle" | "success" | "failure"
+    "idle" | "processing" | "success" | "failure"
   >("idle");
 
   useEffect(() => {
     const url = window.location.href;
-    if (url.includes("data=")) {
-      const urlParams = new URLSearchParams(new URL(url).search);
-      const base64Data = urlParams.get("data");
+    const urlParams = new URLSearchParams(new URL(url).search);
+    const base64Data = urlParams.get("data");
 
-      if (base64Data) {
-        try {
-          const decodedString = atob(base64Data);
-          const jsonData: UrlData = JSON.parse(decodedString);
-          if (jsonData.responseCode == "00") {
-            pay(jsonData);
-          }
-          setData(jsonData);
-        } catch (error) {
-          console.error("Error parsing JSON data:", error);
+    if (
+      base64Data &&
+      localStorage.getItem("awaitingPaymentConfirmation") === "true"
+    ) {
+      setPaymentStatus("processing");
+      localStorage.removeItem("awaitingPaymentConfirmation");
+
+      try {
+        const decodedString = atob(base64Data);
+        const jsonData: UrlData = JSON.parse(decodedString);
+        setData(jsonData);
+        if (jsonData.responseCode === "00") {
+          pay(jsonData);
+        } else {
+          setPaymentStatus("failure");
+          setTimeout(() => setPaymentStatus("idle"), 3000);
+          clearUrlParameters();
         }
-      } else {
-        console.error("No 'data' parameter found in the URL.");
+      } catch (error) {
+        console.error("Error parsing JSON data:", error);
+        setPaymentStatus("failure");
+        setTimeout(() => setPaymentStatus("idle"), 3000);
+        clearUrlParameters();
       }
     }
   }, []);
+
+  const clearUrlParameters = () => {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  };
 
   const pay = async (jsonData: any) => {
     try {
@@ -65,15 +79,13 @@ const Load: React.FC<LoadProps> = ({
       } else {
         setPaymentStatus("failure");
       }
-      setTimeout(() => {
-        setPaymentStatus("idle");
-      }, 3000);
+      setTimeout(() => setPaymentStatus("idle"), 3000);
     } catch (error) {
       console.error("Error processing payment:", error);
       setPaymentStatus("failure");
-      setTimeout(() => {
-        setPaymentStatus("idle");
-      }, 3000);
+      setTimeout(() => setPaymentStatus("idle"), 3000);
+    } finally {
+      clearUrlParameters(); // Clear URL parameters after payment processing
     }
   };
 
@@ -91,21 +103,19 @@ const Load: React.FC<LoadProps> = ({
         orderResponse.orderId
       );
       if (orderResponse.responseCode === "00") {
+        // Set a flag in localStorage before redirecting
+        localStorage.setItem("awaitingPaymentConfirmation", "true");
         const authInitiationUrl = authResponse.peripheryData?.initiationUrl;
         window.location.href = authInitiationUrl;
       } else {
         console.log("Order failed:", orderResponse.responseMessage);
         setPaymentStatus("failure");
-        setTimeout(() => {
-          setPaymentStatus("idle");
-        }, 3000);
+        setTimeout(() => setPaymentStatus("idle"), 3000);
       }
     } catch (error) {
       console.error("Error processing order:", error);
       setPaymentStatus("failure");
-      setTimeout(() => {
-        setPaymentStatus("idle");
-      }, 3000);
+      setTimeout(() => setPaymentStatus("idle"), 3000);
     }
   };
 
@@ -128,6 +138,18 @@ const Load: React.FC<LoadProps> = ({
 
   const renderContent = () => {
     switch (paymentStatus) {
+      case "processing":
+        return (
+          <div className="flex flex-col items-center">
+            <Lottie
+              animationData={processingAnimation}
+              style={{ width: 200, height: 200 }}
+            />
+            <p className="text-xl font-semibold text-blue-600">
+              Processing Payment...
+            </p>
+          </div>
+        );
       case "success":
         return (
           <div className="flex flex-col items-center">
