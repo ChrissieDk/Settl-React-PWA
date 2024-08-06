@@ -75,11 +75,21 @@ export const register = async (user: UserIn) => {
   }
 };
 
-export const getUserId = async (firebaseUserId: string) => {
+// export const getUserId = async (firebaseUserId: string) => {
+//   try {
+//     const response = await axiosInstance.get(
+//       `/user/login?firebaseId=${firebaseUserId}`
+//     );
+//     console.log("User logged in:", response.data);
+//     return response.data;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+export const login = async () => {
   try {
-    const response = await axiosInstance.get(
-      `/user/login?firebaseId=${firebaseUserId}`
-    );
+    const response = await axiosInstance.get("/user/login");
     console.log("User logged in:", response.data);
     return response.data;
   } catch (error) {
@@ -116,7 +126,7 @@ export const listTokens = async () => {
     const response = await axiosInstance.get("/payment/listtokens");
     return response.data;
   } catch (error) {
-    console.error("Error fetching company details:", error);
+    console.error("Error fetching Cards", error);
     throw error;
   }
 };

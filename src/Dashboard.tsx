@@ -21,7 +21,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 
 const Dashboard: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState("transactions");
+  const [selectedTab, setSelectedTab] = useState("load");
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("last7days");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<string>("");
@@ -32,9 +32,9 @@ const Dashboard: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [tokens, setTokens] = useState<any[]>([]);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
-  const [activeText, setActiveText] = useState(0);
-  const [activeImage, setActiveImage] = useState(0);
-  const [data, setData] = useState<UrlData | null>(null);
+  // const [activeText, setActiveText] = useState(0);
+  // const [activeImage, setActiveImage] = useState(0);
+  // const [data, setData] = useState<UrlData | null>(null);
 
   const circleTexts = [
     "Secure Payments.",
@@ -81,6 +81,7 @@ const Dashboard: React.FC = () => {
       try {
         const response = await listTokens();
         setTokens(response.additionalData.paymentTokens);
+        console.log("Tokens fetched:", response.additionalData.paymentTokens);
       } catch (error) {
         console.error("Error fetching tokens:", error);
       }
@@ -424,7 +425,6 @@ const Dashboard: React.FC = () => {
           ]}
         />
       )}
-
       {/* Transactions tab */}
       {selectedTab === "transactions" && (
         <div>

@@ -9,7 +9,7 @@ import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { getUserId } from "../../Services/data.service";
+import { login } from "../../Services/data.service";
 import settlLogo from "../../img/Homepage/Settl logo.png";
 import bgLogin from "../../img/Authflow/bg_login.png";
 
@@ -36,7 +36,7 @@ const Login = () => {
   // Google login
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleProvider)
-      .then((result) => {
+      .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
@@ -47,7 +47,7 @@ const Login = () => {
           localStorage.setItem("bearer", idToken);
           console.log("Bearer " + idToken);
         });
-        getUserIdLogin(user.uid);
+        const userSession = await login();
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -66,14 +66,14 @@ const Login = () => {
   const onLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
         user.getIdToken().then((idToken) => {
           localStorage.setItem("bearer", idToken);
           console.log("Bearer " + idToken);
         });
-        getUserIdLogin(user.uid);
+        const userSession = await login();
         navigate("/Dashboard");
         console.log(user);
       })
@@ -84,15 +84,15 @@ const Login = () => {
       });
   };
 
-  const getUserIdLogin = async (firebaseId: string) => {
-    return getUserId(firebaseId)
-      .then((response) => {
-        console.log("User registered in the database:", response);
-      })
-      .catch((error) => {
-        throw error;
-      });
-  };
+  // const getUserIdLogin = async (firebaseId: string) => {
+  //   return getUserId(firebaseId)
+  //     .then((response) => {
+  //       console.log("User registered in the database:", response);
+  //     })
+  //     .catch((error) => {
+  //       throw error;
+  //     });
+  // };
 
   return (
     <>
