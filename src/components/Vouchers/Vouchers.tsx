@@ -92,11 +92,12 @@ const Vouchers: React.FC = () => {
               />
             </div>
             <p className="text-3xl text-left font-header text-white">
-              R{voucher.amount / 100}
+              R{voucher.balance / 100}
             </p>
             <p className="text-sm font-medium text-left text-white opacity-75">
-              {voucher.balance}
+              R{voucher.amount / 100}
             </p>
+
             <div className="flex flex-row">
               <p className="text-md font-paragraph text-left text-black mt-2 mr-2">
                 Code: {voucher.voucherCode}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Token } from "../types/Types";
+import { Token } from "../../types/Types";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import { MdInfoOutline } from "react-icons/md";
