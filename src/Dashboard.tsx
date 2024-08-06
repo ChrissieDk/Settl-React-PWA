@@ -118,18 +118,15 @@ const Dashboard: React.FC = () => {
 
   const validTotalBalance =
     typeof totalBalance === "number" && !isNaN(totalBalance) ? totalBalance : 0;
-  console.log("totalBalance", totalBalance);
   const validTotalValue =
     typeof totalValue === "number" && !isNaN(totalValue) && totalValue !== 0
       ? totalValue
       : 1; // Default to 1 to avoid division by zero
-  console.log("totalValue", totalValue);
 
   const percentage =
     validTotalValue && validTotalBalance
       ? (validTotalBalance / validTotalValue) * 100
       : 0;
-  console.log("percentage", percentage);
 
   const formattedPercentage = percentage.toFixed(2);
 
