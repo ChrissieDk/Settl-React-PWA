@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/Settl-React-PWA/sw.js', { scope: '/Settl-React-PWA/' })})}
