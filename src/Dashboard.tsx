@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
-import { VoucherOldTransaction, UrlData } from "./types/Types";
+import { VoucherOldTransaction, UrlData, Voucher } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import {
   initiateIssueToken,
@@ -8,8 +8,9 @@ import {
   createOrder,
   initiateAuthenticateToken,
   payment,
+  getVouchers,
 } from "./Services/data.service";
-import Modal from "./CardDetail/CardDetail";
+import Modal from "./components/CardDetail/CardDetail";
 import Vouchers from "./components/Vouchers/Vouchers";
 import Load from "./components/Load/Load";
 // icons
@@ -32,9 +33,9 @@ const Dashboard: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [tokens, setTokens] = useState<any[]>([]);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
-  // const [activeText, setActiveText] = useState(0);
-  // const [activeImage, setActiveImage] = useState(0);
-  // const [data, setData] = useState<UrlData | null>(null);
+  const [vouchers, setVouchers] = useState<Voucher[]>([]);
+  const [totalBalance, setTotalBalance] = useState<number>(0);
+  const [totalValue, setTotalValue] = useState<number>(0);
 
   const circleTexts = [
     "Secure Payments.",
@@ -89,6 +90,48 @@ const Dashboard: React.FC = () => {
 
     fetchTokens();
   }, []);
+
+  useEffect(() => {
+    const fetchVouchers = async () => {
+      try {
+        const response = await getVouchers();
+        setVouchers(response);
+
+        const balance = response.reduce(
+          (acc: any, voucher: any) => acc + voucher.balance,
+          0
+        );
+        const value = response.reduce(
+          (acc: any, voucher: any) => acc + voucher.amount,
+          0
+        );
+
+        setTotalBalance(balance);
+        setTotalValue(value);
+      } catch (error) {
+        console.error("Error fetching vouchers:", error);
+      }
+    };
+
+    fetchVouchers();
+  }, []);
+
+  const validTotalBalance =
+    typeof totalBalance === "number" && !isNaN(totalBalance) ? totalBalance : 0;
+  console.log("totalBalance", totalBalance);
+  const validTotalValue =
+    typeof totalValue === "number" && !isNaN(totalValue) && totalValue !== 0
+      ? totalValue
+      : 1; // Default to 1 to avoid division by zero
+  console.log("totalValue", totalValue);
+
+  const percentage =
+    validTotalValue && validTotalBalance
+      ? (validTotalBalance / validTotalValue) * 100
+      : 0;
+  console.log("percentage", percentage);
+
+  const formattedPercentage = percentage.toFixed(2);
 
   const transactions: VoucherOldTransaction[] = [
     // {
@@ -386,9 +429,9 @@ const Dashboard: React.FC = () => {
       {/* HealthVault tab */}
       {selectedTab === "healthVault" && (
         <HealthVault
-          balance="2000,00"
-          percentage={75}
-          totalValue="5000,00"
+          balance={(totalBalance / 100).toFixed(2).replace(".", ",")}
+          percentage={parseFloat(percentage.toFixed(2))}
+          totalValue={(totalValue / 100).toFixed(2).replace(".", ",")}
           description="Health Vault"
           expenses={[
             {
