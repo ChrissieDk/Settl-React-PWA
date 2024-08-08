@@ -27,11 +27,21 @@ const Vouchers: React.FC = () => {
   }, []);
 
   if (loading)
-    return <div className="text-center py-4">Loading vouchers...</div>;
+    return (
+      <div className="text-center py-4 font-header text-blue-500">
+        Loading vouchers...
+      </div>
+    );
   if (error)
-    return <div className="text-center py-4 text-red-500">{error}</div>;
+    return (
+      <div className="text-center py-4 font-header text-red-500">{error}</div>
+    );
   if (vouchers.length === 0)
-    return <div className="text-center py-4">No vouchers found.</div>;
+    return (
+      <div className="text-center py-4 font-header text-blue-600">
+        No vouchers found.
+      </div>
+    );
 
   return (
     <div className="container mx-auto p-4">
@@ -91,9 +101,15 @@ const Vouchers: React.FC = () => {
                 }}
               />
             </div>
-            <p className="text-3xl text-left font-header text-white">
-              R{voucher.balance / 100}
-            </p>
+            <div className="flex flex-row">
+              <p className="text-3xl text-left font-header text-white">
+                R{voucher.balance / 100}
+              </p>
+              <p className="text-md text-left font-paragraph text-white justify-center ml-2">
+                Current balance
+              </p>
+            </div>
+
             <p className="text-sm font-medium text-left text-white opacity-75">
               R{voucher.amount / 100}
             </p>
