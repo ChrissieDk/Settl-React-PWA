@@ -1,5 +1,5 @@
 // View Transactions
-export interface VoucherOldTransaction {
+export interface tableTransactions {
   id: number;
   date: string;
   type: string;
@@ -8,21 +8,9 @@ export interface VoucherOldTransaction {
   service: string;
 }
 
-// {
-//   "pluCode": "2/gsv/gsvvouchers",
-//   "voucherCode": "6789017019475589",
-//   "amount": 8000,
-//   "status": "01",
-//   "expiryDate": "2024-08-18T14:02:01+00:00",
-//   "balance": 8000,
-//   "verificationCode": "6694",
-//   "pluName": "GetSavvi Vouchers",
-//   "createdDate": "2024-08-04T14:02:17.764593+00:00"
-// },
-
 export interface TransactionModalProps {
   isOpen: boolean;
-  transactions: VoucherOldTransaction[];
+  transactions: tableTransactions[];
   onClose: () => void;
 }
 
