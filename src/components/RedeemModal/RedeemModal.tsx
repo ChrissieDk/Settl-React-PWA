@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { redeem, getVouchers } from "../../Services/data.service";
@@ -99,6 +99,10 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       }, 3000);
     }
   };
+
+  const handleClose = useCallback(() => {
+    onClose();
+  }, [onClose, isOpen]);
 
   const renderContent = () => {
     switch (redeemStatus) {
@@ -251,7 +255,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden flex relative">
         {/* Close button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
         >
           <MdClose size={24} />

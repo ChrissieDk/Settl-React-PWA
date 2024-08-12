@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import RedeemModal from "../RedeemModal/RedeemModal";
 import { tableTransactions } from "../../types/Types";
 
@@ -50,7 +50,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   transactions,
   tokens,
   openModal,
-  closeModal,
+
   handleTimePeriodChange,
   selectedTimePeriod,
 }) => {
@@ -68,11 +68,15 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     setCurrentPage(page);
   };
 
-  const openRedeemModal = (action: string) => {
+  const openRedeemModal = useCallback((action: string) => {
     setSelectedAction(action);
     setTokenModalOpen(true);
-    openModal(action);
-  };
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setTokenModalOpen(false);
+    setSelectedAction("");
+  }, []);
 
   return (
     <div>
