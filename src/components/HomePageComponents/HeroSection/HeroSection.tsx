@@ -1,9 +1,9 @@
 // HeroSection.jsx
-import React from "react";
 import phoneImage from "../../../img/Homepage/phones_updated.png";
 import { HeroSectionProps } from "../../../types/Types";
 import settlLogo from "../../../img/Homepage/Settl logo.png";
 import blurredBird from "../../../img/Homepage/settl bird_blur.png";
+import React from "react";
 
 const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
   return (

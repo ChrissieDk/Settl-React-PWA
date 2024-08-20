@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import useTypingEffect from "./hooks/useTypingEffect/UseTypingEffect";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
-import { HealthCalculator } from "./components/HomePageComponents.tsx/HealthCalculator/HealthCalculator";
-import { IconList } from "./components/HomePageComponents.tsx/HealthCalculator/SliderIcons";
+import { HealthCalculator } from "./components/HomePageComponents/HealthCalculator/HealthCalculator";
+import { IconList } from "./components/HomePageComponents/HealthCalculator/SliderIcons";
 
 //images and icons
-import HeroSection from "./components/HomePageComponents.tsx/HeroSection/HeroSection";
+import HeroSection from "./components/HomePageComponents/HeroSection/HeroSection";
 import planBg from "./img/image3.png";
 import smilingPeople from "./img/Homepage/smiling_people.png";
 import takeControl1 from "./img/Homepage/slider icon.png";
