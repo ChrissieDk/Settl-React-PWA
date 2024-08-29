@@ -14,7 +14,11 @@ const Vouchers: React.FC = () => {
     const fetchVouchers = async () => {
       try {
         const response = await getVouchers();
-        setVouchers(response);
+        // Filter out vouchers with 0 balance
+        const activeVouchers = response.filter(
+          (voucher: { balance: number }) => voucher.balance > 0
+        );
+        setVouchers(activeVouchers);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching vouchers:", err);
