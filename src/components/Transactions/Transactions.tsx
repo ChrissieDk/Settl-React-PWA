@@ -1,14 +1,18 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import RedeemModal from "../RedeemModal/RedeemModal";
 import { tableTransactions } from "../../types/Types";
 
 interface Transaction {
-  id: number;
-  date: string;
-  service: string;
-  type: string;
+  transactionId: string;
+  transactionDate: string;
+  transactionTime: string;
+  transactionType: string;
   status: string;
   amount: number;
+  currencyCode: string;
+  voucherCode?: string;
+  balance?: number;
+  service: string;
 }
 
 interface TransactionsTabProps {
@@ -32,6 +36,9 @@ const StatusPill = ({ status }: { status: string }) => {
       break;
     case "Failed":
       statusClasses = "bg-red-300 text-red-800 min-w-[5rem] uppercase";
+      break;
+    case "Redeemed":
+      statusClasses = "bg-orange-300 text-red-800 min-w-[5rem] uppercase";
       break;
     default:
       statusClasses = "bg-gray-100 text-gray-800 min-w-[5rem] uppercase";
@@ -58,10 +65,26 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   const [selectedAction, setSelectedAction] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((transaction) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        transaction.transactionDate.includes(searchLower) ||
+        transaction.service.toLowerCase().includes(searchLower) ||
+        transaction.transactionType.toLowerCase().includes(searchLower) ||
+        transaction.status.toLowerCase().includes(searchLower)
+      );
+    });
+  }, [transactions, searchTerm]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = transactions.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = filteredTransactions.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(transactions.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
@@ -77,6 +100,11 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     setTokenModalOpen(false);
     setSelectedAction("");
   }, []);
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
+  };
 
   return (
     <div>
@@ -108,6 +136,15 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
             </button>
           ))}
         </div>
+        <div className="mt-4">
+          <input
+            type="text"
+            placeholder="Search by date or service..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
       </div>
       {tokenModalOpen && (
         <RedeemModal
@@ -118,9 +155,9 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
         />
       )}
       <div className="mt-4 bg-white shadow-lg rounded-lg p-4 ">
-        {transactions.length === 0 ? (
+        {filteredTransactions.length === 0 ? (
           <div className="text-center py-8 flex items-center justify-center h-64">
-            <p className="text-gray-500 text-lg">No transactions yet</p>
+            <p className="text-gray-500 text-lg">No transactions found</p>
           </div>
         ) : (
           <div className="overflow-y-auto max-h-96">
@@ -128,12 +165,16 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
               <thead>
                 <tr>
                   {[
-                    "Id",
+                    "Transaction ID",
                     "Date",
-                    "Service",
-                    "Transaction Type",
-                    "Status",
+                    "Time",
+                    "Type",
                     "Amount",
+                    "Balance",
+                    "Service",
+                    "Status",
+                    "Currency",
+                    "Voucher Code",
                   ].map((header) => (
                     <th
                       key={header}
@@ -146,24 +187,38 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
               </thead>
               <tbody>
                 {currentData.map((transaction) => (
-                  <tr key={transaction.id}>
+                  <tr key={transaction.transactionId}>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.id}
+                      {transaction.transactionId}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.date}
+                      {transaction.transactionDate}
+                    </td>
+                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                      {transaction.transactionTime}
+                    </td>
+                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                      {transaction.transactionType}
+                    </td>
+                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                      {transaction.amount}
+                    </td>
+                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                      {transaction.balance !== undefined
+                        ? transaction.balance
+                        : "-"}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.service}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.type}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       <StatusPill status={transaction.status} />
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.amount}
+                      {transaction.currencyCode}
+                    </td>
+                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
+                      {transaction.voucherCode || "-"}
                     </td>
                   </tr>
                 ))}
@@ -172,7 +227,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
           </div>
         )}
       </div>
-      {transactions.length > 0 && (
+      {filteredTransactions.length > 0 && (
         <div className="flex flex-row justify-center">
           <div className="flex justify-center mt-4">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
