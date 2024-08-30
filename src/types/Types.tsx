@@ -1,10 +1,14 @@
 // View Transactions
 export interface tableTransactions {
-  id: number;
-  date: string;
-  type: string;
-  amount: number;
+  transactionId: string;
+  transactionDate: string;
+  transactionTime: string;
+  transactionType: string;
   status: string;
+  amount: number;
+  currencyCode: string;
+  voucherCode?: string;
+  balance?: number;
   service: string;
 }
 
