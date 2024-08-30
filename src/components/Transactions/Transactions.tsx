@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import RedeemModal from "../RedeemModal/RedeemModal";
-import { tableTransactions } from "../../types/Types";
+// import { tableTransactions } from "../../types/Types";
 
 interface Transaction {
   transactionId: string;
