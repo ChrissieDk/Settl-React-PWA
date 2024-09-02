@@ -315,7 +315,7 @@ const HomePage = () => {
                   otcMeds={otcMeds}
                 />
                 {/* Centered Button below IconList */}
-                <button className="absolute bottom-16 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
+                <button className="absolute bottom-24 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
                   I'M INTERESTED
                 </button>
               </div>
