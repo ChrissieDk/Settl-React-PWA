@@ -38,7 +38,7 @@ const Vouchers: React.FC = () => {
     return <div className="text-center py-4">No vouchers found.</div>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto ">
       <h2 className="text-2xl lg:text-4xl text-left font-header text-blue-500 mb-4">
         Your Vouchers
       </h2>
