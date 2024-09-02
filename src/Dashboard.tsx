@@ -299,6 +299,22 @@ const Dashboard: React.FC = () => {
           <div className="flex space-x-4 overflow-x-auto pb-2 min-w-0 whitespace-nowrap">
             <button
               className={`text-lg font-semibold ${
+                selectedTab === "load" ? "text-blue-600" : "text-gray-600"
+              }`}
+              onClick={() => handleTabChange("load")}
+            >
+              Load
+            </button>
+            <button
+              className={`text-lg font-semibold ${
+                selectedTab === "vouchers" ? "text-blue-600" : "text-gray-600"
+              }`}
+              onClick={() => handleTabChange("vouchers")}
+            >
+              Vouchers
+            </button>
+            <button
+              className={`text-lg font-semibold ${
                 selectedTab === "healthVault"
                   ? "text-blue-600"
                   : "text-gray-600"
@@ -316,22 +332,6 @@ const Dashboard: React.FC = () => {
               onClick={() => handleTabChange("transactions")}
             >
               Transactions
-            </button>
-            <button
-              className={`text-lg font-semibold ${
-                selectedTab === "load" ? "text-blue-600" : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("load")}
-            >
-              Load
-            </button>
-            <button
-              className={`text-lg font-semibold ${
-                selectedTab === "vouchers" ? "text-blue-600" : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("vouchers")}
-            >
-              Vouchers
             </button>
           </div>
 

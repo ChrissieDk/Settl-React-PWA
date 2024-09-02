@@ -146,7 +146,7 @@ export function StickyNavbar() {
       <div className="max-w-full px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between">
           <div className="flex">
-            <a href="/">
+            <a href="/Settl-React-PWA/">
               <img className="h-10 w-auto" src={logo} alt="Settl Logo" />
             </a>
             <div className="flex ml-4 my-auto">
