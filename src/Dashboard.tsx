@@ -41,6 +41,7 @@ const Dashboard: React.FC = () => {
 
   const circleImages = [blurredBird, blurredBird, blurredBird];
 
+  // fetches url to add a card
   useEffect(() => {
     const fetchInitiationUrl = async () => {
       try {
@@ -64,6 +65,7 @@ const Dashboard: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  // onClick function to redirect to add card page
   const addCardRedirect = () => {
     if (initiationUrl) {
       console.log("Navigating to:", initiationUrl);
@@ -73,6 +75,7 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  // get all cards and display them
   useEffect(() => {
     const fetchTokens = async () => {
       try {
@@ -87,6 +90,7 @@ const Dashboard: React.FC = () => {
     fetchTokens();
   }, []);
 
+  // get all vouchers and display them
   useEffect(() => {
     const fetchVouchers = async () => {
       try {
@@ -290,14 +294,15 @@ const Dashboard: React.FC = () => {
   return (
     <div className="bg-gray-200 px-4 lg:px-8 py-4 min-h-screen">
       <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 md:justify-between sm:space-x-0">
-          <div className="flex">
+        <div className="flex flex-col sm:flex-row md:justify-between">
+          {/* Scrollable Tabs Container */}
+          <div className="flex space-x-4 overflow-x-auto pb-2 min-w-0 whitespace-nowrap">
             <button
               className={`text-lg font-semibold ${
                 selectedTab === "healthVault"
                   ? "text-blue-600"
                   : "text-gray-600"
-              } mr-6`}
+              }`}
               onClick={() => handleTabChange("healthVault")}
             >
               Health Vault
@@ -307,7 +312,7 @@ const Dashboard: React.FC = () => {
                 selectedTab === "transactions"
                   ? "text-blue-600"
                   : "text-gray-600"
-              } mr-6`}
+              }`}
               onClick={() => handleTabChange("transactions")}
             >
               Transactions
@@ -329,7 +334,9 @@ const Dashboard: React.FC = () => {
               Vouchers
             </button>
           </div>
-          <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0">
+
+          {/* Button Container */}
+          <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0 flex flex-col sm:flex-row">
             <button
               className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2"
               onClick={addCardRedirect}
@@ -347,9 +354,6 @@ const Dashboard: React.FC = () => {
             >
               My Cards
             </button>
-            {/* <button className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2">
-              Load
-            </button> */}
           </div>
         </div>
       </div>

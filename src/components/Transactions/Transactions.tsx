@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import RedeemModal from "../RedeemModal/RedeemModal";
+import { FaArrowDown } from "react-icons/fa6";
+import { FaArrowUp } from "react-icons/fa6";
 // import { tableTransactions } from "../../types/Types";
 
 interface Transaction {
@@ -13,6 +15,7 @@ interface Transaction {
   voucherCode?: string;
   balance?: number;
   service: string;
+  [key: string]: any;
 }
 
 interface TransactionsTabProps {
@@ -66,9 +69,32 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: "ascending" | "descending";
+  } | null>(null);
+
+  // th sorting logic
+  const sortedTransactions = useMemo(() => {
+    let sortableTransactions = [...transactions];
+
+    if (sortConfig !== null) {
+      sortableTransactions.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+
+    return sortableTransactions;
+  }, [transactions, sortConfig]);
 
   const filteredTransactions = useMemo(() => {
-    return transactions.filter((transaction) => {
+    return sortedTransactions.filter((transaction) => {
       const searchLower = searchTerm.toLowerCase();
       return (
         transaction.transactionDate.includes(searchLower) ||
@@ -77,7 +103,19 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
         transaction.status.toLowerCase().includes(searchLower)
       );
     });
-  }, [transactions, searchTerm]);
+  }, [sortedTransactions, searchTerm]);
+
+  const requestSort = (key: string) => {
+    let direction: "ascending" | "descending" = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -178,13 +216,27 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                   ].map((header) => (
                     <th
                       key={header}
-                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5"
+                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5 cursor-pointer"
+                      onClick={() =>
+                        requestSort(header.toLowerCase().replace(/ /g, ""))
+                      }
                     >
-                      {header}
+                      <div className="flex items-center">
+                        {header}
+                        {sortConfig?.key ===
+                        header.toLowerCase().replace(/ /g, "") ? (
+                          sortConfig.direction === "ascending" ? (
+                            <FaArrowDown className="ml-2" />
+                          ) : (
+                            <FaArrowUp className="ml-2" />
+                          )
+                        ) : null}
+                      </div>
                     </th>
                   ))}
                 </tr>
               </thead>
+
               <tbody>
                 {currentData.map((transaction) => (
                   <tr key={transaction.transactionId}>

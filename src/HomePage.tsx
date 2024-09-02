@@ -289,9 +289,12 @@ const HomePage = () => {
 
       {/* Health Calculator - slider */}
       <section className="bg-gray-300">
-        <div className="p-4 lg:p-8 lg:px-20 2xl:px-0 2xl:max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row bg-gray-300">
-            <div className="w-full lg:w-2/5 mb-8 lg:mb-0">
+        <div className="p-4  lg:px-20 2xl:px-0 2xl:max-w-7xl mx-auto ">
+          <div className="flex flex-col lg:flex-row bg-gray-300 justify-center items-center mx-auto ">
+            <div className="w-full  mb-8 lg:mb-0">
+              <h1 className="text-left p-4 font-header text-3xl lg:text-5xl text-blue-500">
+                Adjust to your budget
+              </h1>
               <HealthCalculator
                 gpVisits={gpVisits}
                 setGpVisits={setGpVisits}
@@ -303,21 +306,30 @@ const HomePage = () => {
                 setOtcMeds={setOtcMeds}
               />
             </div>
-            <div className="w-full lg:w-3/5 relative">
+            <div className="relative w-full h-full bg-gray-300">
+              {/* Container for background image and content */}
               <div
-                className="bg-cover bg-center h-[40rem] lg:m-[-7rem] lg:ml-[1rem] lg:mr-[-10rem]"
-                style={{ backgroundImage: `url(${planBg})` }}
+                className="relative w-full  h-full bg-cover bg-center mx-auto"
+                style={{
+                  backgroundImage: `url(${planBg})`,
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
               >
-                <IconList
-                  gpVisits={gpVisits}
-                  dental={dental}
-                  optometry={optometry}
-                  otcMeds={otcMeds}
-                />
-                {/* Centered Button below IconList */}
-                <button className="absolute bottom-24 w-48 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
-                  I'M INTERESTED
-                </button>
+                {/* Centered content inside the background */}
+                <div className="flex flex-col justify-center items-center h-full pt-10">
+                  <IconList
+                    gpVisits={gpVisits}
+                    dental={dental}
+                    optometry={optometry}
+                    otcMeds={otcMeds}
+                  />
+                  {/* Centered Button below IconList */}
+                  <button className="mt-6 w-48 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
+                    I'M INTERESTED
+                  </button>
+                </div>
               </div>
             </div>
           </div>
