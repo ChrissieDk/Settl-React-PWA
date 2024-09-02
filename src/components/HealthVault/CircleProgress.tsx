@@ -9,7 +9,7 @@ interface CircularProgressProps {
 
 const CircularProgress: React.FC<CircularProgressProps> = ({
   percentage,
-  duration = 5100,
+  duration = 1000,
 }) => {
   const [currentPercentage, setCurrentPercentage] = useState(0);
   const hasAnimated = useRef(false);
