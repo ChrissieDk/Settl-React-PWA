@@ -242,11 +242,11 @@ const Load: React.FC<LoadProps> = ({
             </p>
           </div>
           <div className="mt-auto">
-            <div className="w-full h-64 rounded-lg flex items-center justify-center">
+            <div className="rounded-lg flex items-center justify-center h-64">
               <img
                 src={circleImages[activeImage]}
                 alt={`Slide ${activeImage + 1}`}
-                className="object-cover w-full h-full rounded-lg transition-opacity duration-500 ease-in-out"
+                className="h-full w-full object-contain rounded-lg transition-opacity duration-500 ease-in-out"
               />
             </div>
             <div className="flex space-x-2 mt-[2.2rem]">

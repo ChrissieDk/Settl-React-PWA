@@ -17,6 +17,8 @@ import { FaGlasses } from "react-icons/fa";
 import { GiMedicinePills } from "react-icons/gi";
 import { TbReportAnalytics } from "react-icons/tb";
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
+import phone from "../src/img/HP_Phones.png";
+import placeholder from "../src/img/settl_logo1.png";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("load");
@@ -39,7 +41,7 @@ const Dashboard: React.FC = () => {
     "Swift Service.",
   ];
 
-  const circleImages = [blurredBird, blurredBird, blurredBird];
+  const circleImages = [blurredBird, phone, placeholder];
 
   // fetches url to add a card
   useEffect(() => {
