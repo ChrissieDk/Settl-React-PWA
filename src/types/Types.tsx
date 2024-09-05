@@ -10,6 +10,7 @@ export interface tableTransactions {
   voucherCode?: string;
   balance?: number;
   service: string;
+  [key: string]: any;
 }
 
 export interface TransactionModalProps {

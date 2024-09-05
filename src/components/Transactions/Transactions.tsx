@@ -1,25 +1,12 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import RedeemModal from "../RedeemModal/RedeemModal";
-import { FaArrowDown } from "react-icons/fa6";
+import { FaArrowDown, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { FaArrowUp } from "react-icons/fa6";
-// import { tableTransactions } from "../../types/Types";
-
-interface Transaction {
-  transactionId: string;
-  transactionDate: string;
-  transactionTime: string;
-  transactionType: string;
-  status: string;
-  amount: number;
-  currencyCode: string;
-  voucherCode?: string;
-  balance?: number;
-  service: string;
-  [key: string]: any;
-}
+import { getTransactions } from "../../Services/data.service";
+import { tableTransactions } from "../../types/Types";
 
 interface TransactionsTabProps {
-  transactions: Transaction[];
+  transactions: tableTransactions[];
   tokens: any[];
   openModal: (action: string) => void;
   closeModal: () => void;
@@ -31,7 +18,7 @@ const StatusPill = ({ status }: { status: string }) => {
   let statusClasses;
 
   switch (status) {
-    case "Success":
+    case "add":
       statusClasses = "bg-green-300 text-green-800 min-w-[5rem] uppercase";
       break;
     case "Pending":
@@ -59,8 +46,6 @@ const StatusPill = ({ status }: { status: string }) => {
 const TransactionsTab: React.FC<TransactionsTabProps> = ({
   transactions,
   tokens,
-  openModal,
-
   handleTimePeriodChange,
   selectedTimePeriod,
 }) => {
@@ -144,6 +129,50 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     setCurrentPage(1);
   };
 
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await getTransactions();
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pageNumbers.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pageNumbers.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
+      } else {
+        pageNumbers.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages
+        );
+      }
+    }
+    return pageNumbers;
+  };
   return (
     <div>
       <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
@@ -278,40 +307,61 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
             </table>
           </div>
         )}
-      </div>
-      {filteredTransactions.length > 0 && (
-        <div className="flex flex-row justify-center">
-          <div className="flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`mx-1 px-4 py-2 rounded border border-blue-500 ${
-                  page === currentPage
-                    ? "bg-blue-500 text-white"
-                    : "bg-white border"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-          <div>
-            <select
-              id="itemsPerPage"
-              value={itemsPerPage}
-              onChange={(e) => setItemsPerPage(Number(e.target.value))}
-              className="ml-2 rounded px-2 py-1 mt-6 border border-blue-500 "
+
+        {/* Pagination */}
+        {filteredTransactions.length > 0 && (
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+            <nav
+              className="flex items-center justify-center"
+              aria-label="Pagination"
             >
-              {[5, 10, 15, 20, 50, 100, 150].map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="mr-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
+              >
+                <FaChevronLeft className="h-4 w-4" />
+              </button>
+              {getPageNumbers().map((number, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    typeof number === "number" && handlePageChange(number)
+                  }
+                  className={`mx-1 px-3 py-1 rounded-md ${
+                    number === currentPage
+                      ? "bg-orange-400 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {number}
+                </button>
               ))}
-            </select>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="ml-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
+              >
+                <FaChevronRight className="h-4 w-4" />
+              </button>
+            </nav>
+            <div className="mt-4 sm:mt-0">
+              <select
+                id="itemsPerPage"
+                value={itemsPerPage}
+                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                className="ml-2 rounded px-2 py-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {[5, 10, 15, 20, 50, 100, 150].map((value) => (
+                  <option key={value} value={value}>
+                    {value} per page
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
