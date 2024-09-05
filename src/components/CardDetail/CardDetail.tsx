@@ -69,7 +69,7 @@ const CardModal: React.FC<CardModalProps> = ({
                 />
               </div>
             </div>
-            <div className="space-y-2 max-h-[60vh] overflow-y-auto">
+            <div className="space-y-2 max-h-[30vh] overflow-x-auto">
               {tokens?.length > 0 ? (
                 tokens.map((token, index) => (
                   <div key={index} className="bg-gray-50 p-3 rounded-lg shadow">

@@ -53,7 +53,13 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   const handleTransactionAmountChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setTransactionAmount(e.target.value);
+    const userInput = parseFloat(e.target.value);
+    if (!isNaN(userInput)) {
+      const transactionAmountInCents = (userInput * 100).toFixed(0); // Convert to cents and ensure it's an integer string
+      setTransactionAmount(transactionAmountInCents);
+    } else {
+      setTransactionAmount(""); // Handle invalid input
+    }
   };
 
   const handleVoucherCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -138,7 +144,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 htmlFor="merchantId"
                 className="block text-sm font-semibold mb-2 text-gray-700"
               >
-                Merchant ID
+                Merchant ( Service Provider )
               </label>
               <select
                 id="merchantId"
@@ -186,7 +192,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               <input
                 id="transactionAmount"
                 type="number"
-                value={transactionAmount}
+                value={(parseFloat(transactionAmount) / 100).toString()}
                 onChange={handleTransactionAmountChange}
                 className="border border-gray-300 rounded-md p-2 w-full"
                 placeholder="Enter transaction amount"
@@ -210,7 +216,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 <option value="">Select a voucher code</option>
                 {vouchers.map((voucher: Voucher) => (
                   <option key={voucher.voucherCode} value={voucher.voucherCode}>
-                    {voucher.voucherCode}
+                    {voucher.voucherCode} - R {voucher.balance / 100}
                   </option>
                 ))}
               </select>
@@ -298,7 +304,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   anchorId="token-info"
                   place="right"
                   opacity={1}
-                  content="Redeem your token by entering the merchant details, service, and voucher details."
+                  content="Redeem your token by entering merchant details, transaction amount, service, and voucher details."
                   style={{
                     backgroundColor: "white",
                     color: "#222",
