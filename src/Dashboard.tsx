@@ -19,6 +19,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
+import { getTransactions } from "./Services/data.service";
 
 const Dashboard: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("load");
@@ -34,6 +35,8 @@ const Dashboard: React.FC = () => {
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const [totalValue, setTotalValue] = useState<number>(0);
   const [transactions, setTransactions] = useState<tableTransactions[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const circleTexts = [
     "Secure Payments.",
@@ -154,143 +157,21 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    // This is where we can fetch transactions from an API
-    // Using staticData for now
+    const fetchTransactions = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await getTransactions();
+        setTransactions(response);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+        setError("Failed to fetch transactions. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    // transactionId: string;
-    // transactionDate: string;
-    // transactionTime: string;
-    // transactionType: string;
-    // status: string;
-    // amount: number;
-    // currencyCode: string;
-    // voucherCode?: string;
-    // balance?: number;
-    const staticTransactions: tableTransactions[] = [
-      {
-        transactionId: "1",
-        transactionDate: "2024-01-01",
-        transactionTime: "12:00",
-        transactionType: "Vault load",
-        amount: 1000,
-        balance: 1000,
-        status: "Success",
-        service: "Dentist",
-        currencyCode: "123",
-        voucherCode: "1235677852234",
-      },
-      {
-        transactionId: "2",
-        transactionDate: "2024-01-01",
-        transactionTime: "12:00",
-        transactionType: "Token Redeemed",
-        amount: 100,
-        status: "Success",
-        service: "GP",
-        currencyCode: "123",
-        voucherCode: "1235677852234",
-        balance: 100,
-      },
-      {
-        transactionId: "3",
-        transactionDate: "2024-01-01",
-        transactionTime: "12:00",
-        transactionType: "Vault load",
-        amount: 100,
-        status: "Failed",
-        service: "GP",
-        currencyCode: "456",
-        voucherCode: "123567712234",
-        balance: 100,
-      },
-      {
-        transactionId: "4",
-        transactionDate: "2024-08-11",
-        transactionTime: "12:00",
-        transactionType: "Token Redeemed",
-        amount: 10000,
-        status: "Success",
-        service: "GP",
-        currencyCode: "789",
-        voucherCode: "1235677852234",
-        balance: 10000,
-      },
-      // make 10 more transactions with the exact same format below please
-      {
-        transactionId: "5",
-        transactionDate: "2024-02-05",
-        transactionTime: "12:00",
-        transactionType: "Vault load",
-        amount: 1000,
-        balance: 1000,
-        status: "Success",
-        service: "GP",
-        currencyCode: "123",
-        voucherCode: "1235677852234",
-      },
-      {
-        transactionId: "6",
-        transactionDate: "2023-01-01",
-        transactionTime: "12:00",
-        transactionType: "Token Redeemed",
-        amount: 100,
-        status: "Success",
-        service: "GP",
-        currencyCode: "123",
-        voucherCode: "1235677852234",
-        balance: 100,
-      },
-      {
-        transactionId: "7",
-        transactionDate: "2021-01-01",
-        transactionTime: "12:00",
-        transactionType: "Vault load",
-        amount: 100,
-        status: "Failed",
-        service: "GP",
-        currencyCode: "456",
-        voucherCode: "123567712234",
-        balance: 100,
-      },
-      {
-        transactionId: "8",
-        transactionDate: "2020-01-01",
-        transactionTime: "12:00",
-        transactionType: "Token Redeemed",
-        amount: 10000,
-        status: "Success",
-        service: "GP",
-        currencyCode: "789",
-        voucherCode: "1235677852234",
-        balance: 10000,
-      },
-      {
-        transactionId: "9",
-        transactionDate: "2022-01-01",
-        transactionTime: "12:00",
-        transactionType: "Vault load",
-        amount: 1000,
-        balance: 1000,
-        status: "Success",
-        service: "OTC",
-        currencyCode: "123",
-        voucherCode: "1235677852234",
-      },
-      {
-        transactionId: "10",
-        transactionDate: "2024-01-01",
-        transactionTime: "12:00",
-        transactionType: "Token Redeemed",
-        amount: 100,
-        status: "Success",
-        service: "Optometrist",
-        currencyCode: "123",
-        voucherCode: "1235677852234",
-        balance: 100,
-      },
-    ];
-
-    setTransactions(staticTransactions);
+    fetchTransactions();
   }, []);
 
   return (
@@ -404,6 +285,7 @@ const Dashboard: React.FC = () => {
       {/* Transactions tab */}
       {selectedTab === "transactions" && (
         <TransactionsTab
+          key="transactions-tab"
           transactions={transactions}
           tokens={tokens}
           openModal={openModal}

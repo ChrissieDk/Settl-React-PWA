@@ -208,3 +208,14 @@ export const redeem = async (voucher: any) => {
     throw error;
   }
 };
+
+// https://localhost:7183/api/payment/transactions
+export const getTransactions = async () => {
+  try {
+    const response = await axiosInstance.get("/payment/transactions");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    throw error;
+  }
+};
