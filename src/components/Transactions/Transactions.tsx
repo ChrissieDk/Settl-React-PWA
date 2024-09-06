@@ -43,6 +43,8 @@ const StatusPill = ({ status }: { status: string }) => {
   );
 };
 
+const truncateId = (id: string) => `${id.slice(0, 8)}...`;
+
 const TransactionsTab: React.FC<TransactionsTabProps> = ({
   transactions,
   tokens,
@@ -133,6 +135,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     const fetchTransactions = async () => {
       try {
         const response = await getTransactions();
+        console.log("Transactions fetched:", response);
       } catch (error) {
         console.error("Error fetching transactions:", error);
       }
@@ -143,33 +146,24 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
 
   const getPageNumbers = () => {
     const pageNumbers = [];
-    if (totalPages <= 7) {
+    if (totalPages <= 5) {
+      // If there are 5 or fewer pages, show all
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
+      pageNumbers.push(1);
+
       if (currentPage <= 3) {
-        pageNumbers.push(1, 2, 3, 4, "...", totalPages);
+        pageNumbers.push(2, 3, "...");
       } else if (currentPage >= totalPages - 2) {
-        pageNumbers.push(
-          1,
-          "...",
-          totalPages - 3,
-          totalPages - 2,
-          totalPages - 1,
-          totalPages
-        );
+        pageNumbers.push("...", totalPages - 2, totalPages - 1);
       } else {
-        pageNumbers.push(
-          1,
-          "...",
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
-          "...",
-          totalPages
-        );
+        pageNumbers.push("...", currentPage, "...");
       }
+
+      // Always show last page
+      pageNumbers.push(totalPages);
     }
     return pageNumbers;
   };
@@ -269,8 +263,11 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
               <tbody>
                 {currentData.map((transaction) => (
                   <tr key={transaction.transactionId}>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.transactionId}
+                    <td
+                      className="px-5 py-3 border-b border-gray-200 text-sm text-left cursor-help"
+                      title={transaction.id}
+                    >
+                      {truncateId(transaction.id)}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.transactionDate}
@@ -295,8 +292,8 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       <StatusPill status={transaction.status} />
                     </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.currencyCode}
+                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-center">
+                      ZAR
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.voucherCode || "-"}
@@ -322,9 +319,9 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
               >
                 <FaChevronLeft className="h-4 w-4" />
               </button>
-              {getPageNumbers().map((number, index) => (
+              {getPageNumbers().map((number) => (
                 <button
-                  key={index}
+                  key={number === "..." ? `ellipsis-${Math.random()}` : number}
                   onClick={() =>
                     typeof number === "number" && handlePageChange(number)
                   }

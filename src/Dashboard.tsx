@@ -285,6 +285,7 @@ const Dashboard: React.FC = () => {
       {/* Transactions tab */}
       {selectedTab === "transactions" && (
         <TransactionsTab
+          key="transactions-tab"
           transactions={transactions}
           tokens={tokens}
           openModal={openModal}
