@@ -107,7 +107,7 @@ export const getCompanyDetails = async () => {
   }
 };
 
-// Replace <any> in both GET and POST requests.
+// Replace <any>
 export const initiateIssueToken = async (): Promise<any> => {
   try {
     const { data: requestBody } = await axiosInstance.get<any>(

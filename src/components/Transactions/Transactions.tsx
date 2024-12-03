@@ -43,7 +43,7 @@ const StatusPill = ({ status }: { status: string }) => {
   );
 };
 
-const truncateId = (id: string) => `${id.slice(0, 8)}...`;
+const truncateId = (id: string) => `${id.slice(0, 10)}...`;
 
 const TransactionsTab: React.FC<TransactionsTabProps> = ({
   transactions,
@@ -221,7 +221,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
             <p className="text-gray-500 text-lg">No transactions found</p>
           </div>
         ) : (
-          <div className="overflow-y-auto max-h-96">
+          <div className="overflow-y-auto  max-h-96">
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>

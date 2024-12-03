@@ -6,23 +6,30 @@ import {
   initiateIssueToken,
   listTokens,
   getVouchers,
+  getTransactions,
 } from "./Services/data.service";
 import Modal from "./components/CardDetail/CardDetail";
 import Vouchers from "./components/Vouchers/Vouchers";
 import Load from "./components/Load/Load";
 // icons
-import { FaUserDoctor } from "react-icons/fa6";
-import { FaTooth } from "react-icons/fa";
-import { FaGlasses } from "react-icons/fa";
+import { FaUserDoctor, FaTooth, FaGlasses, FaBars } from "react-icons/fa6";
 import { GiMedicinePills } from "react-icons/gi";
 import { TbReportAnalytics } from "react-icons/tb";
+import { IoWalletOutline } from "react-icons/io5";
+import { MdOutlineConfirmationNumber, MdHealthAndSafety } from "react-icons/md";
+import { BiTransfer } from "react-icons/bi";
+
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
-import { getTransactions } from "./Services/data.service";
 
 const Dashboard: React.FC = () => {
+  // Navigation and UI State
   const [selectedTab, setSelectedTab] = useState("load");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Existing State
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("last7days");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<string>("");
@@ -46,15 +53,44 @@ const Dashboard: React.FC = () => {
 
   const circleImages = [blurredBird, phone, placeholder];
 
-  // fetches url to add a card
+  const navItems = [
+    { id: "load", label: "Load", icon: <IoWalletOutline size={20} /> },
+    {
+      id: "vouchers",
+      label: "Vouchers",
+      icon: <MdOutlineConfirmationNumber size={20} />,
+    },
+    {
+      id: "healthVault",
+      label: "Health Vault",
+      icon: <MdHealthAndSafety size={20} />,
+    },
+    {
+      id: "transactions",
+      label: "Transactions",
+      icon: <BiTransfer size={20} />,
+    },
+  ];
+
+  // Responsive sidebar handling
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsSidebarOpen(window.innerWidth >= 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Existing useEffects
   useEffect(() => {
     const fetchInitiationUrl = async () => {
       try {
         const data = await initiateIssueToken();
-        // console.log("API response:", data);
         if (data && data.peripheryData && data.peripheryData.initiationUrl) {
           setInitiationUrl(data.peripheryData.initiationUrl);
-          // console.log("Initiation URL set:", data.peripheryData.initiationUrl);
         } else {
           console.error("API response does not contain initiationUrl:", data);
         }
@@ -66,27 +102,11 @@ const Dashboard: React.FC = () => {
     fetchInitiationUrl();
   }, []);
 
-  const handleButtonClick = () => {
-    setIsModalOpen(true);
-  };
-
-  // onClick function to redirect to add card page
-  const addCardRedirect = () => {
-    if (initiationUrl) {
-      console.log("Navigating to:", initiationUrl);
-      window.location.href = initiationUrl;
-    } else {
-      console.error("Initiation URL is not available");
-    }
-  };
-
-  // get all cards and display them
   useEffect(() => {
     const fetchTokens = async () => {
       try {
         const response = await listTokens();
         setTokens(response.additionalData.paymentTokens);
-        console.log("Tokens fetched:", response.additionalData.paymentTokens);
       } catch (error) {
         console.error("Error fetching tokens:", error);
       }
@@ -95,7 +115,6 @@ const Dashboard: React.FC = () => {
     fetchTokens();
   }, []);
 
-  // get all vouchers and display them
   useEffect(() => {
     const fetchVouchers = async () => {
       try {
@@ -121,41 +140,6 @@ const Dashboard: React.FC = () => {
     fetchVouchers();
   }, []);
 
-  const validTotalBalance =
-    typeof totalBalance === "number" && !isNaN(totalBalance) ? totalBalance : 0;
-  const validTotalValue =
-    typeof totalValue === "number" && !isNaN(totalValue) && totalValue !== 0
-      ? totalValue
-      : 1;
-
-  const percentage =
-    validTotalValue && validTotalBalance
-      ? (validTotalBalance / validTotalValue) * 100
-      : 0;
-
-  const handleTabChange = (tab: string) => {
-    setSelectedTab(tab);
-  };
-
-  const handleTimePeriodChange = (timePeriod: string) => {
-    setSelectedTimePeriod(timePeriod);
-  };
-
-  const openModal = (action: string) => {
-    //  || action === "send" || action === "request"
-    if (action === "redeem") {
-      setTokenModalOpen(true);
-      setSelectedAction(action);
-    } else {
-      setIsModalOpen(true);
-    }
-  };
-
-  const closeModal = () => {
-    setTokenModalOpen(false);
-    setIsModalOpen(false);
-  };
-
   useEffect(() => {
     const fetchTransactions = async () => {
       setIsLoading(true);
@@ -174,137 +158,222 @@ const Dashboard: React.FC = () => {
     fetchTransactions();
   }, []);
 
-  return (
-    <div className="bg-gray-200 px-4 lg:px-8 py-4 min-h-screen">
-      <div className="bg-white shadow-lg rounded-lg mb-6 p-4">
-        <div className="flex flex-col sm:flex-row md:justify-between">
-          {/* Scrollable Tabs Container */}
-          <div className="flex space-x-4 overflow-x-auto pb-2 min-w-0 whitespace-nowrap">
-            <button
-              className={`text-lg font-semibold ${
-                selectedTab === "load" ? "text-blue-600" : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("load")}
-            >
-              Load
-            </button>
-            <button
-              className={`text-lg font-semibold ${
-                selectedTab === "vouchers" ? "text-blue-600" : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("vouchers")}
-            >
-              Vouchers
-            </button>
-            <button
-              className={`text-lg font-semibold ${
-                selectedTab === "healthVault"
-                  ? "text-blue-600"
-                  : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("healthVault")}
-            >
-              Health Vault
-            </button>
-            <button
-              className={`text-lg font-semibold ${
-                selectedTab === "transactions"
-                  ? "text-blue-600"
-                  : "text-gray-600"
-              }`}
-              onClick={() => handleTabChange("transactions")}
-            >
-              Transactions
-            </button>
-          </div>
+  // Calculations
+  const validTotalBalance =
+    typeof totalBalance === "number" && !isNaN(totalBalance) ? totalBalance : 0;
+  const validTotalValue =
+    typeof totalValue === "number" && !isNaN(totalValue) && totalValue !== 0
+      ? totalValue
+      : 1;
 
-          {/* Button Container */}
-          <div className="pt-4 lg:pt-0 space-y-2 md:space-y-0 flex flex-col sm:flex-row">
+  const percentage =
+    validTotalValue && validTotalBalance
+      ? (validTotalBalance / validTotalValue) * 100
+      : 0;
+
+  // Event Handlers
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const addCardRedirect = () => {
+    if (initiationUrl) {
+      window.location.href = initiationUrl;
+    } else {
+      console.error("Initiation URL is not available");
+    }
+  };
+
+  const handleTabChange = (tab: string) => {
+    setSelectedTab(tab);
+  };
+
+  const handleTimePeriodChange = (timePeriod: string) => {
+    setSelectedTimePeriod(timePeriod);
+  };
+
+  const openModal = (action: string) => {
+    if (action === "redeem") {
+      setTokenModalOpen(true);
+      setSelectedAction(action);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setTokenModalOpen(false);
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-200">
+      {/* Mobile Overlay */}
+      {isMobile && isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+        fixed md:static
+        inset-y-0 left-0
+        w-64 bg-white
+        transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        transition-transform duration-200 ease-in-out
+        z-30 md:z-0
+        flex flex-col
+        h-full
+        shadow-lg
+      `}
+      >
+        {/* Sidebar Header */}
+        <div className="p-4 border-b flex justify-between items-center">
+          <h2 className="text-xl font-bold text-blue-600">Dashboard</h2>
+          {isMobile && (
             <button
-              className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2"
-              onClick={addCardRedirect}
+              onClick={() => setIsSidebarOpen(false)}
+              className="text-gray-500 hover:text-gray-700 p-1"
             >
-              Add Card
+              <FaUserDoctor className="h-6 w-6" />
             </button>
-            <Modal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              tokens={tokens}
+          )}
+        </div>
+
+        {/* Navigation Items */}
+        <nav className="flex-1 p-4">
+          {navItems.map(({ id, label, icon }) => (
+            <button
+              key={id}
+              onClick={() => {
+                setSelectedTab(id);
+                if (isMobile) setIsSidebarOpen(false);
+              }}
+              className={`
+                w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg
+                transition-colors duration-200
+                ${
+                  selectedTab === id
+                    ? "bg-blue-500 text-white"
+                    : "text-gray-600 hover:bg-blue-50"
+                }
+              `}
+            >
+              <span className="flex items-center justify-center w-6">
+                {icon}
+              </span>
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+
+        {/* Action Buttons */}
+        <div className="p-4 border-t space-y-2">
+          <button
+            className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors"
+            onClick={addCardRedirect}
+          >
+            Add Card
+          </button>
+          <button
+            className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors"
+            onClick={handleButtonClick}
+          >
+            My Cards
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
+        {/* Top Bar */}
+        <div className="bg-white p-4 shadow-sm flex items-center">
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="md:hidden mr-4 text-gray-500 hover:text-gray-700 p-1"
+          >
+            <FaBars className="h-6 w-6" />
+          </button>
+          <h1 className="text-xl font-semibold">
+            {navItems.find((item) => item.id === selectedTab)?.label}
+          </h1>
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 p-4 overflow-auto">
+          {selectedTab === "healthVault" && (
+            <HealthVault
+              balance={Math.floor(totalBalance / 100).toString()}
+              percentage={Math.floor(percentage)}
+              totalValue={Math.floor(totalValue / 100).toString()}
+              description="Health Vault"
+              expenses={[
+                {
+                  category: "GP",
+                  amount: "500",
+                  icon: <FaUserDoctor size={30} />,
+                  description: "General practitioner voucher value",
+                },
+                {
+                  category: "Dentist",
+                  amount: "500",
+                  icon: <FaTooth size={30} />,
+                  description: "Dentist voucher value",
+                },
+                {
+                  category: "Optometrist",
+                  amount: "500",
+                  icon: <FaGlasses size={30} />,
+                  description: "Optometrist voucher value",
+                },
+                {
+                  category: "Over the counter medication",
+                  amount: "",
+                  icon: <GiMedicinePills size={30} />,
+                  description: "Over-the-counter medication",
+                },
+                {
+                  category: "Transaction summary",
+                  amount: "",
+                  icon: <TbReportAnalytics size={30} />,
+                  description: "Detailed description of past transactions",
+                },
+              ]}
             />
-            <button
-              className="w-full sm:w-auto bg-blue-500 text-white rounded-lg px-4 py-2 lg:mx-2"
-              onClick={handleButtonClick}
-            >
-              My Cards
-            </button>
-          </div>
+          )}
+          {selectedTab === "transactions" && (
+            <TransactionsTab
+              key="transactions-tab"
+              transactions={transactions}
+              tokens={tokens}
+              openModal={openModal}
+              closeModal={closeModal}
+              handleTimePeriodChange={handleTimePeriodChange}
+              selectedTimePeriod={selectedTimePeriod}
+            />
+          )}
+          {selectedTab === "load" && (
+            <Load
+              tokens={tokens}
+              circleImages={circleImages}
+              circleTexts={circleTexts}
+              setTokens={setTokens}
+              setSelectedToken={setSelectedToken}
+            />
+          )}
+          {selectedTab === "vouchers" && <Vouchers />}
         </div>
       </div>
 
-      {/* HealthVault tab */}
-      {selectedTab === "healthVault" && (
-        <HealthVault
-          balance={Math.floor(totalBalance / 100).toString()}
-          percentage={Math.floor(percentage)}
-          totalValue={Math.floor(totalValue / 100).toString()}
-          description="Health Vault"
-          expenses={[
-            {
-              category: "GP",
-              amount: "500",
-              icon: <FaUserDoctor size={30} />,
-              description: "General practitioner voucher value",
-            },
-            {
-              category: "Dentist",
-              amount: "500",
-              icon: <FaTooth size={30} />,
-              description: "Dentist voucher value",
-            },
-            {
-              category: "Optometrist",
-              amount: "500",
-              icon: <FaGlasses size={30} />,
-              description: "Optometrist voucher value",
-            },
-            {
-              category: "Over the counter medication",
-              amount: "",
-              icon: <GiMedicinePills size={30} />,
-              description: "Over-the-counter medication",
-            },
-            {
-              category: "Transaction summary",
-              amount: "",
-              icon: <TbReportAnalytics size={30} />,
-              description: "Detailed description of past transactions",
-            },
-          ]}
-        />
-      )}
-      {/* Transactions tab */}
-      {selectedTab === "transactions" && (
-        <TransactionsTab
-          key="transactions-tab"
-          transactions={transactions}
-          tokens={tokens}
-          openModal={openModal}
-          closeModal={closeModal}
-          handleTimePeriodChange={handleTimePeriodChange}
-          selectedTimePeriod={selectedTimePeriod}
-        />
-      )}
-      {/* Load tab */}
-      {selectedTab === "load" && (
-        <Load
-          tokens={tokens}
-          circleImages={circleImages}
-          circleTexts={circleTexts}
-          setTokens={setTokens}
-          setSelectedToken={setSelectedToken}
-        />
-      )}
-      {selectedTab === "vouchers" && <Vouchers />}
+      {/* Modals */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        tokens={tokens}
+      />
     </div>
   );
 };
