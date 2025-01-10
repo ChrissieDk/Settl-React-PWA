@@ -184,10 +184,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleTabChange = (tab: string) => {
-    setSelectedTab(tab);
-  };
-
   const handleTimePeriodChange = (timePeriod: string) => {
     setSelectedTimePeriod(timePeriod);
   };
@@ -253,19 +249,28 @@ const Dashboard: React.FC = () => {
                 if (isMobile) setIsSidebarOpen(false);
               }}
               className={`
-                w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg
-                transition-colors duration-200
-                ${
-                  selectedTab === id
-                    ? "bg-blue-500 text-white"
-                    : "text-gray-600 hover:bg-blue-50"
-                }
-              `}
+        w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg
+        transition-all duration-200 ease-in-out
+        transform hover:scale-102 
+        hover:shadow-md
+        group
+        ${
+          selectedTab === id
+            ? "bg-blue-500 text-white translate-x-1"
+            : "text-gray-600 hover:bg-blue-50 hover:translate-x-1"
+        }
+      `}
             >
-              <span className="flex items-center justify-center w-6">
+              <span
+                className={`
+        flex items-center justify-center w-6
+        transition-transform duration-200
+        group-hover:scale-110
+      `}
+              >
                 {icon}
               </span>
-              <span>{label}</span>
+              <span className="transition-colors duration-200">{label}</span>
             </button>
           ))}
         </nav>

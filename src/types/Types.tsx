@@ -97,7 +97,7 @@ export interface UrlData {
   responseMessage: string;
 }
 
-// even if only one coucher, still need to be an array
+// even if only one voucher, still need to be an array
 export interface redeem {
   merchantId: string;
   transactionAmount: number;
