@@ -55,10 +55,10 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   ) => {
     const userInput = parseFloat(e.target.value);
     if (!isNaN(userInput)) {
-      const transactionAmountInCents = (userInput * 100).toFixed(0); // Convert to cents and ensure it's an integer string
+      const transactionAmountInCents = (userInput * 100).toFixed(0);
       setTransactionAmount(transactionAmountInCents);
     } else {
-      setTransactionAmount(""); // Handle invalid input
+      setTransactionAmount("");
     }
   };
 

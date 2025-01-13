@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import RedeemModal from "../RedeemModal/RedeemModal";
-import { FaArrowDown, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { FaArrowUp } from "react-icons/fa6";
+import {
+  FaArrowDown,
+  FaChevronLeft,
+  FaChevronRight,
+  FaArrowUp,
+} from "react-icons/fa6";
 import { getTransactions } from "../../Services/data.service";
 import { tableTransactions } from "../../types/Types";
 
@@ -14,25 +18,21 @@ interface TransactionsTabProps {
   selectedTimePeriod: string;
 }
 
-const StatusPill = ({ status }: { status: string }) => {
-  let statusClasses;
-
-  switch (status) {
-    case "add":
-      statusClasses = "bg-green-300 text-green-800 min-w-[5rem] uppercase";
-      break;
-    case "Pending":
-      statusClasses = "bg-yellow-300 text-yellow-800 min-w-[5rem] uppercase";
-      break;
-    case "Failed":
-      statusClasses = "bg-red-300 text-red-800 min-w-[5rem] uppercase";
-      break;
-    case "Redeemed":
-      statusClasses = "bg-orange-300 text-red-800 min-w-[5rem] uppercase";
-      break;
-    default:
-      statusClasses = "bg-gray-100 text-gray-800 min-w-[5rem] uppercase";
-  }
+const StatusPill = React.memo(({ status }: { status: string }) => {
+  const statusClasses = useMemo(() => {
+    switch (status) {
+      case "add":
+        return "bg-green-300 text-green-800 min-w-[5rem] uppercase";
+      case "Pending":
+        return "bg-yellow-300 text-yellow-800 min-w-[5rem] uppercase";
+      case "Failed":
+        return "bg-red-300 text-red-800 min-w-[5rem] uppercase";
+      case "Redeemed":
+        return "bg-orange-300 text-red-800 min-w-[5rem] uppercase";
+      default:
+        return "bg-gray-100 text-gray-800 min-w-[5rem] uppercase";
+    }
+  }, [status]);
 
   return (
     <span
@@ -41,7 +41,7 @@ const StatusPill = ({ status }: { status: string }) => {
       {status}
     </span>
   );
-};
+});
 
 const truncateId = (id: string) => `${id.slice(0, 10)}...`;
 
@@ -61,46 +61,54 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     direction: "ascending" | "descending";
   } | null>(null);
 
-  // th sorting logic
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   const sortedTransactions = useMemo(() => {
     let sortableTransactions = [...transactions];
-
-    if (sortConfig !== null) {
+    if (sortConfig) {
       sortableTransactions.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        if (a[sortConfig.key] < b[sortConfig.key])
           return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (a[sortConfig.key] > b[sortConfig.key])
           return sortConfig.direction === "ascending" ? 1 : -1;
-        }
         return 0;
       });
     }
-
     return sortableTransactions;
   }, [transactions, sortConfig]);
 
   const filteredTransactions = useMemo(() => {
-    return sortedTransactions.filter((transaction) => {
-      const searchLower = searchTerm.toLowerCase();
-      return (
-        transaction.transactionDate.includes(searchLower) ||
-        transaction.service.toLowerCase().includes(searchLower) ||
-        transaction.transactionType.toLowerCase().includes(searchLower) ||
-        transaction.status.toLowerCase().includes(searchLower)
-      );
-    });
+    const searchLower = searchTerm.toLowerCase();
+    return sortedTransactions.filter((transaction) =>
+      Object.values(transaction).some(
+        (value) =>
+          typeof value === "string" && value.toLowerCase().includes(searchLower)
+      )
+    );
   }, [sortedTransactions, searchTerm]);
 
   const requestSort = (key: string) => {
-    let direction: "ascending" | "descending" = "ascending";
-    if (
+    const direction =
       sortConfig &&
       sortConfig.key === key &&
       sortConfig.direction === "ascending"
-    ) {
-      direction = "descending";
-    }
+        ? "descending"
+        : "ascending";
     setSortConfig({ key, direction });
   };
 
@@ -110,7 +118,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     indexOfFirstItem,
     indexOfLastItem
   );
-  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -131,6 +139,24 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     setCurrentPage(1);
   };
 
+  const getPageNumbers = useMemo(() => {
+    const pageNumbers = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
+    } else {
+      pageNumbers.push(1);
+      if (currentPage <= 3) {
+        pageNumbers.push(2, 3, "...");
+      } else if (currentPage >= totalPages - 2) {
+        pageNumbers.push("...", totalPages - 2, totalPages - 1);
+      } else {
+        pageNumbers.push("...", currentPage, "...");
+      }
+      pageNumbers.push(totalPages);
+    }
+    return pageNumbers;
+  }, [currentPage, totalPages]);
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -144,29 +170,6 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     fetchTransactions();
   }, []);
 
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    if (totalPages <= 5) {
-      // If there are 5 or fewer pages, show all
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
-    } else {
-      pageNumbers.push(1);
-
-      if (currentPage <= 3) {
-        pageNumbers.push(2, 3, "...");
-      } else if (currentPage >= totalPages - 2) {
-        pageNumbers.push("...", totalPages - 2, totalPages - 1);
-      } else {
-        pageNumbers.push("...", currentPage, "...");
-      }
-
-      // Always show last page
-      pageNumbers.push(totalPages);
-    }
-    return pageNumbers;
-  };
   return (
     <div>
       <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
@@ -174,11 +177,12 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
           <button
             onClick={() => openRedeemModal("redeem")}
             className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            aria-label="Redeem"
           >
             Redeem
           </button>
         </div>
-        <div className="mt-2 lg:mt-0">
+        {/* <div className="mt-2 lg:mt-0">
           {["last7days", "last30days", "last90days"].map((period) => (
             <button
               key={period}
@@ -188,6 +192,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 period !== "last7days" ? "ml-2" : ""
               }`}
               onClick={() => handleTimePeriodChange(period)}
+              aria-label={`Show ${period}`}
             >
               {period === "last7days"
                 ? "Last 7 days"
@@ -196,7 +201,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 : "Last 90 days"}
             </button>
           ))}
-        </div>
+        </div> */}
         <div className="mt-4">
           <input
             type="text"
@@ -204,6 +209,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
             value={searchTerm}
             onChange={handleSearch}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label="Search transactions"
           />
         </div>
       </div>
@@ -215,13 +221,13 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
           vouchers={tokens}
         />
       )}
-      <div className="mt-4 bg-white shadow-lg rounded-lg p-4 ">
+      <div className="mt-4 bg-white shadow-lg rounded-lg p-4">
         {filteredTransactions.length === 0 ? (
           <div className="text-center py-8 flex items-center justify-center h-64">
             <p className="text-gray-500 text-lg">No transactions found</p>
           </div>
         ) : (
-          <div className="overflow-y-auto  max-h-96">
+          <div className="overflow-y-auto max-h-96">
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>
@@ -239,6 +245,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                   ].map((header) => (
                     <th
                       key={header}
+                      scope="col"
                       className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5 cursor-pointer"
                       onClick={() =>
                         requestSort(header.toLowerCase().replace(/ /g, ""))
@@ -247,19 +254,17 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       <div className="flex items-center">
                         {header}
                         {sortConfig?.key ===
-                        header.toLowerCase().replace(/ /g, "") ? (
-                          sortConfig.direction === "ascending" ? (
+                          header.toLowerCase().replace(/ /g, "") &&
+                          (sortConfig.direction === "ascending" ? (
                             <FaArrowDown className="ml-2" />
                           ) : (
                             <FaArrowUp className="ml-2" />
-                          )
-                        ) : null}
+                          ))}
                       </div>
                     </th>
                   ))}
                 </tr>
               </thead>
-
               <tbody>
                 {currentData.map((transaction) => (
                   <tr key={transaction.transactionId}>
@@ -270,10 +275,12 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       {truncateId(transaction.id)}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.transactionDate}
+                      {formatDate(transaction.transactionDate)}{" "}
+                      {/* Only date */}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.transactionTime}
+                      {formatTime(transaction.transactionDate)}{" "}
+                      {/* Only time */}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.transactionType}
@@ -282,9 +289,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       {transaction.amount}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.balance !== undefined
-                        ? transaction.balance
-                        : "-"}
+                      {transaction.balance ?? "-"}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.service}
@@ -316,12 +321,13 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 className="mr-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
+                aria-label="Previous page"
               >
                 <FaChevronLeft className="h-4 w-4" />
               </button>
-              {getPageNumbers().map((number) => (
+              {getPageNumbers.map((number, index) => (
                 <button
-                  key={number === "..." ? `ellipsis-${Math.random()}` : number}
+                  key={number === "..." ? `ellipsis-${index}` : number}
                   onClick={() =>
                     typeof number === "number" && handlePageChange(number)
                   }
@@ -330,6 +336,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       ? "bg-orange-400 text-white"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
+                  aria-label={`Go to page ${number}`}
                 >
                   {number}
                 </button>
@@ -338,6 +345,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className="ml-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
+                aria-label="Next page"
               >
                 <FaChevronRight className="h-4 w-4" />
               </button>
@@ -348,6 +356,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 value={itemsPerPage}
                 onChange={(e) => setItemsPerPage(Number(e.target.value))}
                 className="ml-2 rounded px-2 py-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Items per page"
               >
                 {[5, 10, 15, 20, 50, 100, 150].map((value) => (
                   <option key={value} value={value}>
