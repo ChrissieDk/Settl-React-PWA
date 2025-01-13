@@ -61,12 +61,18 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     direction: "ascending" | "descending";
   } | null>(null);
 
-  const formatDateTime = (dateString: string) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
+    return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -176,7 +182,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
             Redeem
           </button>
         </div>
-        <div className="mt-2 lg:mt-0">
+        {/* <div className="mt-2 lg:mt-0">
           {["last7days", "last30days", "last90days"].map((period) => (
             <button
               key={period}
@@ -195,7 +201,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                 : "Last 90 days"}
             </button>
           ))}
-        </div>
+        </div> */}
         <div className="mt-4">
           <input
             type="text"
@@ -269,10 +275,12 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       {truncateId(transaction.id)}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatDateTime(transaction.transactionDate)}
+                      {formatDate(transaction.transactionDate)}{" "}
+                      {/* Only date */}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.transactionTime}
+                      {formatTime(transaction.transactionDate)}{" "}
+                      {/* Only time */}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.transactionType}
