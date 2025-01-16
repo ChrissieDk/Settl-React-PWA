@@ -8,7 +8,9 @@ import successAnimation from "../../successAnimation.json";
 import failureAnimation from "../../failureAnimation.json";
 
 const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
-  const [merchantId, setMerchantId] = useState("TBUY64665380465");
+  const [merchantId, setMerchantId] = useState(
+    "b2b911a2-f8df-4e0e-9168-d5dada20786f"
+  );
   const [service, setService] = useState("");
   const [transactionAmount, setTransactionAmount] = useState("");
   const [voucherCode, setVoucherCode] = useState("");
@@ -21,7 +23,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   >("idle");
 
   // Sample data for dropdowns
-  const merchantIds = ["TBUY64665380465"];
+  const merchantIds = ["b2b911a2-f8df-4e0e-9168-d5dada20786f"];
   const services = ["GP", "Dentist", "Optometrist", "OTC"];
 
   useEffect(() => {
