@@ -2,10 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-// @ts-ignore
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { ThemeProvider } from "@material-tailwind/react";
-import "react-tooltip/dist/react-tooltip.css";
+import { BrowserRouter } from "react-router-dom";
 
 const rootElement = document.getElementById("root");
 
@@ -13,9 +10,9 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <ThemeProvider>
+      <BrowserRouter basename="Settl-React-PWA/">
         <App />
-      </ThemeProvider>
+      </BrowserRouter>
     </React.StrictMode>
   );
 } else {
@@ -25,4 +22,4 @@ if (rootElement) {
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   sendEmailVerification,
   signInWithEmailAndPassword,
+  signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase-config";
 import { NavLink, useNavigate } from "react-router-dom";
-import { signInWithPopup } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { login } from "../../Services/data.service";
@@ -18,6 +18,31 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Handle the redirect result after Google sign-in
+  // useEffect(() => {
+  //   const timer = setTimeout(async () => {
+  //     try {
+  //       console.log("Checking redirect result...");
+  //       const result = await getRedirectResult(auth);
+  //       if (result) {
+  //         console.log("Redirect result received:", result);
+  //         const user = result.user;
+  //         const idToken = await user.getIdToken();
+  //         console.log("ID Token:", idToken);
+  //         localStorage.setItem("bearer", idToken);
+  //         console.log("Bearer token saved to localStorage");
+  //         navigate("/Dashboard");
+  //       } else {
+  //         console.log("No redirect result found.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking redirect result:", error);
+  //     }
+  //   }, 1000);
+
+  //   return () => clearTimeout(timer);
+  // }, [navigate]);
+
   // Forgot password function
   const handleForgotPassword = (email: string) => {
     sendPasswordResetEmail(auth, email)
@@ -25,74 +50,34 @@ const Login = () => {
         alert("Password reset email sent! Check your inbox.");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode, errorMessage);
+        console.error("Error sending password reset email:", error);
         alert("Failed to send password reset email. Please try again.");
       });
   };
 
-  // Maybe change to signInWithRedirect to avoid error in console ?
   // Google login
   const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then(async (result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // Navigate to Dashboard or do something with the user info
-        user.getIdToken().then((idToken) => {
-          localStorage.setItem("bearer", idToken);
-          console.log("Bearer " + idToken);
-        });
-        const userSession = await login();
-        navigate("/Dashboard");
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.error(errorCode, errorMessage);
-      });
+    signInWithRedirect(auth, googleProvider).catch((error) => {
+      console.error("Error initiating Google sign-in:", error);
+    });
   };
-
   // Email / Password login
   const onLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        // Signed in
         const user = userCredential.user;
         user.getIdToken().then((idToken) => {
           localStorage.setItem("bearer", idToken);
           console.log("Bearer " + idToken);
         });
-        const userSession = await login();
+        await login();
         navigate("/Dashboard");
-        console.log(user);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        console.error("Error signing in with email and password:", error);
       });
   };
-
-  // const getUserIdLogin = async (firebaseId: string) => {
-  //   return getUserId(firebaseId)
-  //     .then((response) => {
-  //       console.log("User registered in the database:", response);
-  //     })
-  //     .catch((error) => {
-  //       throw error;
-  //     });
-  // };
 
   return (
     <>
@@ -107,7 +92,6 @@ const Login = () => {
             Welcome back!
           </h2>
 
-          {/* Google and Facebook Login Buttons */}
           <div className="flex flex-col items-center my-4">
             <button
               type="button"
@@ -117,17 +101,8 @@ const Login = () => {
               <FcGoogle size={20} className="mr-2" />
               Log in with Google
             </button>
-            {/* <button
-              type="button"
-              className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              onClick={signInWithFacebook}
-            >
-              <FaFacebookF size={20} className="mr-2 text-blue-600" />
-              Log in with Facebook
-            </button> */}
           </div>
 
-          {/* Horizontal Split with 'OR' */}
           <div className="flex items-center my-4">
             <div className="flex-grow border-t border-orange-500"></div>
             <span className="mx-4 text-gray-500">OR</span>
