@@ -27,14 +27,19 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     "idle" | "success" | "failure"
   >("idle");
 
-  // Dropdown-related states
+  // Dropdown-related states for merchants
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredMerchants, setFilteredMerchants] = useState(merchantIds);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Sample data for dropdowns
+  // Dropdown-related states for vouchers
+  const [voucherSearchTerm, setVoucherSearchTerm] = useState("");
+  const [filteredVouchers, setFilteredVouchers] = useState<Voucher[]>([]);
+  const [isVoucherDropdownOpen, setIsVoucherDropdownOpen] = useState(false);
+  const voucherDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Sample data for dropdowns
   const services = ["GP", "Dentist", "Optometrist", "OTC"];
 
   // Fetch vouchers
@@ -43,6 +48,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       try {
         const response = await getVouchers();
         setVouchers(response);
+        setFilteredVouchers(response); // Initialize filtered vouchers
       } catch (err) {
         console.error("Error fetching vouchers:", err);
         setError("Error fetching vouchers. Please try again later.");
@@ -63,14 +69,28 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     );
   }, [searchTerm]);
 
-  // Close dropdown when clicking outside
+  // Filter vouchers based on search term
+  useEffect(() => {
+    setFilteredVouchers(
+      vouchers.filter((voucher) =>
+        voucher.voucherCode
+          .toLowerCase()
+          .includes(voucherSearchTerm.toLowerCase())
+      )
+    );
+  }, [voucherSearchTerm, vouchers]);
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        voucherDropdownRef.current &&
+        !voucherDropdownRef.current.contains(event.target as Node)
       ) {
         setIsDropdownOpen(false);
+        setIsVoucherDropdownOpen(false);
       }
     };
 
@@ -94,14 +114,6 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     } else {
       setTransactionAmount("");
     }
-  };
-
-  const handleVoucherCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedVoucher = vouchers.find(
-      (v) => v.voucherCode === e.target.value
-    );
-    setVoucherCode(selectedVoucher?.voucherCode || "");
-    setVerificationCode(selectedVoucher?.verificationCode || "");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -173,6 +185,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       default:
         return (
           <form onSubmit={handleSubmit}>
+            {/* Merchant Dropdown (unchanged) */}
             <div className="mb-4">
               <label
                 htmlFor="merchantId"
@@ -181,19 +194,16 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 Merchant (Service Provider)
               </label>
               <div className="relative" ref={dropdownRef}>
-                {/* Custom Input Field */}
                 <input
                   type="text"
                   value={merchantId}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   readOnly
-                  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none   cursor-pointer"
+                  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none cursor-pointer"
                   placeholder="Select a merchant"
                 />
-                {/* Custom Dropdown */}
                 {isDropdownOpen && (
                   <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
-                    {/* Search Bar */}
                     <input
                       type="text"
                       placeholder="Search merchants..."
@@ -201,14 +211,13 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="w-full p-2 border-b border-gray-300 rounded-t-md focus:outline-none"
                     />
-                    {/* Merchant List */}
                     <div className="max-h-48 overflow-y-auto">
                       {filteredMerchants.map((merchant) => (
                         <div
                           key={merchant}
                           onClick={() => {
                             setMerchantId(merchant);
-                            setIsDropdownOpen(false); // Close dropdown after selection
+                            setIsDropdownOpen(false);
                           }}
                           className="p-2 hover:bg-gray-100 cursor-pointer rounded-md"
                         >
@@ -220,7 +229,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 )}
               </div>
             </div>
-            {/* Rest of the form remains unchanged */}
+
+            {/* Service Dropdown (unchanged) */}
             <div className="mb-4">
               <label
                 htmlFor="service"
@@ -243,6 +253,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 ))}
               </select>
             </div>
+
+            {/* Transaction Amount (unchanged) */}
             <div className="mb-4">
               <label
                 htmlFor="transactionAmount"
@@ -260,6 +272,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 required
               />
             </div>
+
+            {/* Voucher Code Dropdown (updated) */}
             <div className="mb-4">
               <label
                 htmlFor="voucherCode"
@@ -267,21 +281,51 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               >
                 Voucher Code
               </label>
-              <select
-                id="voucherCode"
-                value={voucherCode}
-                onChange={handleVoucherCodeChange}
-                className="border border-gray-300 rounded-md p-2 w-full"
-                required
-              >
-                <option value="">Select a voucher code</option>
-                {vouchers.map((voucher: Voucher) => (
-                  <option key={voucher.voucherCode} value={voucher.voucherCode}>
-                    {voucher.voucherCode} - R {voucher.balance / 100}
-                  </option>
-                ))}
-              </select>
+              <div className="relative" ref={voucherDropdownRef}>
+                {/* Custom Input Field */}
+                <input
+                  type="text"
+                  value={voucherCode}
+                  onClick={() =>
+                    setIsVoucherDropdownOpen(!isVoucherDropdownOpen)
+                  }
+                  readOnly
+                  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none cursor-pointer"
+                  placeholder="Select a voucher code"
+                />
+                {/* Custom Dropdown */}
+                {isVoucherDropdownOpen && (
+                  <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
+                    {/* Search Bar */}
+                    <input
+                      type="text"
+                      placeholder="Search vouchers..."
+                      value={voucherSearchTerm}
+                      onChange={(e) => setVoucherSearchTerm(e.target.value)}
+                      className="w-full p-2 border-b border-gray-300 rounded-t-md focus:outline-none"
+                    />
+                    {/* Voucher List */}
+                    <div className="max-h-48 overflow-y-auto">
+                      {filteredVouchers.map((voucher) => (
+                        <div
+                          key={voucher.voucherCode}
+                          onClick={() => {
+                            setVoucherCode(voucher.voucherCode);
+                            setVerificationCode(voucher.verificationCode || "");
+                            setIsVoucherDropdownOpen(false); // Close dropdown after selection
+                          }}
+                          className="p-2 hover:bg-gray-100 cursor-pointer rounded-md"
+                        >
+                          {voucher.voucherCode} - R {voucher.balance / 100}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Verification Code (unchanged) */}
             <div className="mb-4">
               <label
                 htmlFor="verificationCode"
@@ -299,6 +343,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 required
               />
             </div>
+
+            {/* Submit Button (unchanged) */}
             <div className="mt-6">
               <button
                 type="submit"
