@@ -205,7 +205,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
         <div className="mt-4">
           <input
             type="text"
-            placeholder="Search by date or service..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={handleSearch}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

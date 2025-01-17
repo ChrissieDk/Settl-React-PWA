@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { redeem, getVouchers } from "../../Services/data.service";
@@ -11,31 +11,41 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   const [merchantId, setMerchantId] = useState(
     "b2b911a2-f8df-4e0e-9168-d5dada20786f"
   );
+  const merchantIds = [
+    "b2b911a2-f8df-4e0e-9168-d5dada20786f",
+    "123",
+    "456",
+    "789",
+  ];
   const [service, setService] = useState("");
   const [transactionAmount, setTransactionAmount] = useState("");
   const [voucherCode, setVoucherCode] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [redeemStatus, setRedeemStatus] = useState<
     "idle" | "success" | "failure"
   >("idle");
 
+  // Dropdown-related states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredMerchants, setFilteredMerchants] = useState(merchantIds);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   // Sample data for dropdowns
-  const merchantIds = ["b2b911a2-f8df-4e0e-9168-d5dada20786f"];
+
   const services = ["GP", "Dentist", "Optometrist", "OTC"];
 
+  // Fetch vouchers
   useEffect(() => {
     const fetchVouchers = async () => {
       try {
         const response = await getVouchers();
         setVouchers(response);
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching vouchers:", err);
         setError("Error fetching vouchers. Please try again later.");
-        setLoading(false);
       }
     };
 
@@ -44,9 +54,31 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  const handleMerchantIdChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMerchantId(e.target.value);
-  };
+  // Filter merchants based on search term
+  useEffect(() => {
+    setFilteredMerchants(
+      merchantIds.filter((merchant) =>
+        merchant.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setService(e.target.value);
@@ -146,22 +178,49 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 htmlFor="merchantId"
                 className="block text-sm font-semibold mb-2 text-gray-700"
               >
-                Merchant ( Service Provider )
+                Merchant (Service Provider)
               </label>
-              <select
-                id="merchantId"
-                value={merchantId}
-                onChange={handleMerchantIdChange}
-                className="border border-gray-300 rounded-md p-2 w-full"
-                required
-              >
-                {merchantIds.map((id) => (
-                  <option key={id} value={id}>
-                    {id}
-                  </option>
-                ))}
-              </select>
+              <div className="relative" ref={dropdownRef}>
+                {/* Custom Input Field */}
+                <input
+                  type="text"
+                  value={merchantId}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  readOnly
+                  className="border border-gray-300 rounded-md p-2 w-full focus:outline-none   cursor-pointer"
+                  placeholder="Select a merchant"
+                />
+                {/* Custom Dropdown */}
+                {isDropdownOpen && (
+                  <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
+                    {/* Search Bar */}
+                    <input
+                      type="text"
+                      placeholder="Search merchants..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full p-2 border-b border-gray-300 rounded-t-md focus:outline-none"
+                    />
+                    {/* Merchant List */}
+                    <div className="max-h-48 overflow-y-auto">
+                      {filteredMerchants.map((merchant) => (
+                        <div
+                          key={merchant}
+                          onClick={() => {
+                            setMerchantId(merchant);
+                            setIsDropdownOpen(false); // Close dropdown after selection
+                          }}
+                          className="p-2 hover:bg-gray-100 cursor-pointer rounded-md"
+                        >
+                          {merchant}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
+            {/* Rest of the form remains unchanged */}
             <div className="mb-4">
               <label
                 htmlFor="service"
@@ -254,9 +313,6 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   };
 
   if (!isOpen) return null;
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="p-2 fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full z-10 flex justify-center items-center">
