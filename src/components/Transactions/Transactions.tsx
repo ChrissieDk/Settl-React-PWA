@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import RedeemModal from "../RedeemModal/RedeemModal";
 import {
   FaArrowDown,
   FaChevronLeft,
@@ -8,6 +7,7 @@ import {
 } from "react-icons/fa6";
 import { getTransactions } from "../../Services/data.service";
 import { tableTransactions } from "../../types/Types";
+import RedeemModal from "../RedeemModal/RedeemModal";
 
 interface TransactionsTabProps {
   transactions: tableTransactions[];
@@ -160,7 +160,11 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     }
     return pageNumbers;
   }, [currentPage, totalPages]);
+
+  // Fetch transactions only when the selectedTab changes to "transactions"
   useEffect(() => {
+    if (selectedTab !== "transactions") return; // Only run for the transactions tab
+
     const fetchTransactions = async () => {
       try {
         const response = await getTransactions();
@@ -171,34 +175,17 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
       }
     };
 
-    if (selectedTab === "transactions") {
-      fetchTransactions();
-    }
-  }, [selectedTab, updateTransactions]);
+    fetchTransactions();
+
+    // Optional: Add a cleanup function if needed
+    return () => {
+      console.log("Cleaning up transactions fetch");
+    };
+  }, [selectedTab]); // Only depend on selectedTab
 
   return (
     <div>
       <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
-        {/* <div className="mt-2 lg:mt-0">
-          {["last7days", "last30days", "last90days"].map((period) => (
-            <button
-              key={period}
-              className={`text-sm ${
-                selectedTimePeriod === period ? "bg-orange-400" : "bg-gray-300"
-              } hover:bg-orange-500 text-white font-bold py-2 px-4 rounded ${
-                period !== "last7days" ? "ml-2" : ""
-              }`}
-              onClick={() => handleTimePeriodChange(period)}
-              aria-label={`Show ${period}`}
-            >
-              {period === "last7days"
-                ? "Last 7 days"
-                : period === "last30days"
-                ? "Last 30 days"
-                : "Last 90 days"}
-            </button>
-          ))}
-        </div> */}
         <div className="mt-4">
           <input
             type="text"
@@ -272,12 +259,10 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       {truncateId(transaction.id)}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatDate(transaction.transactionDate)}{" "}
-                      {/* Only date */}
+                      {formatDate(transaction.transactionDate)}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatTime(transaction.transactionDate)}{" "}
-                      {/* Only time */}
+                      {formatTime(transaction.transactionDate)}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.transactionType}
