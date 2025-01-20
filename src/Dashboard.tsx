@@ -71,6 +71,9 @@ const Dashboard: React.FC = () => {
       icon: <BiTransfer size={20} />,
     },
   ];
+  const updateTransactions = (newTransactions: tableTransactions[]) => {
+    setTransactions(newTransactions);
+  };
 
   // Responsive sidebar handling
   useEffect(() => {
@@ -358,6 +361,8 @@ const Dashboard: React.FC = () => {
               closeModal={closeModal}
               handleTimePeriodChange={handleTimePeriodChange}
               selectedTimePeriod={selectedTimePeriod}
+              selectedTab={selectedTab}
+              updateTransactions={updateTransactions}
             />
           )}
           {selectedTab === "load" && (

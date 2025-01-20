@@ -16,6 +16,8 @@ interface TransactionsTabProps {
   closeModal: () => void;
   handleTimePeriodChange: (period: string) => void;
   selectedTimePeriod: string;
+  selectedTab: string;
+  updateTransactions: (transactions: tableTransactions[]) => void;
 }
 
 const StatusPill = React.memo(({ status }: { status: string }) => {
@@ -50,6 +52,8 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   tokens,
   handleTimePeriodChange,
   selectedTimePeriod,
+  selectedTab,
+  updateTransactions,
 }) => {
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState("");
@@ -156,19 +160,21 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     }
     return pageNumbers;
   }, [currentPage, totalPages]);
-
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const response = await getTransactions();
         console.log("Transactions fetched:", response);
+        updateTransactions(response);
       } catch (error) {
         console.error("Error fetching transactions:", error);
       }
     };
 
-    fetchTransactions();
-  }, []);
+    if (selectedTab === "transactions") {
+      fetchTransactions();
+    }
+  }, [selectedTab, updateTransactions]);
 
   return (
     <div>
@@ -205,7 +211,7 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
         <div className="mt-4">
           <input
             type="text"
-            placeholder="Search by date or service..."
+            placeholder="Search..."
             value={searchTerm}
             onChange={handleSearch}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
