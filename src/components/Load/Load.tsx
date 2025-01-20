@@ -22,10 +22,9 @@ const Load: React.FC<LoadProps> = ({
   tokens,
   circleImages,
   circleTexts,
-
   setSelectedToken,
 }) => {
-  const [amount, setAmount] = useState<number>(0);
+  const [amountInRands, setAmountInRands] = useState<number | "">(""); // State for amount in rands (empty by default)
   const [selectedToken, setSelectedTokenState] = useState<string | null>(null);
   const [activeText, setActiveText] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
@@ -91,12 +90,16 @@ const Load: React.FC<LoadProps> = ({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!selectedToken) {
-      console.log("No token selected");
+    if (!selectedToken || amountInRands === "") {
+      console.log("No token selected or amount is empty");
       return;
     }
+
+    // Convert amount from rands to cents
+    const amountInCents = Number(amountInRands) * 100;
+
     try {
-      const orderResponse = await createOrder(amount);
+      const orderResponse = await createOrder(amountInCents); // Send amount in cents
       console.log("Order created:", orderResponse);
       const authResponse = await initiateAuthenticateToken(
         selectedToken,
@@ -116,6 +119,20 @@ const Load: React.FC<LoadProps> = ({
       console.error("Error processing order:", error);
       setPaymentStatus("failure");
       setTimeout(() => setPaymentStatus("idle"), 3000);
+    }
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Allow empty input or valid numbers
+    if (value === "") {
+      setAmountInRands("");
+    } else {
+      const numericValue = parseFloat(value);
+      if (!isNaN(numericValue) && numericValue >= 0) {
+        setAmountInRands(numericValue);
+      }
     }
   };
 
@@ -180,15 +197,16 @@ const Load: React.FC<LoadProps> = ({
                 htmlFor="amount"
                 className="block text-md font-paragraph text-black mb-1 text-left"
               >
-                Amount
+                Amount (Rands)
               </label>
               <input
                 type="number"
                 id="amount"
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
+                value={amountInRands}
+                onChange={handleAmountChange}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                min="0" // Ensure the input is non-negative
               />
             </div>
             <div>
