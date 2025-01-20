@@ -179,15 +179,6 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   return (
     <div>
       <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
-        <div>
-          <button
-            onClick={() => openRedeemModal("redeem")}
-            className="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            aria-label="Redeem"
-          >
-            Redeem
-          </button>
-        </div>
         {/* <div className="mt-2 lg:mt-0">
           {["last7days", "last30days", "last90days"].map((period) => (
             <button

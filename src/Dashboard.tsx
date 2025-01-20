@@ -22,6 +22,7 @@ import { BiTransfer } from "react-icons/bi";
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
+import RedeemModal from "./components/RedeemModal/RedeemModal";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
@@ -44,6 +45,7 @@ const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<tableTransactions[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
 
   const circleTexts = [
     "Secure Payments.",
@@ -55,6 +57,11 @@ const Dashboard: React.FC = () => {
 
   const navItems = [
     { id: "load", label: "Load", icon: <IoWalletOutline size={20} /> },
+    {
+      id: "redeem",
+      label: "Redeem",
+      icon: <MdOutlineConfirmationNumber size={20} />,
+    },
     {
       id: "vouchers",
       label: "Vouchers",
@@ -205,6 +212,16 @@ const Dashboard: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  // Open Redeem Modal
+  const openRedeemModal = () => {
+    setIsRedeemModalOpen(true);
+  };
+
+  // Close Redeem Modal
+  const closeRedeemModal = () => {
+    setIsRedeemModalOpen(false);
+  };
+
   return (
     <div className="flex h-screen bg-gray-200">
       {/* Mobile Overlay */}
@@ -248,7 +265,11 @@ const Dashboard: React.FC = () => {
             <button
               key={id}
               onClick={() => {
-                setSelectedTab(id);
+                if (id === "redeem") {
+                  openRedeemModal(); // Open RedeemModal for the "redeem" option
+                } else {
+                  setSelectedTab(id); // Handle other tabs as usual
+                }
                 if (isMobile) setIsSidebarOpen(false);
               }}
               className={`
@@ -383,6 +404,12 @@ const Dashboard: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         tokens={tokens}
+      />
+      <RedeemModal
+        isOpen={isRedeemModalOpen}
+        onClose={closeRedeemModal}
+        vouchers={vouchers}
+        action="redeem"
       />
     </div>
   );
