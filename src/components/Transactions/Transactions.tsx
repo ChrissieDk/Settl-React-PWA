@@ -16,6 +16,8 @@ interface TransactionsTabProps {
   closeModal: () => void;
   handleTimePeriodChange: (period: string) => void;
   selectedTimePeriod: string;
+  selectedTab: string;
+  updateTransactions: (transactions: tableTransactions[]) => void;
 }
 
 const StatusPill = React.memo(({ status }: { status: string }) => {
@@ -50,6 +52,8 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   tokens,
   handleTimePeriodChange,
   selectedTimePeriod,
+  selectedTab,
+  updateTransactions,
 }) => {
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState("");
@@ -156,19 +160,21 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     }
     return pageNumbers;
   }, [currentPage, totalPages]);
-
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const response = await getTransactions();
         console.log("Transactions fetched:", response);
+        updateTransactions(response);
       } catch (error) {
         console.error("Error fetching transactions:", error);
       }
     };
 
-    fetchTransactions();
-  }, []);
+    if (selectedTab === "transactions") {
+      fetchTransactions();
+    }
+  }, [selectedTab, updateTransactions]);
 
   return (
     <div>
