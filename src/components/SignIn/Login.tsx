@@ -34,54 +34,65 @@ const Login = () => {
 
   // Maybe change to signInWithRedirect to avoid error in console ?
   // Google login
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then(async (result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // Navigate to Dashboard or do something with the user info
-        user.getIdToken().then((idToken) => {
-          localStorage.setItem("bearer", idToken);
-          console.log("Bearer " + idToken);
-        });
-        const userSession = await login();
-        navigate("/Dashboard");
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.error(errorCode, errorMessage);
-      });
+  const signInWithGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      const idToken = await user.getIdToken();
+      localStorage.setItem("bearer", idToken);
+      console.log("Bearer " + idToken);
+
+      await login(); // Ensure this completes before navigating
+      navigate("/Dashboard");
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, errorMessage);
+    }
   };
 
   // Email / Password login
-  const onLogin = (e: { preventDefault: () => void }) => {
+  // const onLogin = (e: { preventDefault: () => void }) => {
+  //   e.preventDefault();
+  //   signInWithEmailAndPassword(auth, email, password)
+  //     .then(async (userCredential) => {
+  //       // Signed in
+  //       const user = userCredential.user;
+  //       user.getIdToken().then((idToken) => {
+  //         localStorage.setItem("bearer", idToken);
+  //         console.log("Bearer " + idToken);
+  //       });
+  //       const userSession = await login();
+  //       navigate("/Dashboard");
+  //       console.log(user);
+  //     })
+  //     .catch((error) => {
+  //       const errorCode = error.code;
+  //       const errorMessage = error.message;
+  //       console.log(errorCode, errorMessage);
+  //     });
+  // };
+  const onLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        user.getIdToken().then((idToken) => {
-          localStorage.setItem("bearer", idToken);
-          console.log("Bearer " + idToken);
-        });
-        const userSession = await login();
-        navigate("/Dashboard");
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      const idToken = await user.getIdToken();
+      localStorage.setItem("bearer", idToken);
+      console.log("Bearer " + idToken);
+
+      await login(); // Ensure this completes before navigating
+      navigate("/Dashboard");
+      console.log(user);
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+    }
   };
 
   // const getUserIdLogin = async (firebaseId: string) => {
