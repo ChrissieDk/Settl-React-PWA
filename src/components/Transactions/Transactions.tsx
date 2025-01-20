@@ -268,10 +268,14 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
                       {transaction.transactionType}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.amount}
+                      {(transaction.amount / 100).toFixed(2)}{" "}
+                      {/* Convert cents to rands */}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.balance ?? "-"}
+                      {transaction.balance
+                        ? (transaction.balance / 100).toFixed(2)
+                        : "-"}{" "}
+                      {/* Convert cents to rands */}
                     </td>
                     <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
                       {transaction.service}
