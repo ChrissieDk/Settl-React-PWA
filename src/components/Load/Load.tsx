@@ -16,7 +16,8 @@ interface LoadProps {
   circleTexts: string[];
   setTokens: React.Dispatch<React.SetStateAction<Token[]>>;
   setSelectedToken: React.Dispatch<React.SetStateAction<string | null>>;
-  setSelectedTab: (tab: string) => void; // Add this prop to handle tab navigation
+  setSelectedTab: (tab: string) => void; // For navigating to the "Vouchers" tab
+  openRedeemModal: () => void; // Add this prop to open the Redeem modal
 }
 
 const Load: React.FC<LoadProps> = ({
@@ -24,7 +25,8 @@ const Load: React.FC<LoadProps> = ({
   circleImages,
   circleTexts,
   setSelectedToken,
-  setSelectedTab, // Destructure the new prop
+  setSelectedTab,
+  openRedeemModal, // Destructure the new prop
 }) => {
   const [amountInRands, setAmountInRands] = useState<number | "">(""); // State for amount in rands (empty by default)
   const [selectedToken, setSelectedTokenState] = useState<string | null>(null);
@@ -198,8 +200,8 @@ const Load: React.FC<LoadProps> = ({
               </button>
               <button
                 onClick={() => {
-                  setSelectedTab("redeem"); // Navigate to Redeem tab
-                  resetForm(); // Reset the form after navigation
+                  openRedeemModal(); // Open the Redeem modal
+                  resetForm(); // Reset the form after opening the modal
                 }}
                 className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
               >

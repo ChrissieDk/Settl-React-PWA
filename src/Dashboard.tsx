@@ -394,6 +394,7 @@ const Dashboard: React.FC = () => {
               setTokens={setTokens}
               setSelectedToken={setSelectedToken}
               setSelectedTab={setSelectedTab}
+              openRedeemModal={openRedeemModal}
             />
           )}
           {selectedTab === "vouchers" && <Vouchers />}
