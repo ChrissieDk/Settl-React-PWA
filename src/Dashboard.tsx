@@ -393,6 +393,7 @@ const Dashboard: React.FC = () => {
               circleTexts={circleTexts}
               setTokens={setTokens}
               setSelectedToken={setSelectedToken}
+              setSelectedTab={setSelectedTab}
             />
           )}
           {selectedTab === "vouchers" && <Vouchers />}

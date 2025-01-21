@@ -16,6 +16,7 @@ interface LoadProps {
   circleTexts: string[];
   setTokens: React.Dispatch<React.SetStateAction<Token[]>>;
   setSelectedToken: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedTab: (tab: string) => void; // Add this prop to handle tab navigation
 }
 
 const Load: React.FC<LoadProps> = ({
@@ -23,6 +24,7 @@ const Load: React.FC<LoadProps> = ({
   circleImages,
   circleTexts,
   setSelectedToken,
+  setSelectedTab, // Destructure the new prop
 }) => {
   const [amountInRands, setAmountInRands] = useState<number | "">(""); // State for amount in rands (empty by default)
   const [selectedToken, setSelectedTokenState] = useState<string | null>(null);
@@ -169,7 +171,7 @@ const Load: React.FC<LoadProps> = ({
         );
       case "success":
         return (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center space-y-4">
             <Lottie
               animationData={successAnimation}
               style={{ width: 200, height: 200 }}
@@ -177,6 +179,23 @@ const Load: React.FC<LoadProps> = ({
             <p className="text-xl font-semibold text-green-600">
               Payment Successful!
             </p>
+            <p className="text-md text-gray-600">
+              Your voucher has been generated successfully.
+            </p>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => setSelectedTab("vouchers")}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              >
+                View Vouchers
+              </button>
+              <button
+                onClick={() => setSelectedTab("redeem")}
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
+              >
+                Redeem Voucher
+              </button>
+            </div>
           </div>
         );
       case "failure":
