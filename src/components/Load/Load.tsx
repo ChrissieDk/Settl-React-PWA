@@ -76,11 +76,11 @@ const Load: React.FC<LoadProps> = ({
       const paymentResponse = await payment(jsonData.echoData);
       console.log("Payment request:", paymentResponse);
       if (paymentResponse.responseCode === "00") {
-        setPaymentStatus("success");
+        setPaymentStatus("success"); // Success state will persist until user interacts
       } else {
         setPaymentStatus("failure");
+        setTimeout(() => setPaymentStatus("idle"), 3000); // Failure state still resets after 3 seconds
       }
-      setTimeout(() => setPaymentStatus("idle"), 3000);
     } catch (error) {
       console.error("Error processing payment:", error);
       setPaymentStatus("failure");
@@ -155,6 +155,10 @@ const Load: React.FC<LoadProps> = ({
     return () => clearInterval(intervalId);
   }, []);
 
+  const resetForm = () => {
+    setPaymentStatus("idle"); // Reset to the default form state
+  };
+
   const renderContent = () => {
     switch (paymentStatus) {
       case "processing":
@@ -184,13 +188,19 @@ const Load: React.FC<LoadProps> = ({
             </p>
             <div className="flex space-x-4">
               <button
-                onClick={() => setSelectedTab("vouchers")}
+                onClick={() => {
+                  setSelectedTab("vouchers"); // Navigate to Vouchers tab
+                  resetForm(); // Reset the form after navigation
+                }}
                 className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
               >
                 View Vouchers
               </button>
               <button
-                onClick={() => setSelectedTab("redeem")}
+                onClick={() => {
+                  setSelectedTab("redeem"); // Navigate to Redeem tab
+                  resetForm(); // Reset the form after navigation
+                }}
                 className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
               >
                 Redeem Voucher
