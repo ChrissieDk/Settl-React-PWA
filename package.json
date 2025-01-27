@@ -6,6 +6,7 @@
   "dependencies": {
     "@googlemaps/markerclusterer": "^2.5.3",
     "@material-tailwind/react": "^2.1.8",
+    "@microsoft/signalr": "^8.0.7",
     "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

@@ -219,3 +219,17 @@ export const getTransactions = async () => {
     throw error;
   }
 };
+
+// https://localhost:7183/api/redemption/otp
+export const getOTP = async (testOtp: any) => {
+  try {
+    const response = await axiosInstance.post(
+      "/payment/redemption/otp",
+      testOtp
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error getting OTP:", error);
+    throw error;
+  }
+};
