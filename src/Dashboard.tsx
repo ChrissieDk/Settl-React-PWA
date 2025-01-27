@@ -23,6 +23,7 @@ import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
+import { useSignalR } from "./hooks/signalR/useSignalR";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
@@ -46,6 +47,9 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
+  const { connectionState, messages, sendMessage } = useSignalR(
+    "https://localhost:7183/otpHub"
+  );
 
   const circleTexts = [
     "Secure Payments.",

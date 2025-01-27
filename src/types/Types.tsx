@@ -120,3 +120,23 @@ export interface Voucher {
   pluName: string;
   createdDate: string;
 }
+
+export interface SignalRMessage {
+  user: string;
+  message: string;
+  timestamp: Date;
+}
+
+export type ConnectionState =
+  | "connecting"
+  | "connected"
+  | "reconnecting"
+  | "disconnected"
+  | "error";
+
+export interface UseSignalRReturn {
+  connectionState: ConnectionState;
+  messages: { user: string; message: string; timestamp: Date }[];
+  sendMessage: (methodName: string, ...args: any[]) => Promise<void>;
+  error: boolean;
+}
