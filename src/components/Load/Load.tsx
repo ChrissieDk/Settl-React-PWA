@@ -28,9 +28,9 @@ const Load: React.FC<LoadProps> = ({
   circleTexts,
   setSelectedToken,
   setSelectedTab,
-  openRedeemModal, // Destructure the new prop
+  openRedeemModal,
 }) => {
-  const [amountInRands, setAmountInRands] = useState<number | "">(""); // State for amount in rands (empty by default)
+  const [amountInRands, setAmountInRands] = useState<number | "">("");
   const [selectedToken, setSelectedTokenState] = useState<string | null>(null);
   const [activeText, setActiveText] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
@@ -45,26 +45,23 @@ const Load: React.FC<LoadProps> = ({
   // test data for otp
 
   //OTP TEST
-  // useEffect(() => {
-  //   let testOtp = {
-  //     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
-  //     Service: "Dentist",
-  //     transactionAmount: 9000,
-  //     vouchers: [
-  //       {
-  //         voucherCode: "6789019725052082",
-  //         verificationCode: "4455",
-  //       },
-  //     ],
-  //   };
-  //   const intervalId = setInterval(() => {
-  //     getOTP(testOtp).then((response) => {
-  //       console.log("OTP response:", response);
-  //     });
-  //   }, 5000);
+  useEffect(() => {
+    let testOtp = {
+      MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
+      Service: "Dentist",
+      transactionAmount: 9000,
+      vouchers: [
+        {
+          voucherCode: "6789019725052082",
+          verificationCode: "4455",
+        },
+      ],
+    };
 
-  //   return () => clearInterval(intervalId);
-  // }, []);
+    getOTP(testOtp).then((response) => {
+      console.log("OTP response:", response);
+    });
+  }, []);
 
   useEffect(() => {
     const url = window.location.href;
@@ -214,18 +211,16 @@ const Load: React.FC<LoadProps> = ({
             <p className="text-xl font-semibold text-green-600">
               Payment Successful!
             </p>
-            <p className="text-md text-gray-600">
-              Your voucher has been generated successfully.
-            </p>
+            <p className="text-md text-gray-600">Vault has been loaded!</p>
             <div className="flex space-x-4">
               <button
                 onClick={() => {
-                  setSelectedTab("vouchers"); // Navigate to Vouchers tab
+                  setSelectedTab("healthVault");
                   resetForm(); // Reset the form after navigation
                 }}
                 className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
               >
-                View Vouchers
+                View Health Vault
               </button>
               <button
                 onClick={() => {

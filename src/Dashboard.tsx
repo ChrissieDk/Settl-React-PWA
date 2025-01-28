@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { tableTransactions, Voucher } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import TransactionsTab from "./components/Transactions/Transactions";
+import { AuthContext, useAuth } from "./Auth/AuthContext";
 import {
   initiateIssueToken,
   listTokens,
@@ -27,7 +28,10 @@ import { useSignalR } from "./hooks/signalR/useSignalR";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
-  const [selectedTab, setSelectedTab] = useState("load");
+  const { isMerchant, loading: authLoading } = useAuth();
+  const [selectedTab, setSelectedTab] = useState(
+    isMerchant ? "transactions" : "load"
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -59,32 +63,46 @@ const Dashboard: React.FC = () => {
 
   const circleImages = [blurredBird, phone, placeholder];
 
-  const navItems = [
-    { id: "load", label: "Load", icon: <IoWalletOutline size={20} /> },
-    {
-      id: "redeem",
-      label: "Redeem",
-      icon: <MdOutlineConfirmationNumber size={20} />,
-    },
-    {
-      id: "vouchers",
-      label: "Vouchers",
-      icon: <MdOutlineConfirmationNumber size={20} />,
-    },
-    {
-      id: "healthVault",
-      label: "Health Vault",
-      icon: <MdHealthAndSafety size={20} />,
-    },
-    {
-      id: "transactions",
-      label: "Transactions",
-      icon: <BiTransfer size={20} />,
-    },
-  ];
+  const navItems = isMerchant
+    ? [
+        {
+          id: "transactions",
+          label: "Transactions",
+          icon: <BiTransfer size={20} />,
+        },
+      ]
+    : [
+        { id: "load", label: "Load", icon: <IoWalletOutline size={20} /> },
+        {
+          id: "redeem",
+          label: "Redeem",
+          icon: <MdOutlineConfirmationNumber size={20} />,
+        },
+        {
+          id: "vouchers",
+          label: "Vouchers",
+          icon: <MdOutlineConfirmationNumber size={20} />,
+        },
+        {
+          id: "healthVault",
+          label: "Health Vault",
+          icon: <MdHealthAndSafety size={20} />,
+        },
+        {
+          id: "transactions",
+          label: "Transactions",
+          icon: <BiTransfer size={20} />,
+        },
+      ];
   const updateTransactions = (newTransactions: tableTransactions[]) => {
     setTransactions(newTransactions);
   };
+
+  useEffect(() => {
+    if (isMerchant && selectedTab !== "transactions") {
+      setSelectedTab("transactions");
+    }
+  }, [selectedTab, isMerchant]);
 
   // Responsive sidebar handling
   useEffect(() => {
@@ -305,18 +323,22 @@ const Dashboard: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="p-4 border-t space-y-2">
-          <button
-            className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors"
-            onClick={addCardRedirect}
-          >
-            Add Card
-          </button>
-          <button
-            className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors"
-            onClick={handleButtonClick}
-          >
-            My Cards
-          </button>
+          {!isMerchant && (
+            <>
+              <button
+                className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors"
+                onClick={addCardRedirect}
+              >
+                Add Card
+              </button>
+              <button
+                className="w-full bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition-colors"
+                onClick={handleButtonClick}
+              >
+                My Cards
+              </button>
+            </>
+          )}
         </div>
       </aside>
 

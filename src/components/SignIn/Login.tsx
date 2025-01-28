@@ -42,7 +42,11 @@ const Login = () => {
       localStorage.setItem("bearer", idToken);
       console.log("Bearer " + idToken);
 
-      await login(); // Ensure this completes before navigating
+      const loginResponse = await login();
+      localStorage.setItem(
+        "userIsMerchant",
+        loginResponse.userIsMerchant.toString()
+      );
       navigate("/Dashboard");
     } catch (error: any) {
       const errorCode = error.code;
@@ -85,7 +89,11 @@ const Login = () => {
       localStorage.setItem("bearer", idToken);
       console.log("Bearer " + idToken);
 
-      await login(); // Ensure this completes before navigating
+      const loginResponse = await login();
+      localStorage.setItem(
+        "userIsMerchant",
+        loginResponse.userIsMerchant.toString()
+      );
       navigate("/Dashboard");
       console.log(user);
     } catch (error: any) {

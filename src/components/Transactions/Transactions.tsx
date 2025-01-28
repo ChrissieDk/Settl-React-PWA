@@ -168,7 +168,6 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     const fetchTransactions = async () => {
       try {
         const response = await getTransactions();
-        console.log("Transactions fetched:", response);
         updateTransactions(response);
       } catch (error) {
         console.error("Error fetching transactions:", error);
@@ -178,9 +177,9 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     fetchTransactions();
 
     // Optional: Add a cleanup function if needed
-    return () => {
-      console.log("Cleaning up transactions fetch");
-    };
+    // return () => {
+    //   console.log("Cleaning up transactions fetch");
+    // };
   }, [selectedTab]); // Only depend on selectedTab
 
   return (
