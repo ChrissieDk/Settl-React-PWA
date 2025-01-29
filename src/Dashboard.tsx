@@ -304,9 +304,11 @@ const Dashboard: React.FC = () => {
               key={id}
               onClick={() => {
                 if (id === "redeem") {
-                  openRedeemModal(); // Open RedeemModal for the "redeem" option
+                  openRedeemModal();
+                } else if (id === "otp-redemption") {
+                  openOTPModal();
                 } else {
-                  setSelectedTab(id); // Handle other tabs as usual
+                  setSelectedTab(id);
                 }
                 if (isMobile) setIsSidebarOpen(false);
               }}
