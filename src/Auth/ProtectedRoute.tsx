@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import { LoadingSpinner } from "../components/LoadingSpinner/LoadingSpinner";
+import { LoadingSpinner } from "../components/loadingSpinner/LoadingSpinner";
 
 export const ProtectedRoute: React.FC<PropsWithChildren<{}>> = ({
   children,
