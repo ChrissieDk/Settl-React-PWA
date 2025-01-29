@@ -24,6 +24,7 @@ import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
+import OTPRedemptionModal from "./components/OTPRedemption/OTPRedemption";
 import { useSignalR } from "./hooks/signalR/useSignalR";
 
 const Dashboard: React.FC = () => {
@@ -36,6 +37,7 @@ const Dashboard: React.FC = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   // Existing State
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState("last7days");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<string>("");
@@ -51,9 +53,9 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
-  const { connectionState, messages, sendMessage } = useSignalR(
-    "https://localhost:7183/otpHub"
-  );
+  // const { connectionState, messages, sendMessage } = useSignalR(
+  //   "https://localhost:7183/otpHub"
+  // );
 
   const circleTexts = [
     "Secure Payments.",
@@ -69,6 +71,11 @@ const Dashboard: React.FC = () => {
           id: "transactions",
           label: "Transactions",
           icon: <BiTransfer size={20} />,
+        },
+        {
+          id: "otp-redemption",
+          label: "OTP Redemption",
+          icon: <MdHealthAndSafety size={20} />,
         },
       ]
     : [
@@ -190,6 +197,13 @@ const Dashboard: React.FC = () => {
     fetchTransactions();
   }, []);
 
+  const openOTPModal = () => {
+    setIsOtpModalOpen(true);
+  };
+  const closeOTPModal = () => {
+    setIsOtpModalOpen(false);
+  };
+
   // Calculations
   const validTotalBalance =
     typeof totalBalance === "number" && !isNaN(totalBalance) ? totalBalance : 0;
@@ -224,6 +238,8 @@ const Dashboard: React.FC = () => {
     if (action === "redeem") {
       setTokenModalOpen(true);
       setSelectedAction(action);
+    } else if (action === "otp-redemption") {
+      openOTPModal();
     } else {
       setIsModalOpen(true);
     }
@@ -439,6 +455,7 @@ const Dashboard: React.FC = () => {
         vouchers={vouchers}
         action="redeem"
       />
+      <OTPRedemptionModal isOpen={isOtpModalOpen} onClose={closeOTPModal} />
     </div>
   );
 };

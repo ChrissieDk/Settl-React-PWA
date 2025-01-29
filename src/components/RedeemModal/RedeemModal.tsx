@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { MdClose, MdInfoOutline } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { redeem, getVouchers } from "../../Services/data.service";
+import { redeem, getVouchers, getOTP } from "../../Services/data.service";
 import { TokenModalProps, Voucher } from "../../types/Types";
 import Lottie from "lottie-react";
 import successAnimation from "../../successAnimation.json";
@@ -115,6 +115,59 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       setTransactionAmount("");
     }
   };
+  // const handleSubmitTest = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const payload = {
+  //     MerchantId: merchantId,
+  //     Service: service,
+  //     transactionAmount: parseInt(transactionAmount, 10),
+  //     vouchers: [
+  //       {
+  //         voucherCode: voucherCode,
+  //         verificationCode: verificationCode,
+  //       },
+  //     ],
+  //   };
+
+  //   try {
+  //     const response = await redeem(payload);
+  //     console.log("Redeem response:", response);
+  //     if (response.responseCode === "00") {
+  //       setRedeemStatus("success");
+  //     } else {
+  //       setRedeemStatus("failure");
+  //     }
+  //     // Don't close the modal immediately to show the animation
+  //     setTimeout(() => {
+  //       onClose();
+  //       setRedeemStatus("idle");
+  //     }, 3000);
+  //   } catch (error) {
+  //     console.error("Error redeeming voucher:", error);
+  //     setRedeemStatus("failure");
+  //     setTimeout(() => {
+  //       setRedeemStatus("idle");
+  //     }, 3000);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   let testOtp = {
+  //     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
+  //     Service: "Dentist",
+  //     transactionAmount: 9000,
+  //     vouchers: [
+  //       {
+  //         voucherCode: "6789019725052082",
+  //         verificationCode: "4455",
+  //       },
+  //     ],
+  //   };
+
+  //   getOTP(testOtp).then((response) => {
+  //     console.log("OTP response:", response);
+  //   });
+  // }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,14 +184,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await redeem(payload);
-      console.log("Redeem response:", response);
-      if (response.responseCode === "00") {
-        setRedeemStatus("success");
-      } else {
-        setRedeemStatus("failure");
-      }
-      // Don't close the modal immediately to show the animation
+      const response = await getOTP(payload);
+      console.log("OTP response:", response);
       setTimeout(() => {
         onClose();
         setRedeemStatus("idle");
@@ -350,7 +397,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 type="submit"
                 className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-xl font-paragraph text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
               >
-                Redeem Token
+                Generate OTP
               </button>
             </div>
           </form>
@@ -434,3 +481,11 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
 };
 
 export default RedeemModal;
+function getOtp(payload: {
+  MerchantId: string;
+  Service: string;
+  transactionAmount: number;
+  vouchers: { voucherCode: string; verificationCode: string }[];
+}) {
+  throw new Error("Function not implemented.");
+}
