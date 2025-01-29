@@ -25,7 +25,7 @@ import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
 import OTPRedemptionModal from "./components/OTPRedemption/OTPRedemption";
-import { useSignalR } from "./hooks/signalR/useSignalR";
+import SignalRservice from "./Services/SignalRservice";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   // const { connectionState, messages, sendMessage } = useSignalR(
-  //   "https://localhost:7183/otpHub"
+  //   "https://settl-api.azurewebsites.net/otphub"
   // );
 
   const circleTexts = [
@@ -101,6 +101,49 @@ const Dashboard: React.FC = () => {
           icon: <BiTransfer size={20} />,
         },
       ];
+
+  useEffect(() => {
+    // Listen for incoming messages
+    SignalRservice.on("ReceiveMessage", (message) => {
+      console.log("Received message:", message);
+    });
+
+    return () => {
+      SignalRservice.off("ReceiveMessage");
+    };
+  }, []);
+  useEffect(() => {
+    const maxRetries = 3;
+    let retryCount = 0;
+
+    const fetchDataWithRetry = async (
+      fetchFunction: () => Promise<any>,
+      setData: (data: any) => void
+    ) => {
+      while (retryCount < maxRetries) {
+        try {
+          const response = await fetchFunction();
+          setData(response);
+          break; // Exit loop if fetch is successful
+        } catch (error) {
+          retryCount++;
+          console.error(`Attempt ${retryCount} failed:`, error);
+          if (retryCount >= maxRetries) {
+            setError(
+              "Failed to fetch data after multiple attempts. Please try again later."
+            );
+          }
+        }
+      }
+    };
+
+    fetchDataWithRetry(getTransactions, setTransactions);
+    fetchDataWithRetry(getVouchers, setVouchers);
+    fetchDataWithRetry(listTokens, (response) =>
+      setTokens(response.additionalData.paymentTokens)
+    );
+  }, []);
+
   const updateTransactions = (newTransactions: tableTransactions[]) => {
     setTransactions(newTransactions);
   };

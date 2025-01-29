@@ -9,8 +9,8 @@ import Lottie from "lottie-react";
 import successAnimation from "../../successAnimation.json";
 import failureAnimation from "../../failureAnimation.json";
 import processingAnimation from "../../processingAnimation.json";
-import { useSignalR } from "../../hooks/signalR/useSignalR";
-import { getOTP } from "../../Services/data.service";
+// import { useSignalR } from "../../hooks/signalR/useSignalR";
+// import { getOTP } from "../../Services/data.service";
 
 interface LoadProps {
   tokens: Token[];
@@ -38,30 +38,30 @@ const Load: React.FC<LoadProps> = ({
   const [paymentStatus, setPaymentStatus] = useState<
     "idle" | "processing" | "success" | "failure"
   >("idle");
-  const { connectionState, messages, sendMessage } = useSignalR(
-    "https://settl-api.azurewebsites.net/otphub"
-  );
+  // const { connectionState, messages, sendMessage } = useSignalR(
+  //   "https://settl-api.azurewebsites.net/otphub"
+  // );
 
   // test data for otp
 
   //OTP TEST
-  useEffect(() => {
-    let testOtp = {
-      MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
-      Service: "Dentist",
-      transactionAmount: 9000,
-      vouchers: [
-        {
-          voucherCode: "6789019725052082",
-          verificationCode: "4455",
-        },
-      ],
-    };
+  // useEffect(() => {
+  //   let testOtp = {
+  //     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
+  //     Service: "Dentist",
+  //     transactionAmount: 9000,
+  //     vouchers: [
+  //       {
+  //         voucherCode: "6789019725052082",
+  //         verificationCode: "4455",
+  //       },
+  //     ],
+  //   };
 
-    getOTP(testOtp).then((response) => {
-      console.log("OTP response:", response);
-    });
-  }, []);
+  //   getOTP(testOtp).then((response) => {
+  //     console.log("OTP response:", response);
+  //   });
+  // }, []);
 
   useEffect(() => {
     const url = window.location.href;

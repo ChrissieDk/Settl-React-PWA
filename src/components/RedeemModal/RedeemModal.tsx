@@ -13,6 +13,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   );
   const merchantIds = [
     "b2b911a2-f8df-4e0e-9168-d5dada20786f",
+    "de66a1f1-544d-414c-bf59-fc31d4344ccb",
     "123",
     "456",
     "789",
