@@ -1972,7 +1972,7 @@ o.goToAndStop(ot-o.firstFrame-1,!0)}at.type==="loop"&&(_e===null||_e!==at.frames
         flex flex-col
         h-full
         shadow-lg
-      `,children:[jsxRuntimeExports.jsxs("div",{className:"p-4 border-b flex justify-between items-center",children:[jsxRuntimeExports.jsx("h2",{className:"text-xl font-bold text-blue-600",children:"Dashboard"}),d&&jsxRuntimeExports.jsx("button",{onClick:()=>c(!1),className:"text-gray-500 hover:text-gray-700 p-1",children:jsxRuntimeExports.jsx(FaUserDoctor,{className:"h-6 w-6"})})]}),jsxRuntimeExports.jsx("nav",{className:"flex-1 p-4",children:Rt.map(({id:Nt,label:Dt,icon:Zt})=>jsxRuntimeExports.jsxs("button",{onClick:()=>{Nt==="redeem"?Yt():o(Nt),d&&c(!1)},className:`
+      `,children:[jsxRuntimeExports.jsxs("div",{className:"p-4 border-b flex justify-between items-center",children:[jsxRuntimeExports.jsx("h2",{className:"text-xl font-bold text-blue-600",children:"Dashboard"}),d&&jsxRuntimeExports.jsx("button",{onClick:()=>c(!1),className:"text-gray-500 hover:text-gray-700 p-1",children:jsxRuntimeExports.jsx(FaUserDoctor,{className:"h-6 w-6"})})]}),jsxRuntimeExports.jsx("nav",{className:"flex-1 p-4",children:Rt.map(({id:Nt,label:Dt,icon:Zt})=>jsxRuntimeExports.jsxs("button",{onClick:()=>{Nt==="redeem"?Yt():Nt==="otp-redemption"?wt():o(Nt),d&&c(!1)},className:`
         w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg
         transition-all duration-200 ease-in-out
         transform hover:scale-102 

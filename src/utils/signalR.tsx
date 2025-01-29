@@ -4,11 +4,11 @@ import {
   LogLevel,
 } from "@microsoft/signalr";
 
-export const createHubConnection = async (
-  hubUrl: string
-): Promise<signalR.HubConnection> => {
+export const createHubConnection = async (): Promise<signalR.HubConnection> => {
   const token = localStorage.getItem("bearer");
   console.log("Retrieved token from localStorage:", token);
+
+  const hubUrl = "https://settl-api.azurewebsites.net/otphub";
 
   if (!token) {
     throw new Error("No authentication token found");
@@ -18,7 +18,7 @@ export const createHubConnection = async (
     .withUrl(hubUrl, {
       accessTokenFactory: () => token,
       transport: HttpTransportType.WebSockets,
-      skipNegotiation: false,
+      skipNegotiation: true,
       withCredentials: true,
     })
     .withAutomaticReconnect({
@@ -26,7 +26,7 @@ export const createHubConnection = async (
         return Math.min(retryContext.elapsedMilliseconds * 2, 10000);
       },
     })
-    .configureLogging(LogLevel.Information) // Added logging
+    .configureLogging(LogLevel.Information)
     .build();
 
   try {
