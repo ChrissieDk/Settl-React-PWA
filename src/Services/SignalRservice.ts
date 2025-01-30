@@ -8,7 +8,8 @@ class SignalRService {
   constructor() {
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl(hubUrl, {
-        withCredentials: true, // If authentication is required
+        accessTokenFactory: () => localStorage.getItem("bearer") || "", // Retrieve token
+        withCredentials: true, // If cross-origin credentials are required
       })
       .withAutomaticReconnect() // Enables auto-reconnect
       .configureLogging(signalR.LogLevel.Information)
