@@ -504,7 +504,7 @@ const Dashboard: React.FC = () => {
         action="redeem"
       />
       {isOtpModalOpen && (
-        <OTPRedemptionModal onClose={closeOTPModal} isOpen={false} />
+        <OTPRedemptionModal isOpen={isOtpModalOpen} onClose={closeOTPModal} />
       )}
     </div>
   );
