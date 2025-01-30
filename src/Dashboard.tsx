@@ -106,6 +106,9 @@ const Dashboard: React.FC = () => {
     // Listen for incoming messages
     SignalRservice.on("ReceiveMessage", (message) => {
       console.log("Received message:", message);
+      if (typeof message === "string" && message.length === 36) {
+        setIsOtpModalOpen(true); // Open the OTP Modal
+      }
     });
 
     return () => {
@@ -500,7 +503,9 @@ const Dashboard: React.FC = () => {
         vouchers={vouchers}
         action="redeem"
       />
-      <OTPRedemptionModal isOpen={isOtpModalOpen} onClose={closeOTPModal} />
+      {isOtpModalOpen && (
+        <OTPRedemptionModal onClose={closeOTPModal} isOpen={false} />
+      )}
     </div>
   );
 };
