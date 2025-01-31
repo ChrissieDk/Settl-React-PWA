@@ -233,3 +233,16 @@ export const getOTP = async (testOtp: any) => {
     throw error;
   }
 };
+
+//https://localhost:7183/api/redemption/accept/{otp}/{merhcantId}
+export const acceptOTP = async (otp: string, merchantId: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `/payment/redemption/accept/${otp}/${merchantId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error accepting OTP:", error);
+    throw error;
+  }
+};
