@@ -24,7 +24,7 @@ import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
 import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
-import OTPRedemptionModal from "./components/OTPRedemption/OTPRedemption";
+import OTPRedemptionModal from "./components/OtpRedemption/OTPRedemption";
 import SignalRservice from "./Services/SignalRservice";
 
 const Dashboard: React.FC = () => {
@@ -504,10 +504,67 @@ const Dashboard: React.FC = () => {
         action="redeem"
       />
       {isOtpModalOpen && (
-        <OTPRedemptionModal isOpen={isOtpModalOpen} onClose={closeOTPModal} />
+        <OTPRedemptionModal
+          isOpen={isOtpModalOpen}
+          onClose={closeOTPModal}
+          merchantId={"b2b911a2-f8df-4e0e-9168-d5dada20786f"}
+        />
       )}
     </div>
   );
 };
 
 export default Dashboard;
+// const handleSubmitTest = async (e: React.FormEvent) => {
+//   e.preventDefault();
+//   const payload = {
+//     MerchantId: merchantId,
+//     Service: service,
+//     transactionAmount: parseInt(transactionAmount, 10),
+//     vouchers: [
+//       {
+//         voucherCode: voucherCode,
+//         verificationCode: verificationCode,
+//       },
+//     ],
+//   };
+
+//   try {
+//     const response = await redeem(payload);
+//     console.log("Redeem response:", response);
+//     if (response.responseCode === "00") {
+//       setRedeemStatus("success");
+//     } else {
+//       setRedeemStatus("failure");
+//     }
+//     // Don't close the modal immediately to show the animation
+//     setTimeout(() => {
+//       onClose();
+//       setRedeemStatus("idle");
+//     }, 3000);
+//   } catch (error) {
+//     console.error("Error redeeming voucher:", error);
+//     setRedeemStatus("failure");
+//     setTimeout(() => {
+//       setRedeemStatus("idle");
+//     }, 3000);
+//   }
+// };
+
+// useEffect(() => {
+//   let testOtp = {
+//     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
+//     Service: "Dentist",
+//     transactionAmount: 9000,
+//     vouchers: [
+//       {
+//         voucherCode: "6789019725052082",
+//         verificationCode: "4455",
+//       },
+//     ],
+//   };
+
+//   getOTP(testOtp).then((response) => {
+//     console.log("OTP response:", response);
+//   });
+// }, []);

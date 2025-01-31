@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { MdClose, MdInfoOutline } from "react-icons/md";
+import { MdClose, MdInfoOutline, MdContentCopy } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { redeem, getVouchers, getOTP } from "../../Services/data.service";
 import { TokenModalProps, Voucher } from "../../types/Types";
@@ -25,8 +25,9 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [redeemStatus, setRedeemStatus] = useState<
-    "idle" | "success" | "failure"
+    "idle" | "success" | "failure" | "otpGenerated"
   >("idle");
+  const [generatedOTP, setGeneratedOTP] = useState(""); // New state for OTP
 
   // Dropdown-related states for merchants
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,59 +117,6 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       setTransactionAmount("");
     }
   };
-  // const handleSubmitTest = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const payload = {
-  //     MerchantId: merchantId,
-  //     Service: service,
-  //     transactionAmount: parseInt(transactionAmount, 10),
-  //     vouchers: [
-  //       {
-  //         voucherCode: voucherCode,
-  //         verificationCode: verificationCode,
-  //       },
-  //     ],
-  //   };
-
-  //   try {
-  //     const response = await redeem(payload);
-  //     console.log("Redeem response:", response);
-  //     if (response.responseCode === "00") {
-  //       setRedeemStatus("success");
-  //     } else {
-  //       setRedeemStatus("failure");
-  //     }
-  //     // Don't close the modal immediately to show the animation
-  //     setTimeout(() => {
-  //       onClose();
-  //       setRedeemStatus("idle");
-  //     }, 3000);
-  //   } catch (error) {
-  //     console.error("Error redeeming voucher:", error);
-  //     setRedeemStatus("failure");
-  //     setTimeout(() => {
-  //       setRedeemStatus("idle");
-  //     }, 3000);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   let testOtp = {
-  //     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
-  //     Service: "Dentist",
-  //     transactionAmount: 9000,
-  //     vouchers: [
-  //       {
-  //         voucherCode: "6789019725052082",
-  //         verificationCode: "4455",
-  //       },
-  //     ],
-  //   };
-
-  //   getOTP(testOtp).then((response) => {
-  //     console.log("OTP response:", response);
-  //   });
-  // }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,12 +135,18 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     try {
       const response = await getOTP(payload);
       console.log("OTP response:", response);
+
+      const otp = response;
+      setGeneratedOTP(otp);
+      setRedeemStatus("otpGenerated");
+
+      // Auto-close after 7 seconds
       setTimeout(() => {
         onClose();
         setRedeemStatus("idle");
-      }, 3000);
+      }, 7000);
     } catch (error) {
-      console.error("Error redeeming voucher:", error);
+      console.error("Error generating OTP:", error);
       setRedeemStatus("failure");
       setTimeout(() => {
         setRedeemStatus("idle");
@@ -204,8 +158,37 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     onClose();
   }, [onClose, isOpen]);
 
+  const handleCopyOTP = () => {
+    navigator.clipboard.writeText(generatedOTP);
+    alert("OTP copied to clipboard!");
+  };
+
   const renderContent = () => {
     switch (redeemStatus) {
+      case "otpGenerated":
+        return (
+          <div className="flex flex-col items-center">
+            <Lottie
+              animationData={successAnimation}
+              style={{ width: 200, height: 200 }}
+            />
+            <p className="text-xl font-semibold text-green-600 mt-4">
+              OTP Generated Successfully!
+            </p>
+            <div className="mt-6 text-4xl font-mono bg-gray-100 px-6 py-3 rounded-lg flex items-center gap-3">
+              {generatedOTP}
+              <button
+                onClick={handleCopyOTP}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <MdContentCopy size={20} />
+              </button>
+            </div>
+            <p className="text-gray-600 mt-4 text-sm">
+              This OTP will automatically expire in 5 minutes
+            </p>
+          </div>
+        );
       case "success":
         return (
           <div className="flex flex-col items-center">
@@ -233,7 +216,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
       default:
         return (
           <form onSubmit={handleSubmit}>
-            {/* Merchant Dropdown (unchanged) */}
+            {/* Merchant Dropdown */}
             <div className="mb-4">
               <label
                 htmlFor="merchantId"
@@ -278,7 +261,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* Service Dropdown (unchanged) */}
+            {/* Service Dropdown */}
             <div className="mb-4">
               <label
                 htmlFor="service"
@@ -302,7 +285,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               </select>
             </div>
 
-            {/* Transaction Amount (unchanged) */}
+            {/* Transaction Amount */}
             <div className="mb-4">
               <label
                 htmlFor="transactionAmount"
@@ -321,7 +304,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               />
             </div>
 
-            {/* Voucher Code Dropdown (updated) */}
+            {/* Voucher Code Dropdown */}
             <div className="mb-4">
               <label
                 htmlFor="voucherCode"
@@ -330,7 +313,6 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 Voucher Code
               </label>
               <div className="relative" ref={voucherDropdownRef}>
-                {/* Custom Input Field */}
                 <input
                   type="text"
                   value={voucherCode}
@@ -341,10 +323,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                   className="border border-gray-300 rounded-md p-2 w-full focus:outline-none cursor-pointer"
                   placeholder="Select a voucher code"
                 />
-                {/* Custom Dropdown */}
                 {isVoucherDropdownOpen && (
                   <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 z-10">
-                    {/* Search Bar */}
                     <input
                       type="text"
                       placeholder="Search vouchers..."
@@ -352,7 +332,6 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                       onChange={(e) => setVoucherSearchTerm(e.target.value)}
                       className="w-full p-2 border-b border-gray-300 rounded-t-md focus:outline-none"
                     />
-                    {/* Voucher List */}
                     <div className="max-h-48 overflow-y-auto">
                       {filteredVouchers.map((voucher) => (
                         <div
@@ -360,7 +339,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                           onClick={() => {
                             setVoucherCode(voucher.voucherCode);
                             setVerificationCode(voucher.verificationCode || "");
-                            setIsVoucherDropdownOpen(false); // Close dropdown after selection
+                            setIsVoucherDropdownOpen(false);
                           }}
                           className="p-2 hover:bg-gray-100 cursor-pointer rounded-md"
                         >
@@ -373,7 +352,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* Verification Code (unchanged) */}
+            {/* Verification Code */}
             <div className="mb-4">
               <label
                 htmlFor="verificationCode"
@@ -392,7 +371,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               />
             </div>
 
-            {/* Submit Button (unchanged) */}
+            {/* Submit Button */}
             <div className="mt-6">
               <button
                 type="submit"
@@ -482,11 +461,3 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
 };
 
 export default RedeemModal;
-function getOtp(payload: {
-  MerchantId: string;
-  Service: string;
-  transactionAmount: number;
-  vouchers: { voucherCode: string; verificationCode: string }[];
-}) {
-  throw new Error("Function not implemented.");
-}
