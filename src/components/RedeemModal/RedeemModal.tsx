@@ -184,9 +184,6 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 <MdContentCopy size={20} />
               </button>
             </div>
-            <p className="text-gray-600 mt-4 text-sm">
-              This OTP will automatically expire in 5 minutes
-            </p>
           </div>
         );
       case "success":
