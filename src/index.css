@@ -15,3 +15,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@layer components {
+  .driver-popover {
+    @apply bg-white text-gray-800 shadow-lg border border-gray-200 rounded-xl p-4;
+  }
+
+  .driver-popover-title {
+    @apply text-lg font-semibold text-gray-900;
+  }
+
+  .driver-popover-description {
+    @apply text-sm text-gray-600 leading-relaxed;
+  }
+
+  .driver-popover-navigation {
+    @apply flex justify-end gap-2 mt-4;
+  }
+
+  .driver-popover-button {
+    @apply px-3 py-1 text-sm font-medium rounded-md;
+  }
+
+  .driver-popover-button-next {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .driver-popover-button-prev {
+    @apply bg-gray-300 text-gray-800 hover:bg-gray-400;
+  }
+
+  .driver-popover-button-done {
+    @apply bg-green-600 text-white hover:bg-green-700;
+  }
+}

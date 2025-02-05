@@ -29,6 +29,7 @@ import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
 import OTPRedemptionModal from "./components/OtpRedemption/OTPRedemption";
 import SignalRservice from "./Services/SignalRservice";
+import { useDriverTour } from "./hooks/DriverJS/useDriverTour";
 
 const Dashboard: React.FC = () => {
   // Driver js
@@ -106,141 +107,142 @@ const Dashboard: React.FC = () => {
       ];
 
   // Driver js
+  useDriverTour(isMobile, setIsSidebarOpen);
 
-  useEffect(() => {
-    const tourCompleted = localStorage.getItem("tourCompleted");
+  // useEffect(() => {
+  //   const tourCompleted = localStorage.getItem("tourCompleted");
 
-    if (!tourCompleted) {
-      // Check if the user is on mobile
-      if (isMobile) {
-        setIsSidebarOpen(true); // Force open the sidebar
-      }
+  //   if (!tourCompleted) {
+  //     // Check if the user is on mobile
+  //     if (isMobile) {
+  //       setIsSidebarOpen(true); // Force open the sidebar
+  //     }
 
-      driverRef.current = driver({
-        animate: true,
-        allowClose: false,
-        doneBtnText: "Finish",
-        nextBtnText: "Next",
-        prevBtnText: "Back",
-        steps: [
-          // Sidebar Overview
-          {
-            element: "aside",
-            popover: {
-              title: "Navigation Sidebar",
-              description:
-                "This is your main navigation area. All dashboard features are accessible from here.",
-              side: "right",
-            },
-          },
-          // Add Card Button
-          {
-            element: '[data-driver="sidebar-add-card"]',
-            popover: {
-              title: "Add Payment Card",
-              description:
-                "Step 1 : Securely add new card to your account to start your journey to simpler healthcare. You can add more than one card and choose your preferred one.",
-              side: "right",
-            },
-          },
+  //     driverRef.current = driver({
+  //       animate: true,
+  //       allowClose: false,
+  //       doneBtnText: "Finish",
+  //       nextBtnText: "Next",
+  //       prevBtnText: "Back",
+  //       steps: [
+  //         // Sidebar Overview
+  //         {
+  //           element: "aside",
+  //           popover: {
+  //             title: "Navigation Sidebar",
+  //             description:
+  //               "This is your main navigation area. All dashboard features are accessible from here.",
+  //             side: "right",
+  //           },
+  //         },
+  //         // Add Card Button
+  //         {
+  //           element: '[data-driver="sidebar-add-card"]',
+  //           popover: {
+  //             title: "Add Payment Card",
+  //             description:
+  //               "Step 1 : Securely add new card to your account to start your journey to simpler healthcare. You can add more than one card and choose your preferred one.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Load Section
-          {
-            element: '[data-driver="sidebar-nav-load"]',
-            popover: {
-              title: "Load Health Vault",
-              description:
-                "Step 2 : Add funds to your account here. Simply add the amount you wish to load and select a card from the dropdown. All cards will be displayed here",
-              side: "right",
-            },
-          },
+  //         // Load Section
+  //         {
+  //           element: '[data-driver="sidebar-nav-load"]',
+  //           popover: {
+  //             title: "Load Health Vault",
+  //             description:
+  //               "Step 2 : Add funds to your account here. Simply add the amount you wish to load and select a card from the dropdown. All cards will be displayed here",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Redeem Section
-          {
-            element: '[data-driver="sidebar-nav-redeem"]',
-            popover: {
-              title: "Redeem Vouchers",
-              description:
-                "Step 3 : Redeem your healthcare vouchers for medical services and products.",
-              side: "right",
-            },
-          },
+  //         // Redeem Section
+  //         {
+  //           element: '[data-driver="sidebar-nav-redeem"]',
+  //           popover: {
+  //             title: "Redeem Vouchers",
+  //             description:
+  //               "Step 3 : Redeem your healthcare vouchers for medical services and products.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Vouchers Section
-          {
-            element: '[data-driver="sidebar-nav-vouchers"]',
-            popover: {
-              title: "View Vouchers",
-              description: "View all your healthcare vouchers in one place.",
-              side: "right",
-            },
-          },
+  //         // Vouchers Section
+  //         {
+  //           element: '[data-driver="sidebar-nav-vouchers"]',
+  //           popover: {
+  //             title: "View Vouchers",
+  //             description: "View all your healthcare vouchers in one place.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Health Vault Section
-          {
-            element: '[data-driver="sidebar-nav-healthVault"]',
-            popover: {
-              title: "Health Vault",
-              description:
-                "Track your medical expenses and view your account balances.",
-              side: "right",
-            },
-          },
+  //         // Health Vault Section
+  //         {
+  //           element: '[data-driver="sidebar-nav-healthVault"]',
+  //           popover: {
+  //             title: "Health Vault",
+  //             description:
+  //               "Track your medical expenses and view your account balances.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Transactions Section
-          {
-            element: '[data-driver="sidebar-nav-transactions"]',
-            popover: {
-              title: "Transaction History",
-              description:
-                "View all your payment and redemption transactions with detailed records.",
-              side: "right",
-            },
-          },
+  //         // Transactions Section
+  //         {
+  //           element: '[data-driver="sidebar-nav-transactions"]',
+  //           popover: {
+  //             title: "Transaction History",
+  //             description:
+  //               "View all your payment and redemption transactions with detailed records.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Action Buttons Section
-          {
-            element: '[data-driver="sidebar-actions"]',
-            popover: {
-              title: "Quick Actions",
-              description:
-                "Perform essential account actions quickly from here.",
-              side: "right",
-            },
-          },
+  //         // Action Buttons Section
+  //         {
+  //           element: '[data-driver="sidebar-actions"]',
+  //           popover: {
+  //             title: "Quick Actions",
+  //             description:
+  //               "Perform essential account actions quickly from here.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // My Cards Button
-          {
-            element: '[data-driver="sidebar-my-cards"]',
-            popover: {
-              title: "Manage Cards",
-              description: "View and manage your saved cards.",
-              side: "right",
-            },
-          },
+  //         // My Cards Button
+  //         {
+  //           element: '[data-driver="sidebar-my-cards"]',
+  //           popover: {
+  //             title: "Manage Cards",
+  //             description: "View and manage your saved cards.",
+  //             side: "right",
+  //           },
+  //         },
 
-          // Main Content Area
-          {
-            element: ".flex-1.p-4.overflow-auto",
-            popover: {
-              title: "Content Area",
-              description:
-                "This area displays detailed information based on your selected section.",
-              side: "left",
-            },
-          },
-        ],
-        onDestroyed: () => {
-          console.log("Tour completed!");
-          localStorage.setItem("tourCompleted", "true");
-        },
-      });
+  //         // Main Content Area
+  //         {
+  //           element: ".flex-1.p-4.overflow-auto",
+  //           popover: {
+  //             title: "Content Area",
+  //             description:
+  //               "This area displays detailed information based on your selected section.",
+  //             side: "left",
+  //           },
+  //         },
+  //       ],
+  //       onDestroyed: () => {
+  //         console.log("Tour completed!");
+  //         localStorage.setItem("tourCompleted", "true");
+  //       },
+  //     });
 
-      if (driverRef.current) {
-        driverRef.current.drive();
-      }
-    }
-  }, [isMobile]);
+  //     if (driverRef.current) {
+  //       driverRef.current.drive();
+  //     }
+  //   }
+  // }, [isMobile]);
 
   useEffect(() => {
     // Listen for incoming messages
