@@ -12,7 +12,7 @@ import {
 import Modal from "./components/CardDetail/CardDetail";
 import Vouchers from "./components/Vouchers/Vouchers";
 import Load from "./components/Load/Load";
-import { driver } from "driver.js"; // ✅ Correct import
+import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 
 // icons
@@ -59,9 +59,6 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
-  // const { connectionState, messages, sendMessage } = useSignalR(
-  //   "https://settl-api.azurewebsites.net/otphub"
-  // );
 
   const circleTexts = [
     "Secure Payments.",
@@ -114,6 +111,11 @@ const Dashboard: React.FC = () => {
     const tourCompleted = localStorage.getItem("tourCompleted");
 
     if (!tourCompleted) {
+      // Check if the user is on mobile
+      if (isMobile) {
+        setIsSidebarOpen(true); // Force open the sidebar
+      }
+
       driverRef.current = driver({
         animate: true,
         allowClose: false,
@@ -137,7 +139,7 @@ const Dashboard: React.FC = () => {
             popover: {
               title: "Add Payment Card",
               description:
-                "Securely add new card to your account to start your journey to simpler healthcare. You can add more than one card and choose your preferred one.",
+                "Step 1 : Securely add new card to your account to start your journey to simpler healthcare. You can add more than one card and choose your preferred one.",
               side: "right",
             },
           },
@@ -148,7 +150,7 @@ const Dashboard: React.FC = () => {
             popover: {
               title: "Load Health Vault",
               description:
-                "Add funds to your account here. Simply add the amount you wish to load and select a card from the dropdown. All cards will be displayed here",
+                "Step 2 : Add funds to your account here. Simply add the amount you wish to load and select a card from the dropdown. All cards will be displayed here",
               side: "right",
             },
           },
@@ -159,7 +161,7 @@ const Dashboard: React.FC = () => {
             popover: {
               title: "Redeem Vouchers",
               description:
-                "Redeem your healthcare vouchers for medical services and products.",
+                "Step 3 : Redeem your healthcare vouchers for medical services and products.",
               side: "right",
             },
           },
@@ -238,7 +240,7 @@ const Dashboard: React.FC = () => {
         driverRef.current.drive();
       }
     }
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     // Listen for incoming messages
@@ -253,6 +255,7 @@ const Dashboard: React.FC = () => {
       SignalRservice.off("ReceiveMessage");
     };
   }, []);
+
   useEffect(() => {
     const maxRetries = 3;
     let retryCount = 0;
@@ -662,56 +665,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-// const handleSubmitTest = async (e: React.FormEvent) => {
-//   e.preventDefault();
-//   const payload = {
-//     MerchantId: merchantId,
-//     Service: service,
-//     transactionAmount: parseInt(transactionAmount, 10),
-//     vouchers: [
-//       {
-//         voucherCode: voucherCode,
-//         verificationCode: verificationCode,
-//       },
-//     ],
-//   };
-
-//   try {
-//     const response = await redeem(payload);
-//     console.log("Redeem response:", response);
-//     if (response.responseCode === "00") {
-//       setRedeemStatus("success");
-//     } else {
-//       setRedeemStatus("failure");
-//     }
-//     // Don't close the modal immediately to show the animation
-//     setTimeout(() => {
-//       onClose();
-//       setRedeemStatus("idle");
-//     }, 3000);
-//   } catch (error) {
-//     console.error("Error redeeming voucher:", error);
-//     setRedeemStatus("failure");
-//     setTimeout(() => {
-//       setRedeemStatus("idle");
-//     }, 3000);
-//   }
-// };
-
-// useEffect(() => {
-//   let testOtp = {
-//     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
-//     Service: "Dentist",
-//     transactionAmount: 9000,
-//     vouchers: [
-//       {
-//         voucherCode: "6789019725052082",
-//         verificationCode: "4455",
-//       },
-//     ],
-//   };
-
-//   getOTP(testOtp).then((response) => {
-//     console.log("OTP response:", response);
-//   });
-// }, []);
