@@ -38,30 +38,15 @@ const Load: React.FC<LoadProps> = ({
   const [paymentStatus, setPaymentStatus] = useState<
     "idle" | "processing" | "success" | "failure"
   >("idle");
-  // const { connectionState, messages, sendMessage } = useSignalR(
-  //   "https://settl-api.azurewebsites.net/otphub"
-  // );
 
-  // test data for otp
-
-  //OTP TEST
-  // useEffect(() => {
-  //   let testOtp = {
-  //     MerchantId: "b2b911a2-f8df-4e0e-9168-d5dada20786f",
-  //     Service: "Dentist",
-  //     transactionAmount: 9000,
-  //     vouchers: [
-  //       {
-  //         voucherCode: "6789019725052082",
-  //         verificationCode: "4455",
-  //       },
-  //     ],
-  //   };
-
-  //   getOTP(testOtp).then((response) => {
-  //     console.log("OTP response:", response);
-  //   });
-  // }, []);
+  useEffect(() => {
+    const totalCost = localStorage.getItem("totalCost");
+    if (totalCost) {
+      setAmountInRands(Number(totalCost));
+      // Clear the stored value after use
+      localStorage.removeItem("totalCost");
+    }
+  }, []);
 
   useEffect(() => {
     const url = window.location.href;
@@ -262,7 +247,7 @@ const Load: React.FC<LoadProps> = ({
                   onChange={handleAmountChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  min="0" // Ensure the input is non-negative
+                  min="0"
                 />
               </div>
               <div>
@@ -298,44 +283,7 @@ const Load: React.FC<LoadProps> = ({
                 Secure Payment
               </button>
             </form>
-            <div>
-              {/* test signalR */}
-              {/* <div className="max-w-md mx-auto p-4 space-y-4">
-                <div
-                  className={`p-2 rounded text-center text-sm ${
-                    connectionState === "connected"
-                      ? "bg-green-100 text-green-800"
-                      : connectionState === "reconnecting"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-red-100 text-red-800"
-                  }`}
-                >
-                  Status: {connectionState}
-                </div>
-
-                <div className="space-y-2">
-                  {messages.map((message, index) => (
-                    <div key={index} className="p-3 bg-white rounded shadow-sm">
-                      <div className="flex justify-between text-xs text-gray-500 mb-1">
-                        <span>{message.user}</span>
-                        <span>{message.timestamp.toLocaleTimeString()}</span>
-                      </div>
-                      <div className="text-gray-800">{message.message}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() =>
-                    sendMessage("SendMessage", "user123", "Hello!")
-                  }
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50"
-                  disabled={connectionState !== "connected"}
-                >
-                  Send Test Message
-                </button>
-              </div> */}
-            </div>
+            <div></div>
           </>
         );
     }

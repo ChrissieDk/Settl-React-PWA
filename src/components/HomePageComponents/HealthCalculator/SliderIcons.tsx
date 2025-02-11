@@ -3,12 +3,14 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { LiaToothSolid } from "react-icons/lia";
 import { PiEyeThin } from "react-icons/pi";
 import { GiMedicinePills } from "react-icons/gi";
+import { useNavigate } from "react-router-dom"; // Add this import
 
 interface IconListProps {
   gpVisits: number;
   dental: number;
   optometry: number;
   otcMeds: number;
+  onInterestClick?: (totalCost: number) => void;
 }
 
 export const IconList: React.FC<IconListProps> = ({
@@ -16,12 +18,21 @@ export const IconList: React.FC<IconListProps> = ({
   dental,
   optometry,
   otcMeds,
+  onInterestClick,
 }) => {
   const totalCost = gpVisits + dental + optometry + otcMeds;
+  const navigate = useNavigate();
+
+  const handleInterestClick = () => {
+    // Store totalCost in localStorage
+    localStorage.setItem("totalCost", totalCost.toString());
+    // Navigate to dashboard
+    navigate("/dashboard");
+  };
 
   return (
-    <div className="relative w-64 h-[30rem] bg-orange-400 bg-opacity-60 shadow-lg rounded-3xl p-6 text-center ">
-      <h1 className="text-white font-header text-2xl mb-6">
+    <div className="relative w-64 h-[30rem] bg-orange-400 bg-opacity-60 shadow-lg rounded-3xl p-6 text-center flex flex-col">
+      <h1 className="text-white font-header text-2xl mb-2">
         Your Plan Value Is:
       </h1>
       <div className="flex justify-center mb-4">
@@ -46,7 +57,7 @@ export const IconList: React.FC<IconListProps> = ({
         </svg>
       </div>
       <h2 className="text-white font-header text-xl mb-4">You can visit:</h2>
-      <div className="space-y-2">
+      <div className="space-y-2 flex-1">
         <div className="flex items-center">
           <FaUserDoctor className="text-white text-xl mr-2" />
           <span className="text-white">{gpVisits / 500}: GP Visits</span>
@@ -64,6 +75,14 @@ export const IconList: React.FC<IconListProps> = ({
           <span className="text-white">{otcMeds}: OTC</span>
         </div>
       </div>
+
+      {/* I'M INTERESTED Button */}
+      <button
+        onClick={handleInterestClick}
+        className="mt-2 w-full bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button"
+      >
+        I'M INTERESTED
+      </button>
     </div>
   );
 };
