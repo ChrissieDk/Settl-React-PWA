@@ -148,7 +148,6 @@ const HomePage = () => {
           How it works<span className="text-orange-400"> :</span>
         </h1>
         <div className="absolute inset-0 z-0">
-          {/* TOP LEFT  */}
           <img
             src={blurredBird}
             alt="Dove Behind"
@@ -156,57 +155,44 @@ const HomePage = () => {
           />
         </div>
         <div className="absolute top-8 right-0 lg:-right-8 z-0">
-          {/* TOP RIGHT */}
           <img
             src={blurredBird}
             alt="Dove Behind"
             className="h-16 lg:h-72 w-auto object-cover blur-[2px] lg:ml-10 scale-x-[-1]"
           />
         </div>
-
-        <div className="relative lg:h-[70vh] flex justify-center items-center">
-          <div className="flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 mx-auto">
-            <div className="w-full lg:w-[30%] px-2 relative">
-              <img className="w-full h-auto" src={block1} alt="testblock" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8 flex flex-col items-center text-center w-full">
-                <h2 className="text-2xl lg:text-2xl font-button mt-2 text-black">
-                  JOIN SETTL
+        <div className="relative lg:h-[50vh] flex justify-center items-center">
+          <div className="flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 mx-auto w-full">
+            {[
+              {
+                title: "JOIN SETTL",
+                text: "It’s free, takes seconds!",
+                img: block1,
+              },
+              {
+                title: "CRAFT YOUR PLAN",
+                text: "Use our calculator to customise how much you allocate for doctors, dentists, optometrists and meds.",
+                img: block2,
+              },
+              {
+                title: "SEE YOUR DOC",
+                text: "Pay seamlessly with your Settl token at checkout!",
+                img: block3,
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="w-full lg:w-[30%] px-2 relative flex flex-col items-center text-center bg-gray-600 text-white rounded-2xl p-6 min-h-[150px]"
+              >
+                <h2 className="text-2xl lg:text-2xl font-button text-orange-400">
+                  {item.title}
                 </h2>
-                <p className="text-xl lg:text-lg font-paragraph text-white">
-                  It’s free, takes seconds!
-                </p>
+                <hr className="w-full border-white my-2" />
+                <p className="text-xl lg:text-lg font-paragraph">{item.text}</p>
               </div>
-            </div>
-            <div className="w-full lg:w-[30%] px-2 relative">
-              <img
-                className="lg:w-full lg:h-auto"
-                src={block2}
-                alt="testblock"
-              />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-12 flex flex-col items-center text-center w-full">
-                <h2 className="pt-14 text-2xl lg:text-2xl font-button mt-2 text-black lg:pt-10">
-                  CRAFT YOUR PLAN
-                </h2>
-                <p className="text-xl lg:text-lg font-paragraph text-white">
-                  Use our calculator to customise how much you allocate for
-                  doctors, dentists, optometrists and meds.
-                </p>
-              </div>
-            </div>
-            <div className="w-full lg:w-[30%] px-2 relative">
-              <img className="w-full h-auto" src={block3} alt="testblock" />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-12 flex flex-col items-center text-center w-full">
-                <h2 className="text-2xl lg:text-2xl font-button mt-2 text-black lg:pt-3">
-                  SEE YOUR DOC
-                </h2>
-                <p className="text-xl lg:text-lg font-paragraph text-white">
-                  Pay seamlessly with your Settl token at checkout!
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
           <div className="absolute bottom-0 left-[-8%] z-0">
-            {/* BOTTOM LEFT */}
             <img
               src={blurredBird}
               alt="Dove Behind"
