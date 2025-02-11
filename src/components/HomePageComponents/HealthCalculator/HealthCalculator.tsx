@@ -2,134 +2,173 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
-const GP_COST_PER_VISIT = 500; // Cost per GP visit
-const DENTAL_COST_PER_VISIT = 300; // Cost per dental visit
-const OPTOMETRY_COST_PER_VISIT = 200; // Cost per optometry visit
-const MAX_GP_VISITS = 5;
-const MAX_DENTAL_VISITS = 5;
-const MAX_OPTOMETRY_VISITS = 5;
+// Updated cost structure based on screenshot
+const SERVICE_COSTS = {
+  GP: {
+    Consultation: 450,
+    "In-room procedure": 420,
+    "Scale/Polish": 320,
+  },
+  Dental: {
+    Consultation: 665,
+    Filling: 430,
+    Extraction: 164,
+    OralXray: 174,
+  },
+  Optometry: {
+    "Spectacle Frame": 583,
+    "Single lens": 227,
+    "Bifocal lens": 444,
+    Multifocal: 488,
+  },
+};
+
+const MAX_VISITS = 5;
+
+interface ServiceType {
+  label: string;
+  value: number;
+  setValue: Dispatch<SetStateAction<number>>;
+  costPerVisit: number;
+  maxVisits: number;
+}
 
 interface HealthCalculatorProps {
-  gpVisits: number;
-  setGpVisits: Dispatch<SetStateAction<number>>;
-  dental: number;
-  setDental: Dispatch<SetStateAction<number>>;
-  optometry: number;
-  setOptometry: Dispatch<SetStateAction<number>>;
   otcMeds: number;
   setOtcMeds: Dispatch<SetStateAction<number>>;
+  gpVisits: Record<string, number>;
+  setGpVisits: Dispatch<SetStateAction<Record<string, number>>>;
+  dentalVisits: Record<string, number>;
+  setDentalVisits: Dispatch<SetStateAction<Record<string, number>>>;
+  optometryVisits: Record<string, number>;
+  setOptometryVisits: Dispatch<SetStateAction<Record<string, number>>>;
 }
 
 export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
-  gpVisits,
-  setGpVisits,
-  dental,
-  setDental,
-  optometry,
-  setOptometry,
   otcMeds,
   setOtcMeds,
+  gpVisits,
+  setGpVisits,
+  dentalVisits,
+  setDentalVisits,
+  optometryVisits,
+  setOptometryVisits,
 }) => {
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+
+  // Structure providers with sub-services
+  const providers = {
+    GP: {
+      services: Object.entries(SERVICE_COSTS.GP).map(([label, cost]) => ({
+        label,
+        value: gpVisits[label] || 0,
+        setValue: (val: number) =>
+          setGpVisits((prev) => ({ ...prev, [label]: val })),
+        costPerVisit: cost,
+        maxVisits: MAX_VISITS,
+      })),
+    },
+    Dental: {
+      services: Object.entries(SERVICE_COSTS.Dental).map(([label, cost]) => ({
+        label,
+        value: dentalVisits[label] || 0,
+        setValue: (val: number) =>
+          setDentalVisits((prev) => ({ ...prev, [label]: val })),
+        costPerVisit: cost,
+        maxVisits: MAX_VISITS,
+      })),
+    },
+    Optometry: {
+      services: Object.entries(SERVICE_COSTS.Optometry).map(
+        ([label, cost]) => ({
+          label,
+          value: optometryVisits[label] || 0,
+          setValue: (val: number) =>
+            setOptometryVisits((prev) => ({ ...prev, [label]: val })),
+          costPerVisit: cost,
+          maxVisits: MAX_VISITS,
+        })
+      ),
+    },
+  };
+
   return (
-    <div className="space-y-4 p-2 sm:p-4 text-left">
-      <div>
-        <h3 className="font-paragraph text-sm sm:text-base">GP Visits</h3>
-        <div className="flex items-center">
-          <Slider
-            min={0}
-            max={MAX_GP_VISITS * GP_COST_PER_VISIT}
-            step={GP_COST_PER_VISIT}
-            value={gpVisits}
-            onChange={(value) => setGpVisits(value as number)}
-            className="flex-1"
-            trackStyle={{ backgroundColor: "blue", height: "8px" }}
-            handleStyle={{
-              borderColor: "blue",
-              height: "18px",
-              width: "18px",
-              marginTop: "-5px",
-              backgroundColor: "white",
-            }}
-            railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
-          />
-          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
-            {gpVisits / GP_COST_PER_VISIT}
+    <div className="space-y-4 p-4 text-left border rounded-lg shadow-md bg-white">
+      <div className="grid gap-4">
+        {Object.entries(providers).map(([provider, { services }]) => (
+          <div key={provider} className="p-4 border rounded-lg bg-gray-100">
+            <div
+              className="cursor-pointer flex justify-between items-center"
+              onClick={() =>
+                setExpanded((prev) => ({
+                  ...prev,
+                  [provider]: !prev[provider],
+                }))
+              }
+            >
+              <h3 className="text-lg font-semibold">{provider}</h3>
+              <span className="text-sm text-gray-600">
+                {expanded[provider] ? "Hide options" : "Click to expand"}
+              </span>
+            </div>
+
+            {expanded[provider] && (
+              <div className="space-y-4 mt-2">
+                {services.map((service) => (
+                  <div
+                    key={service.label}
+                    className="p-4 border rounded-lg bg-gray-50"
+                  >
+                    <h3 className="text-sm sm:text-base font-medium">
+                      {service.label}
+                    </h3>
+                    <div className="flex items-center">
+                      <Slider
+                        min={0}
+                        max={service.maxVisits * service.costPerVisit}
+                        step={service.costPerVisit}
+                        value={service.value}
+                        onChange={(val) => service.setValue(val as number)}
+                        // ... rest of slider styles
+                      />
+                      <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
+                        {service.value / service.costPerVisit}
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Cost per visit: R{service.costPerVisit.toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      </div>
-      <div>
-        <h3 className="font-paragraph text-sm sm:text-base">
-          Dental Consultations
-        </h3>
-        <div className="flex items-center">
-          <Slider
-            min={0}
-            max={MAX_DENTAL_VISITS * DENTAL_COST_PER_VISIT}
-            step={DENTAL_COST_PER_VISIT}
-            value={dental}
-            onChange={(value) => setDental(value as number)}
-            className="flex-1"
-            trackStyle={{ backgroundColor: "blue", height: "8px" }}
-            handleStyle={{
-              borderColor: "blue",
-              height: "18px",
-              width: "18px",
-              marginTop: "-5px",
-              backgroundColor: "white",
-            }}
-            railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
-          />
-          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
-            {dental / DENTAL_COST_PER_VISIT}
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3 className="font-paragraph text-sm sm:text-base">
-          Optometry Appointments
-        </h3>
-        <div className="flex items-center">
-          <Slider
-            min={0}
-            max={MAX_OPTOMETRY_VISITS * OPTOMETRY_COST_PER_VISIT}
-            step={OPTOMETRY_COST_PER_VISIT}
-            value={optometry}
-            onChange={(value) => setOptometry(value as number)}
-            className="flex-1"
-            trackStyle={{ backgroundColor: "blue", height: "8px" }}
-            handleStyle={{
-              borderColor: "blue",
-              height: "18px",
-              width: "18px",
-              marginTop: "-5px",
-              backgroundColor: "white",
-            }}
-            railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
-          />
-          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
-            {optometry / OPTOMETRY_COST_PER_VISIT}
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3 className="font-paragraph text-sm sm:text-base">OTC Medication</h3>
-        <div className="flex items-center">
-          <Slider
-            defaultValue={otcMeds}
-            onChange={(value) => setOtcMeds(value as number)}
-            className="flex-1"
-            trackStyle={{ backgroundColor: "blue", height: "8px" }}
-            handleStyle={{
-              borderColor: "blue",
-              height: "18px",
-              width: "18px",
-              marginTop: "-5px",
-              backgroundColor: "white",
-            }}
-            railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
-          />
-          <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
-            R {otcMeds}
+        ))}
+
+        {/* OTC Medication */}
+        <div className="p-4 border rounded-lg bg-gray-50">
+          <h3 className="text-sm sm:text-base font-medium">OTC Medication</h3>
+          <div className="flex items-center">
+            <Slider
+              min={0}
+              max={1000}
+              step={50}
+              value={otcMeds}
+              onChange={(value) => setOtcMeds(value as number)}
+              className="flex-1"
+              trackStyle={{ backgroundColor: "blue", height: "8px" }}
+              handleStyle={{
+                borderColor: "blue",
+                height: "18px",
+                width: "18px",
+                marginTop: "-5px",
+                backgroundColor: "white",
+              }}
+              railStyle={{ backgroundColor: "lightgrey", height: "8px" }}
+            />
+            <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
+              R {otcMeds}
+            </div>
           </div>
         </div>
       </div>

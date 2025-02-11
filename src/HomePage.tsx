@@ -48,10 +48,12 @@ const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
   const dynamicText = useTypingEffect(dynamicWords);
-  const [gpVisits, setGpVisits] = useState(0);
-  const [dental, setDental] = useState(0);
-  const [optometry, setOptometry] = useState(0);
   const [otcMeds, setOtcMeds] = useState(0);
+  const [gpVisits, setGpVisits] = useState<Record<string, number>>({});
+  const [dentalVisits, setDentalVisits] = useState<Record<string, number>>({});
+  const [optometryVisits, setOptometryVisits] = useState<
+    Record<string, number>
+  >({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -64,22 +66,6 @@ const HomePage = () => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Check if user is logged in
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       // User is signed in, see docs for a list of available properties
-  //       // https://firebase.google.com/docs/reference/js/firebase.User
-  //       const uid = user.uid;
-  //       // ...
-  //       console.log("uid", uid);
-  //     } else {
-  //       // User is signed out
-  //       console.log("user is logged out");
-  //     }
-  //   });
-  // }, []);
 
   return (
     <>
@@ -296,14 +282,14 @@ const HomePage = () => {
                 Adjust to your budget
               </h1>
               <HealthCalculator
-                gpVisits={gpVisits}
-                setGpVisits={setGpVisits}
-                dental={dental}
-                setDental={setDental}
-                optometry={optometry}
-                setOptometry={setOptometry}
                 otcMeds={otcMeds}
                 setOtcMeds={setOtcMeds}
+                gpVisits={gpVisits}
+                setGpVisits={setGpVisits}
+                dentalVisits={dentalVisits}
+                setDentalVisits={setDentalVisits}
+                optometryVisits={optometryVisits}
+                setOptometryVisits={setOptometryVisits}
               />
             </div>
             <div className="relative w-full h-full bg-gray-300">
@@ -320,15 +306,20 @@ const HomePage = () => {
                 {/* Centered content inside the background */}
                 <div className="flex flex-col justify-center items-center h-full pt-10">
                   <IconList
-                    gpVisits={gpVisits}
-                    dental={dental}
-                    optometry={optometry}
+                    gpVisits={Object.values(gpVisits).reduce(
+                      (a, b) => a + b,
+                      0
+                    )}
+                    dental={Object.values(dentalVisits).reduce(
+                      (a, b) => a + b,
+                      0
+                    )}
+                    optometry={Object.values(optometryVisits).reduce(
+                      (a, b) => a + b,
+                      0
+                    )}
                     otcMeds={otcMeds}
                   />
-                  {/* Centered Button below IconList */}
-                  <button className="mt-6 w-48 bg-gray-500 text-white hover:bg-transparent hover:border-black hover:text-black active:transparent active:scale-95 transition duration-200 ease-in-out p-2 border shadow-md rounded-xl font-button">
-                    I'M INTERESTED
-                  </button>
                 </div>
               </div>
             </div>
