@@ -1,38 +1,63 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
-const useTypingEffect = (
-  words: any,
-  typingSpeed = 120,
-  deletingSpeed = 50,
-  delay = 1800
-) => {
+type UseTypingEffectProps = {
+  words: string[];
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  delay?: number;
+};
+
+const useTypingEffect = ({
+  words,
+  typingSpeed = 100,
+  deletingSpeed = 100,
+  delay = 1800,
+}: UseTypingEffectProps): string => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [reverse, setReverse] = useState(false);
   const [text, setText] = useState("");
 
   useEffect(() => {
-    if (subIndex === words[index].length + 1 && !reverse) {
-      setReverse(true);
-      setTimeout(() => setSubIndex(subIndex - 1), delay);
-      return;
+    if (words.length === 0) return;
+
+    const currentWord = words[index];
+
+    // Typing phase
+    if (!reverse && subIndex <= currentWord.length) {
+      const timeout = setTimeout(() => {
+        setText(currentWord.substring(0, subIndex));
+        setSubIndex((prev) => prev + 1);
+      }, typingSpeed);
+
+      return () => clearTimeout(timeout);
     }
 
-    if (subIndex === 0 && reverse) {
+    // Delay before deleting phase
+    if (!reverse && subIndex > currentWord.length) {
+      const timeout = setTimeout(() => {
+        setReverse(true);
+      }, delay);
+
+      return () => clearTimeout(timeout);
+    }
+
+    // Deleting phase
+    if (reverse && subIndex >= 0) {
+      const timeout = setTimeout(() => {
+        setText(currentWord.substring(0, subIndex));
+        setSubIndex((prev) => prev - 1);
+      }, deletingSpeed);
+
+      return () => clearTimeout(timeout);
+    }
+
+    // Move to the next word after deleting is complete
+    if (reverse && subIndex < 0) {
       setReverse(false);
-      setIndex((prevIndex) => (prevIndex + 1) % words.length);
-      return;
+      setIndex((prev) => (prev + 1) % words.length);
+      setSubIndex(0);
     }
-
-    const timeout = setTimeout(
-      () => {
-        setText(words[index].substring(0, subIndex));
-        setSubIndex((prevSubIndex) => prevSubIndex + (reverse ? -1 : 1));
-      },
-      reverse ? deletingSpeed : typingSpeed
-    );
-
-    return () => clearTimeout(timeout);
   }, [subIndex, index, reverse, words, typingSpeed, deletingSpeed, delay]);
 
   return text;

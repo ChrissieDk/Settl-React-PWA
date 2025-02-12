@@ -42,12 +42,12 @@ const blockText = [
   },
 ];
 
-// write call getAllUsers from dataService
-
 const HomePage = () => {
   const [iconSize, setIconSize] = useState(100);
   const dynamicWords = ["Freedom", "Flexibility", "Choice"];
-  const dynamicText = useTypingEffect(dynamicWords);
+  const dynamicText = useTypingEffect({
+    words: dynamicWords,
+  });
   const [otcMeds, setOtcMeds] = useState(0);
   const [gpVisits, setGpVisits] = useState<Record<string, number>>({});
   const [dentalVisits, setDentalVisits] = useState<Record<string, number>>({});
