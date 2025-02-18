@@ -236,7 +236,7 @@ const HomePage = () => {
                     Instant Update:
                   </span>{" "}
                   As you adjust each slider, watch the recommended cover amount
-                  for your health wallet update in real time!
+                  for your health vault update in real time!
                 </p>
               </div>
             </div>
@@ -250,7 +250,7 @@ const HomePage = () => {
                   Your Cover Defined: Slide, See, Save!
                 </span>{" "}
                 The calculator shows your personalised cover for each selection.
-                Simply load your Settl health wallet with this amount to unlock
+                Simply load your Settl health vault with this amount to unlock
                 quality private healthcare at lower-than-market rates.
               </p>
             </div>

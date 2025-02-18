@@ -20,44 +20,38 @@ const AboutUs = () => {
     },
     {
       id: 3,
-      question: "How does ‘buy now, pay later’ work?",
-      answer:
-        "With ‘buy now, pay later’, you can use our healthcare services and arrange to pay later. Settl uses reliable third-party providers to offer funds up front. You may apply for credit, and upon confirmation, the money will be transferred into your health wallet. Then you can book an appointment with your service provider and get your consultation.",
-    },
-    {
-      id: 4,
       question: "What is a settl voucher and how does it work?",
       answer:
         "Your Magic Healthcare Coin! Think of a Settl voucher as your digital healthcare coin. Need to see a doc? Generate a voucher from your health vault (usually for the service cost). Doctors, dentists, optometrists and pharmacies love these vouchers – they just scan your QR code or enter a special code on their end. Easy payment, healthy you!",
     },
     {
-      id: 5,
+      id: 4,
       question: "How can I use my health vault?",
       answer: [
         "1 Load money: Once you become a member, you can easily select the health services you need and load money into your health vault. 2 Generate a voucher: Your voucher is your digital payment for healthcare services. You can generate a voucher equal to the service fee. Providers like doctors, dentists, optometrists and pharmacists can redeem it by entering the unique code on their Settl account.",
       ],
     },
     {
-      id: 6,
+      id: 5,
       question: "How do I load money into my health vault?",
       answer:
         "Log in to your Settl account. Add your card, and deposit cash directly into your health vault. ",
     },
     {
-      id: 7,
+      id: 6,
       question: "Is there a monthly subscription?",
       answer:
         "No. You only pay and add money to your health vault when you’re able to.",
     },
     {
-      id: 8,
+      id: 7,
       question:
-        "Why should I choose Settl instead of paying the health provider directly?      ",
+        "Why should I choose Settl instead of paying the health provider directly?",
       answer:
         "Settl offers cost savings, transparent pricing, flexible payment plans, improved financial planning, and other health-related services, making it easier and more convenient.",
     },
     {
-      id: 9,
+      id: 8,
       question: "What healthcare providers can I use?",
       answer:
         "We provide access to a network of qualified healthcare professionals across the nation, including GPs, dentists, optometrists and pharmacies. To see our healthcare providers, click here.",
