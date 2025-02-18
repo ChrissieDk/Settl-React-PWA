@@ -23,20 +23,19 @@ import step3 from "../src/img/Homepage/3.png";
 
 const blockText = [
   {
-    description:
-      "Use our health calculator to find your perfect fit!Slide the dials to adjust cover for GP, dentist and optometrists’ visits, and even the amount of OTC  medication you need. Learn more.",
+    description: "Use our health calculator to find your perfect fit!",
     imgSrc: takeControl1,
     id: "1",
   },
   {
     description:
-      "Pay the way that works for you! We offer a variety of flexible payment options, including cash, buy now, pay later, medical credit, and even a customisable payment plan. Learn more.",
+      "Load your vault – your vault is where you spend and take control of your health.",
     imgSrc: takeControl2,
     id: "2",
   },
   {
     description:
-      "Support their health! Send and receive funds for your loved ones' health wallets. Learn more.",
+      "Pay merchants quickly and easily – no cash needed when you’ve planned ahead.",
     imgSrc: takeControl3,
     id: "3",
   },
@@ -107,7 +106,7 @@ const HomePage = () => {
                         exit={{ opacity: 0, y: -20 }}
                         className="flex lg:flex-row items-center lg:space-x-4 space-y-4 lg:space-y-0"
                       >
-                        <div className="w-16 h-16 lg:w-32 lg:h-32 lg:p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl mr-2 lg:mr-0">
+                        <div className="w-16 h-16 lg:w-16 lg:h-16 lg:p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl mr-2 lg:mr-0">
                           <img
                             src={block.imgSrc}
                             alt="Icon"
@@ -165,24 +164,24 @@ const HomePage = () => {
           <div className="flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 mx-auto w-full">
             {[
               {
-                title: "JOIN SETTL",
-                text: "It’s free, takes seconds!",
+                title: "CREATE",
+                text: "Join Settl and create your account. It's free, takes seconds!",
                 img: block1,
               },
               {
-                title: "CRAFT YOUR PLAN",
-                text: "Use our calculator to customise how much you allocate for doctors, dentists, optometrists and meds.",
+                title: "LOAD",
+                text: "Load your card and add funds. Use our calculator to customise how much you allocate per provider.",
                 img: block2,
               },
               {
-                title: "SEE YOUR DOC",
-                text: "Pay seamlessly with your Settl token at checkout!",
+                title: "REDEEM",
+                text: "See your doc and redeem your credits. Pay seamlessly with your Settl voucher at checkout!",
                 img: block3,
               },
             ].map((item, index) => (
               <div
                 key={index}
-                className="w-full lg:w-[30%] px-2 relative flex flex-col items-center text-center bg-gray-600 text-white rounded-2xl p-6 min-h-[150px]"
+                className="w-full lg:w-[30%] px-2 relative flex flex-col items-center text-center bg-gray-500 text-white rounded-2xl p-6 min-h-[150px]"
               >
                 <h2 className="text-2xl lg:text-2xl font-button text-orange-400">
                   {item.title}

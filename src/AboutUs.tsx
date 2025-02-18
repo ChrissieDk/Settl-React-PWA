@@ -14,9 +14,9 @@ const AboutUs = () => {
     },
     {
       id: 2,
-      question: "What is my health wallet?",
+      question: "What is my health vault?",
       answer:
-        "Your Healthcare Piggy Bank! This digital stash holds the cash you set aside for cover and lets you pay your doc directly. Here's how you can feed your piggy bank: Cash: Straightforward and simple. Buy now, pay later: Spread the cost (check for options!).Medical credit (if available): Use a credit option for healthcare.Pay as you can: Contribute what you can. Top it up, pay your doc, stay healthy!",
+        "Your Healthcare Piggy Bank! This digital stash holds the cash you set aside for cover and lets you pay your doc directly. Loading cash is easy and straightforward. Simply load your card and add money to your health vault.",
     },
     {
       id: 3,
@@ -26,30 +26,28 @@ const AboutUs = () => {
     },
     {
       id: 4,
-      question: "What is a settl token and how does it work?",
+      question: "What is a settl voucher and how does it work?",
       answer:
-        "Your Magic Healthcare Coin! Think of a Settl token as your digital healthcare coin. Need to see a doc? Generate a token from your health wallet (usually for the service cost). Doctors, dentists, optometrists and pharmacies love these tokens – they just scan your QR code or enter a special code on their end. Easy payment, healthy you!",
+        "Your Magic Healthcare Coin! Think of a Settl voucher as your digital healthcare coin. Need to see a doc? Generate a voucher from your health vault (usually for the service cost). Doctors, dentists, optometrists and pharmacies love these vouchers – they just scan your QR code or enter a special code on their end. Easy payment, healthy you!",
     },
     {
       id: 5,
-      question: "How can I use my health wallet?",
+      question: "How can I use my health vault?",
       answer: [
-        "1 Load money: Once you become a member, you can easily select the health services you need and load money into your health wallet.",
-        "2 Generate a token: Your token is your digital payment for healthcare services. You can generate a token equal to the service fee. Providers like doctors, dentists, optometrists, and pharmacists can redeem it by scanning the QR code or entering the unique code on their Settl account.",
-        "3 Send and receive: Easily send and receive funds from other Settl members.",
+        "1 Load money: Once you become a member, you can easily select the health services you need and load money into your health vault. 2 Generate a voucher: Your voucher is your digital payment for healthcare services. You can generate a voucher equal to the service fee. Providers like doctors, dentists, optometrists and pharmacists can redeem it by entering the unique code on their Settl account.",
       ],
     },
     {
       id: 6,
-      question: "Can I send money to another person's health wallet?",
+      question: "How do I load money into my health vault?",
       answer:
-        "Absolutely! You can effortlessly send or receive money from anyone who’s also a Settl member.",
+        "Log in to your Settl account. Add your card, and deposit cash directly into your health vault. ",
     },
     {
       id: 7,
-      question: "How do I load money into my health wallet?",
+      question: "Is there a monthly subscription?",
       answer:
-        "Cash payment: Deposit cash directly from your bank account into your health wallet. Settl accepts most payment methods. Buy now, pay later: You can use a healthcare provider immediately, and then pay back in monthly installments until your account is settled",
+        "No. You only pay and add money to your health vault when you’re able to.",
     },
     {
       id: 8,
@@ -60,19 +58,6 @@ const AboutUs = () => {
     },
     {
       id: 9,
-      question:
-        "What if my consultation costs more than the balance in my health wallet?",
-      answer:
-        "You can either add more money to your health wallet or pay the provider directly in cash. You also have the option to apply for credit through our ‘buy now, pay later’ option, which allows you to access funds up front for your healthcare needs.",
-    },
-    {
-      id: 10,
-      question: "Can I withdraw funds from my health wallet?",
-      answer:
-        "Yes, you can access cash from your health wallet as needed by transferring the money into a bank account. Banking fees will apply.",
-    },
-    {
-      id: 11,
       question: "What healthcare providers can I use?",
       answer:
         "We provide access to a network of qualified healthcare professionals across the nation, including GPs, dentists, optometrists and pharmacies. To see our healthcare providers, click here.",
@@ -104,7 +89,7 @@ const AboutUs = () => {
             <h1 className="text-4xl lg:text-[3.8rem] font-header mb-4 lg:-ml-20">
               Healthcare for EVERYONE <br />
               <span className="font-header text-4xl text-orange-500">
-                (at South African prices!)
+                (without breaking your budget)
               </span>
             </h1>
 
@@ -124,33 +109,20 @@ const AboutUs = () => {
               </strong>
             </h2>
             <p className="text-black font-paragraph mb-3 text-lg">
-              Settl is a prepaid healthcare payment enabler that puts you in
-              charge. Load your health wallet, choose your cover, and access
-              care whenever you need it. Pay as you go, with the flexibility to
-              fit your life.
+              You're in control! Settl is a prepaid healthcare payment enabler
+              that puts you in charge. Load your health vault, choose your
+              cover, and access care whenever you need it
             </p>
 
             <h2 className="text-xl font-header text-orange-500">
               Focus on well-being, not bills.
             </h2>
             <p className="text-lg text-black mb-3 font-paragraph">
-              We handle the costs, you focus on staying healthy. That's the
-              Settl difference.
+              With a simple process, it’s easy to redeem your voucher.
             </p>
           </div>
         </div>
       </section>
-
-      {/* Possiblly add later when we have the video ? At the moment extra section seems pointless. */}
-      {/* <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
-        <h1 className="text-blue-500 font-header text-[3.5rem]">
-          Healthcare{" "}
-          <span className="text-orange-500 font-header text-[3.5rem]">
-            freedom
-          </span>{" "}
-          is just a tap away.
-        </h1>
-      </section> */}
 
       {/* Possiblly add later when we have the video ? At the moment extra section seems pointless. */}
       <section className=" pb-lg-0 2xl:px-0  mx-auto">
