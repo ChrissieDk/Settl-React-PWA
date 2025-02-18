@@ -25,13 +25,13 @@ const SERVICE_COSTS = {
 
 const MAX_VISITS = 5;
 
-interface ServiceType {
-  label: string;
-  value: number;
-  setValue: Dispatch<SetStateAction<number>>;
-  costPerVisit: number;
-  maxVisits: number;
-}
+// interface ServiceType {
+//   label: string;
+//   value: number;
+//   setValue: Dispatch<SetStateAction<number>>;
+//   costPerVisit: number;
+//   maxVisits: number;
+// }
 
 interface HealthCalculatorProps {
   otcMeds: number;

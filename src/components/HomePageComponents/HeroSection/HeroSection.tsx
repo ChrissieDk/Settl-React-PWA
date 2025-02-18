@@ -24,11 +24,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
           </h1>
           <div className="lg:pt-2">
             <p className="pt-2 text-left lg:text-lg text-blue-500 font-paragraph">
-              We’re all about healthcare made easy. Our goal is to give you the
-              freedom to pick the healthcare options that fit you best, make
-              managing payments easy with our flexible payment alternatives, and
-              give you the choice of an extensive array of options when
-              selecting your network provider.
+              Access simplified healthcare with flexible payment options across
+              our extensive network of trusted providers.
             </p>
           </div>
           <div className="pt-4 pb-4 lg:pt-5 flex text-left gap-2 lg:gap-6 lg:pb-10">
