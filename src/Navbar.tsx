@@ -62,12 +62,17 @@ export function StickyNavbar() {
           to="/FindNetwork"
           className="flex items-center hover:text-blue-500"
         >
-          <h1 className="font-navbar">Find a network provider</h1>
+          <h1 className="font-paragraph">Find a network provider</h1>
         </Link>
       </li>
       <li className="p-1">
         <Link to="/AboutUs" className="flex items-center hover:text-blue-500">
-          <h1 className="font-navbar">About Us</h1>
+          <h1 className="font-paragraph">About Us</h1>
+        </Link>
+      </li>
+      <li className="p-1">
+        <Link to="/ContactUs" className="flex items-center hover:text-blue-500">
+          <h1 className="font-paragraph">Contact Us</h1>
         </Link>
       </li>
       {currentUser && (
@@ -76,12 +81,12 @@ export function StickyNavbar() {
             to="/Dashboard"
             className="flex items-center hover:text-blue-500"
           >
-            <h1 className="font-navbar">Dashboard</h1>
+            <h1 className="font-paragraph">Dashboard</h1>
           </Link>
         </li>
       )}
 
-      {isUserSignedIn && (
+      {/* {isUserSignedIn && (
         <li className="p-1">
           <Link
             to="/UserProfile"
@@ -107,12 +112,12 @@ export function StickyNavbar() {
           width: "auto",
           zIndex: 9999,
         }}
-      />
+      /> */}
 
       {isUserSignedIn ? (
         <li className="p-1">
           <button
-            className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded"
             onClick={handleSignOut}
           >
             Sign Out
@@ -122,7 +127,7 @@ export function StickyNavbar() {
         <>
           <li className="p-1">
             <button
-              className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded"
               onClick={navigateToLogin}
             >
               Sign In
@@ -130,7 +135,7 @@ export function StickyNavbar() {
           </li>
           <li className="p-1">
             <button
-              className="lg:hidden bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-4 border border-blue-700 rounded"
+              className="lg:hidden bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-6 border border-blue-700 rounded"
               onClick={navigateToSignUp}
             >
               Sign Up

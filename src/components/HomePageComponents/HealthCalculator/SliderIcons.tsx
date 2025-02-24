@@ -31,7 +31,7 @@ export const IconList: React.FC<IconListProps> = ({
   };
 
   return (
-    <div className="relative w-64 h-[30rem] bg-orange-400 bg-opacity-60 shadow-lg rounded-3xl p-6 text-center flex flex-col">
+    <div className="relative w-64 h-[30rem] bg-orange-400 bg-opacity-90 shadow-lg rounded-3xl p-6 text-center flex flex-col">
       <h1 className="text-white font-header text-2xl mb-2">
         Your Plan Value Is:
       </h1>

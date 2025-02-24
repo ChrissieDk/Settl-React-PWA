@@ -69,7 +69,7 @@ const HomePage = () => {
   return (
     <>
       {/* Hero section */}
-      <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+      <section className="p-8 lg:p-0  lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row w-full">
           <HeroSection dynamicText={dynamicText} />
         </div>
