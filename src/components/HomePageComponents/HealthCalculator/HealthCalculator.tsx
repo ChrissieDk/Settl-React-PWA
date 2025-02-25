@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { FiChevronDown } from "react-icons/fi"; // Import the arrow icon
 
-// Updated cost structure based on screenshot
 const SERVICE_COSTS = {
   GP: {
     Consultation: 450,
@@ -24,14 +24,6 @@ const SERVICE_COSTS = {
 };
 
 const MAX_VISITS = 5;
-
-// interface ServiceType {
-//   label: string;
-//   value: number;
-//   setValue: Dispatch<SetStateAction<number>>;
-//   costPerVisit: number;
-//   maxVisits: number;
-// }
 
 interface HealthCalculatorProps {
   otcMeds: number;
@@ -56,7 +48,6 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
 }) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  // Structure providers with sub-services
   const providers = {
     GP: {
       services: Object.entries(SERVICE_COSTS.GP).map(([label, cost]) => ({
@@ -96,7 +87,11 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
     <div className="space-y-4 p-4 text-left border rounded-lg shadow-md bg-white">
       <div className="grid gap-4">
         {Object.entries(providers).map(([provider, { services }]) => (
-          <div key={provider} className="p-4 border rounded-lg bg-gray-100">
+          <div
+            key={provider}
+            className="p-4 border border-gray-400 rounded-lg bg-gray-100"
+          >
+            {/* Header Section */}
             <div
               className="cursor-pointer flex justify-between items-center"
               onClick={() =>
@@ -105,14 +100,24 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
                   [provider]: !prev[provider],
                 }))
               }
+              aria-expanded={expanded[provider]}
             >
               <h3 className="text-lg font-semibold">{provider}</h3>
-              <span className="text-sm text-gray-600">
-                {expanded[provider] ? "Hide options" : "Click to expand"}
-              </span>
+              <FiChevronDown
+                className={`text-xl transition-transform duration-300 ${
+                  expanded[provider] ? "rotate-180" : "rotate-0"
+                }`}
+              />
             </div>
 
-            {expanded[provider] && (
+            {/* Expanding Section with Smooth Animation */}
+            <div
+              className={`transition-all duration-500 overflow-hidden ${
+                expanded[provider]
+                  ? "max-h-[1000px] opacity-100"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
               <div className="space-y-4 mt-2">
                 {services.map((service) => (
                   <div
@@ -129,7 +134,6 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
                         step={service.costPerVisit}
                         value={service.value}
                         onChange={(val) => service.setValue(val as number)}
-                        // ... rest of slider styles
                       />
                       <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center ml-2 sm:ml-4 bg-orange-400 text-white rounded text-sm sm:text-base">
                         {service.value / service.costPerVisit}
@@ -141,12 +145,12 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
                   </div>
                 ))}
               </div>
-            )}
+            </div>
           </div>
         ))}
 
         {/* OTC Medication */}
-        <div className="p-4 border rounded-lg bg-gray-50">
+        <div className="p-4 border border-gray-400 rounded-lg bg-gray-50">
           <h3 className="text-sm sm:text-base font-medium">OTC Medication</h3>
           <div className="flex items-center">
             <Slider
