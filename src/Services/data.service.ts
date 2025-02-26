@@ -97,6 +97,7 @@ export const login = async () => {
   }
 };
 
+// details of merchants within our network
 export const getCompanyDetails = async () => {
   try {
     const response = await axiosInstance.get("/company/companydetails");
@@ -107,7 +108,7 @@ export const getCompanyDetails = async () => {
   }
 };
 
-// Replace <any>
+// add a card
 export const initiateIssueToken = async (): Promise<any> => {
   try {
     const { data: requestBody } = await axiosInstance.get<any>(
@@ -160,6 +161,7 @@ export const initiateAuthenticateToken = async (
   }
 };
 
+// last legof redemption phase - fires once all checks have passed and money is released
 export const payment = async (orderId: string) => {
   try {
     const response = await axiosInstance.get(`/payment/payment/${orderId}`);
@@ -188,6 +190,7 @@ export const cancelPayment = async (
   }
 };
 
+// bring back all vouchers realting to users acount
 export const getVouchers = async () => {
   try {
     const response = await axiosInstance.get("/payment/vouchers");
@@ -198,6 +201,7 @@ export const getVouchers = async () => {
   }
 };
 
+// action redemption of vouchers
 export const redeem = async (voucher: any) => {
   try {
     const response = await axiosInstance.post(`/payment/redeem`, voucher);
@@ -209,7 +213,7 @@ export const redeem = async (voucher: any) => {
   }
 };
 
-// https://localhost:7183/api/payment/transactions
+// bring back all yransactions relevant to user account
 export const getTransactions = async () => {
   try {
     const response = await axiosInstance.get("/payment/transactions");
@@ -220,7 +224,7 @@ export const getTransactions = async () => {
   }
 };
 
-// https://localhost:7183/api/redemption/otp
+// generated OTP to be redeemed by merchant
 export const getOTP = async (testOtp: any) => {
   try {
     const response = await axiosInstance.post(
@@ -234,7 +238,7 @@ export const getOTP = async (testOtp: any) => {
   }
 };
 
-//https://localhost:7183/api/redemption/accept/{otp}/{merhcantId}
+// for merchant accpeting OTP/Payment for service
 export const acceptOTP = async (otp: string, merchantId: string) => {
   try {
     const response = await axiosInstance.get(

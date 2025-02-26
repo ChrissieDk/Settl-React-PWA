@@ -321,7 +321,6 @@ const HomePage = () => {
                     otcMeds={otcMeds}
                   />
                 </div>
-                v
               </div>
             </div>
           </div>

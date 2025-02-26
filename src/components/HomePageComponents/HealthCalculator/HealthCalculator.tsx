@@ -6,14 +6,10 @@ import { FiChevronDown } from "react-icons/fi"; // Import the arrow icon
 const SERVICE_COSTS = {
   GP: {
     Consultation: 450,
-    "In-room procedure": 420,
-    "Scale/Polish": 320,
   },
   Dental: {
-    Consultation: 665,
     Filling: 430,
     Extraction: 164,
-    OralXray: 174,
   },
   Optometry: {
     "Spectacle Frame": 583,
