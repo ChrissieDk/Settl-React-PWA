@@ -157,6 +157,51 @@ const FindNetwork: React.FC = () => {
           </div>
         </div>
       </div>
+      <div className="bg-[#f8f5ef] py-12 mt-6 px-8 md:px-8 lg:px-0">
+        <div className="px-6 lg:px-24">
+          <h2 className="text-3xl lg:text-5xl font-header text-left text-blue-500">
+            <span className="text-orange-500 font-header">Go</span>{" "}
+            <span className="text-blue-500 font-header">and</span>
+            <span className="text-orange-500 font-header"> Show!</span>
+          </h2>
+        </div>
+        <div className="flex flex-col md:flex-row justify-start md:justify-center items-start md:items-center gap-6 md:gap-8 mt-6">
+          {[
+            {
+              number: "1",
+              title: "Go:",
+              description: "Visit your chosen Settl network provider.",
+            },
+            {
+              number: "2",
+              title: "Show:",
+              description:
+                "Show your OTP code and have the merchant enter it to redeem!",
+            },
+            {
+              number: "3",
+              title: "Settl Up Simply:",
+              description:
+                "Pay before or after your consultation, it’s your choice!",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center md:items-start gap-3 max-w-md w-full md:w-auto"
+            >
+              <div className="bg-orange-400 text-white font-header text-lg md:text-3xl w-10 h-10 md:w-16 md:h-16 flex items-center justify-center rounded-md">
+                {item.number}
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-orange-500 text-left">
+                  {item.title}
+                </h3>
+                <p className="text-blue-500 text-left">{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };
