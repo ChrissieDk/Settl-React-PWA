@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { HealthCalculator } from "./components/HomePageComponents/HealthCalculator/HealthCalculator";
 import { IconList } from "./components/HomePageComponents/HealthCalculator/SliderIcons";
-
+import Footer from "./components/Footer/Footer";
 //images and icons
 import HeroSection from "./components/HomePageComponents/HeroSection/HeroSection";
 import planBg from "./img/image3.png";
@@ -155,7 +155,7 @@ const HomePage = () => {
 
       {/* How it works */}
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto relative">
-        <h1 className="font-header text-4xl lg:text-7xl text-blue-500 lg:pb-4">
+        <h1 className="font-header text-4xl lg:text-7xl text-blue-500 pb-6 lg:pb-4">
           How it works<span className="text-orange-400"> :</span>
         </h1>
         <div className="absolute inset-0 z-0">
@@ -326,6 +326,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

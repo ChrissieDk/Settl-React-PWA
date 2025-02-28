@@ -3,8 +3,8 @@ import Map from "./components/GoogleMaps/Map";
 import { getCompanyDetails } from "./Services/data.service";
 import { MapProps } from "./types/Types";
 import useDebounce from "./hooks/debounce/useDebounce";
-
 import needDoc from "../src/img/FindNetwork/needADoc.png";
+import Footer from "./components/Footer/Footer";
 
 const services = [
   { id: 1, service: "gp", type: "GP" },
@@ -202,6 +202,7 @@ const FindNetwork: React.FC = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </section>
   );
 };
