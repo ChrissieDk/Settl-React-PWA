@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { HealthCalculator } from "./components/HomePageComponents/HealthCalculator/HealthCalculator";
 import { IconList } from "./components/HomePageComponents/HealthCalculator/SliderIcons";
-
+import Footer from "./components/Footer/Footer";
 //images and icons
 import HeroSection from "./components/HomePageComponents/HeroSection/HeroSection";
 import planBg from "./img/image3.png";
@@ -13,29 +13,29 @@ import smilingPeople from "./img/Homepage/smiling_people.png";
 import takeControl1 from "./img/Homepage/slider icon.png";
 import takeControl2 from "./img/Homepage/pay icon.png";
 import takeControl3 from "./img/Homepage/support icon.png";
-import block1 from "../src/img/Homepage/join settl.png";
-import block2 from "../src/img/Homepage/craft your plan.png";
-import block3 from "../src/img/Homepage/see your doc.png";
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import step1 from "../src/img/Homepage/1.png";
 import step2 from "../src/img/Homepage/2.png";
 import step3 from "../src/img/Homepage/3.png";
+import penIcon from "../src/img/Homepage/pen-icon.png";
+import stethoscope from "../src/img/Homepage/stethoscope.png";
+import slider from "../src/img/Homepage/slider.png";
 
 const blockText = [
   {
-    description: "Use our health calculator to find your perfect fit!",
+    description: "Use our health calculator to find your perfect fit! ",
     imgSrc: takeControl1,
     id: "1",
   },
   {
     description:
-      "Load your vault – your vault is where you spend and take control of your health.",
+      "Load your vault – your vault is where you spend and take control of your health. ",
     imgSrc: takeControl2,
     id: "2",
   },
   {
     description:
-      "Pay merchants quickly and easily – no cash needed when you’ve planned ahead.",
+      "Pay merchants quickly and easily – no cash needed when you’ve planned ahead. ",
     imgSrc: takeControl3,
     id: "3",
   },
@@ -69,7 +69,7 @@ const HomePage = () => {
   return (
     <>
       {/* Hero section */}
-      <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
+      <section className="p-8 lg:p-0  lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row w-full">
           <HeroSection dynamicText={dynamicText} />
         </div>
@@ -81,46 +81,53 @@ const HomePage = () => {
 
       {/* Take control section */}
       <section className="w-full bg-gray-200">
-        <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto bg-gray-200">
-          <div className="flex flex-col lg:flex-row w-full">
-            <div className="lg:w-1/2 flex flex-col">
-              <div>
-                <h1 className="font-header text-4xl lg:text-6xl text-left text-blue-500">
-                  <span className="text-orange-400 font-header">
-                    Take control
-                  </span>{" "}
-                  of your money and health.
-                </h1>
-              </div>
+        <div className="p-8 lg:pt-18 lg:px-20 pb-0 2xl:px-0 2xl:max-w-7xl mx-auto bg-gray-200">
+          <div className="flex flex-col lg:flex-row items-center lg:justify-center w-full">
+            {/* Left Section - Centered Text */}
+            <div className="lg:w-1/2 flex flex-col justify-center h-full">
+              <h1 className="font-header text-4xl lg:text-6xl text-left text-blue-500">
+                <span className="text-orange-400 font-header">
+                  Take control
+                </span>{" "}
+                of your money and health.
+              </h1>
 
-              <div className="flex flex-col space-y-4 mt-10">
-                <AnimatePresence>
+              <div className="flex flex-col space-y-6 mt-10">
+                <AnimatePresence mode="wait">
                   {blockText.map((block) => {
                     const learnMoreUrl = "/Settl-React-PWA";
 
                     return (
                       <motion.div
                         key={block.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="flex lg:flex-row items-center lg:space-x-4 space-y-4 lg:space-y-0"
+                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -30, scale: 0.95 }}
+                        transition={{
+                          duration: 0.4,
+                          ease: "easeOut",
+                        }}
+                        className="flex items-center space-x-4"
                       >
-                        <div className="w-16 h-16 lg:w-16 lg:h-16 lg:p-10 bg-orange-400 flex justify-center items-center text-2xl text-gray-800 rounded-xl mr-2 lg:mr-0">
+                        {/* Icon Wrapper */}
+                        <div className="w-14 h-14 lg:w-24 lg:h-24 flex justify-center items-center bg-orange-400 rounded-lg">
                           <img
                             src={block.imgSrc}
                             alt="Icon"
-                            className="w-full h-full object-cover"
+                            className="w-8 h-8 lg:w-14 lg:h-14 object-contain"
                           />
                         </div>
-                        <div className="p-2 flex-1 min-w-0">
-                          <p className="text-blue-500 break-words text-sm lg:text-lg text-left font-paragraph lg:pb-0">
-                            {block.description.replace("Learn more.", "")}
+
+                        {/* Text */}
+                        <div className="flex-1">
+                          <p className="text-blue-500 text-sm lg:text-lg font-paragraph text-left">
+                            {block.description}{" "}
                             <a
                               href={learnMoreUrl}
                               className="text-orange-400 hover:text-blue-500 underline"
                             >
-                              Learn more.
+                              <br />
+                              Learn more
                             </a>
                           </p>
                         </div>
@@ -130,11 +137,16 @@ const HomePage = () => {
                 </AnimatePresence>
               </div>
             </div>
-            <div className="lg:w-1/2 flex items-center pt-5 pb-5 relative">
-              <img
+
+            {/* Right Section - Image Centered */}
+            <div className="lg:w-1/2 flex justify-center items-center pt-5">
+              <motion.img
                 src={smilingPeople}
-                alt="Description"
-                className="hidden lg:block absolute max-w-full h-[18em] w-auto lg:h-[36rem] bottom-0"
+                alt="People smiling"
+                className="hidden lg:block max-w-full h-auto w-full object-contain"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               />
             </div>
           </div>
@@ -143,7 +155,7 @@ const HomePage = () => {
 
       {/* How it works */}
       <section className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto relative">
-        <h1 className="font-header text-4xl lg:text-7xl text-blue-500 lg:pb-4">
+        <h1 className="font-header text-4xl lg:text-7xl text-blue-500 pb-6 lg:pb-4">
           How it works<span className="text-orange-400"> :</span>
         </h1>
         <div className="absolute inset-0 z-0">
@@ -160,43 +172,46 @@ const HomePage = () => {
             className="h-16 lg:h-72 w-auto object-cover blur-[2px] lg:ml-10 scale-x-[-1]"
           />
         </div>
-        <div className="relative lg:h-[50vh] flex justify-center items-center">
-          <div className="flex flex-col lg:flex-row lg:justify-between space-y-4 lg:space-y-0 mx-auto w-full">
+        <div className="relative lg:h-[60vh] flex justify-center items-center">
+          <div className="flex flex-col lg:flex-row lg:justify-between space-y-4 md:mx-40 lg:space-y-0 mx-auto w-full">
             {[
               {
-                title: "CREATE",
-                text: "Join Settl and create your account. It's free, takes seconds!",
-                img: block1,
+                title: "JOIN SETTL",
+                text: "It's free, takes seconds!",
+                icon: penIcon,
               },
               {
-                title: "LOAD",
-                text: "Load your card and add funds. Use our calculator to customise how much you allocate per provider.",
-                img: block2,
+                title: "CRAFT YOUR PLAN",
+                text: "Use our calculator to customise how much you allocate for doctors, dentists, optometrists and meds.",
+                icon: slider,
               },
               {
-                title: "REDEEM",
-                text: "See your doc and redeem your credits. Pay seamlessly with your Settl voucher at checkout!",
-                img: block3,
+                title: "SEE YOUR DOC",
+                text: "Pay seamlessly with your Settl token at checkout!",
+                icon: stethoscope,
               },
             ].map((item, index) => (
               <div
                 key={index}
-                className="w-full lg:w-[30%] px-2 relative flex flex-col items-center text-center bg-gray-500 text-white rounded-2xl p-6 min-h-[150px]"
+                className="w-full lg:w-[32%] md:h-[18rem] px-4  relative flex flex-col items-center text-center bg-[#4d4d4d] text-white rounded-xl p-6 min-h-[180px] shadow-lg"
               >
-                <h2 className="text-2xl lg:text-2xl font-button text-orange-400">
+                {/* Icon */}
+                <div>
+                  <img
+                    className="w-12 h-12 object-contain"
+                    src={item.icon}
+                  ></img>
+                </div>
+                {/* Title */}
+                <h2 className="text-lg lg:text-2xl font-semibold text-orange-400 mt-3">
                   {item.title}
                 </h2>
-                <hr className="w-full border-white my-2" />
-                <p className="text-xl lg:text-lg font-paragraph">{item.text}</p>
+                {/* Divider */}
+                <hr className="w-[80%] border-[3px] border-white my-2 rounded-xl" />
+                {/* Text */}
+                <p className="text-sm lg:text-lg font-light">{item.text}</p>
               </div>
             ))}
-          </div>
-          <div className="absolute bottom-0 left-[-8%] z-0">
-            <img
-              src={blurredBird}
-              alt="Dove Behind"
-              className="h-24 lg:h-56 w-auto object-cover blur-[2px] lg:ml-10"
-            />
           </div>
         </div>
       </section>
@@ -311,6 +326,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

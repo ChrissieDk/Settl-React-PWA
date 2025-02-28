@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { useAuth } from "./Auth/AuthContext";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 
-// icons and images
+// Icons and images
 import { FaInstagram } from "react-icons/fa6";
-import { FaFacebookF, FaUserCircle } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
+import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import logo from "./img/Homepage/settl icon.png";
 
 export function StickyNavbar() {
-  const [openNav, setOpenNav] = useState(false);
-  const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+  const [openNav, setOpenNav] = useState<boolean>(false);
+  const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unregisterAuthObserver = auth.onAuthStateChanged((user) => {
@@ -47,72 +46,35 @@ export function StickyNavbar() {
       });
   };
 
-  const navigateToSignUp = () => {
-    navigate("/signup");
-  };
+  const navigateToSignUp = () => navigate("/signup");
+  const navigateToLogin = () => navigate("/login");
 
-  const navigateToLogin = () => {
-    navigate("/login");
-  };
+  const navItems = [
+    { name: "Find a network provider", path: "/FindNetwork" },
+    { name: "About Us", path: "/AboutUs" },
+    { name: "Contact Us", path: "/ContactUs" },
+    currentUser ? { name: "Dashboard", path: "/Dashboard" } : null,
+  ].filter(Boolean) as { name: string; path: string }[];
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <li className="p-1">
-        <Link
-          to="/FindNetwork"
-          className="flex items-center hover:text-blue-500"
-        >
-          <h1 className="font-navbar">Find a network provider</h1>
-        </Link>
-      </li>
-      <li className="p-1">
-        <Link to="/AboutUs" className="flex items-center hover:text-blue-500">
-          <h1 className="font-navbar">About Us</h1>
-        </Link>
-      </li>
-      {currentUser && (
-        <li className="p-1">
+      {navItems.map(({ name, path }) => (
+        <li key={path} className="p-1">
           <Link
-            to="/Dashboard"
-            className="flex items-center hover:text-blue-500"
+            to={path}
+            className={`flex items-center hover:text-orange-400 ${
+              location.pathname === path ? "text-orange-400" : ""
+            }`}
           >
-            <h1 className="font-navbar">Dashboard</h1>
+            <h1 className="font-paragraph">{name}</h1>
           </Link>
         </li>
-      )}
-
-      {isUserSignedIn && (
-        <li className="p-1">
-          <Link
-            to="/UserProfile"
-            className="flex items-center hover:text-blue-500"
-          >
-            <FaUserCircle className="h-6 w-6 mr-2" id="my-profile" />
-          </Link>
-        </li>
-      )}
-      <ReactTooltip
-        anchorId="my-profile"
-        place="bottom"
-        opacity={1}
-        content="View and manage your personal details"
-        style={{
-          backgroundColor: "white",
-          color: "#222",
-          fontFamily: "Montserrat, sans-serif",
-          borderRadius: "8px",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-          padding: "8px 12px",
-          maxWidth: "350px",
-          width: "auto",
-          zIndex: 9999,
-        }}
-      />
+      ))}
 
       {isUserSignedIn ? (
         <li className="p-1">
           <button
-            className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+            className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded"
             onClick={handleSignOut}
           >
             Sign Out
@@ -122,7 +84,7 @@ export function StickyNavbar() {
         <>
           <li className="p-1">
             <button
-              className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+              className="lg:hidden bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded"
               onClick={navigateToLogin}
             >
               Sign In
@@ -130,7 +92,7 @@ export function StickyNavbar() {
           </li>
           <li className="p-1">
             <button
-              className="lg:hidden bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-4 border border-blue-700 rounded"
+              className="lg:hidden bg-blue-500 hover:bg-blue-700 text-white font-navbar py-2 px-6 border border-blue-700 rounded"
               onClick={navigateToSignUp}
             >
               Sign Up
@@ -165,20 +127,12 @@ export function StickyNavbar() {
             <div className="hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
               {isUserSignedIn ? (
-                <>
-                  {/* <a
-                    href="/profile"
-                    className="hidden lg:block text-blue-500 hover:text-blue-700 mr-4"
-                  >
-                    <FaUserCircle className="h-6 w-6" />
-                  </a> */}
-                  <button
-                    className="hidden lg:block bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-                    onClick={handleSignOut}
-                  >
-                    Sign Out
-                  </button>
-                </>
+                <button
+                  className="hidden lg:block bg-transparent hover:bg-blue-500 text-blue-700 font-navbar hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </button>
               ) : (
                 <>
                   <button
