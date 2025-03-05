@@ -9,6 +9,7 @@ import FindNetwork from "./FindNetwork";
 import Login from "./components/SignIn/Login";
 import Signup from "./components/SignUp/SignUp";
 import UserProfile from "./UserProfile";
+import ContactUs from "./components/contactUs";
 import { AuthProvider } from "./Auth/AuthContext";
 import { ProtectedRoute } from "./Auth/ProtectedRoute";
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/FindNetwork" element={<FindNetwork />} />
+            <Route path="/ContactUs" element={<ContactUs />} />
             <Route
               path="/UserProfile"
               element={
