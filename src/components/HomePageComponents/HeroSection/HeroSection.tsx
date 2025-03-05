@@ -1,4 +1,4 @@
-import phoneImage from "../../../img/Homepage/Phones_updated.png";
+import phoneImage from "../../../img/Homepage/phones_updated.png";
 import { HeroSectionProps } from "../../../types/Types";
 import settlLogo from "../../../img/Homepage/Settl logo.png";
 import React from "react";
