@@ -108,7 +108,7 @@ const Signup = () => {
               onClick={signInWithGoogle}
             >
               <FcGoogle size={20} className="mr-2" />
-              Log in with Google
+              Sign Up with Google
             </button>
             {/* <button
             type="button"
@@ -132,7 +132,7 @@ const Signup = () => {
                 htmlFor="email-address"
                 className="block text-sm font-button text-black "
               >
-                Email address
+                Email Address
               </label>
               <input
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
@@ -141,7 +141,7 @@ const Signup = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="Email address"
+                placeholder="Email Address"
               />
             </div>
 
@@ -167,7 +167,7 @@ const Signup = () => {
               type="submit"
               className="w-[50%] px-4 py-2 mb-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              Sign up
+              Sign Up
             </button>
           </form>
 
@@ -178,7 +178,7 @@ const Signup = () => {
               className="text-indigo-600 hover:text-indigo-500"
             >
               {" "}
-              Sign in
+              Log In
             </NavLink>
           </p>
         </div>

@@ -120,8 +120,10 @@ const Login = () => {
         style={{ backgroundImage: `url(${bgLogin})`, height: "90vh" }}
       >
         <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
-          <img src={settlLogo} alt="Settl Logo" className="h-16 mx-auto mb-4" />
-          <h2 className="text-md font-button text-center text-black">Log in</h2>
+          <img src={settlLogo} alt="Settl Logo" className="h-16 mx-auto mb-2" />
+          <h1 className="text-3xl font-bold text-center text-blue-500 mt-2 lg:mt-6">
+            Let’s get you logged in
+          </h1>
           <h2 className="text-md font-button text-center text-black">
             Welcome back!
           </h2>
@@ -199,10 +201,10 @@ const Login = () => {
                 className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 onClick={onLogin}
               >
-                Login
+                Log In
               </button>
             </div>
-            <div className=" mt-4">
+            <div className="mt-4">
               <button
                 type="button"
                 className="text-indigo-600 hover:text-indigo-500 text-sm"
