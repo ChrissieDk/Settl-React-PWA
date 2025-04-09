@@ -35,6 +35,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ dynamicText }) => {
         </div>
 
         {/* Image Section */}
+
         <div className="lg:w-1/2 flex justify-center">
           <img
             className="mx-auto px-8 lg:pt-0"

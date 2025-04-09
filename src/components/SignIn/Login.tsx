@@ -103,16 +103,6 @@ const Login = () => {
     }
   };
 
-  // const getUserIdLogin = async (firebaseId: string) => {
-  //   return getUserId(firebaseId)
-  //     .then((response) => {
-  //       console.log("User registered in the database:", response);
-  //     })
-  //     .catch((error) => {
-  //       throw error;
-  //     });
-  // };
-
   return (
     <>
       <main
