@@ -5,6 +5,7 @@ import { MapProps } from "./types/Types";
 import useDebounce from "./hooks/debounce/useDebounce";
 import needDoc from "../src/img/FindNetwork/needADoc.png";
 import Footer from "./components/Footer/Footer";
+import FadeIn from "./components/FadeIn/FadeIn";
 
 const services = [
   { id: 1, service: "gp", type: "GP" },
@@ -78,6 +79,7 @@ const FindNetwork: React.FC = () => {
 
   return (
     <section>
+      <FadeIn>
       <div className="relative">
         <img src={needDoc} alt="need a doctor" className="h-auto w-full" />
         <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -93,6 +95,8 @@ const FindNetwork: React.FC = () => {
           </div>
         </div>
       </div>
+      </FadeIn>
+      <FadeIn>
       <div className="p-8 lg:pt-18 lg:px-20 pb-lg-0 2xl:px-0 2xl:max-w-7xl mx-auto flex flex-wrap">
         <div className="w-full text-left">
           <h1 className="text-3xl lg:text-6xl font-header mb-4 text-blue-500">
@@ -157,6 +161,8 @@ const FindNetwork: React.FC = () => {
           </div>
         </div>
       </div>
+      </FadeIn>
+      <FadeIn>
       <div className="bg-[#f8f5ef] py-12 mt-6 px-8 md:px-8 lg:px-0">
         <div className="px-6 lg:px-24">
           <h2 className="text-3xl lg:text-5xl font-header text-left text-blue-500">
@@ -202,6 +208,7 @@ const FindNetwork: React.FC = () => {
           ))}
         </div>
       </div>
+      </FadeIn>
       <Footer />
     </section>
   );
