@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
       ];
 
   // Driver js
-  useDriverTour(isMobile, setIsSidebarOpen);
+  // useDriverTour(isMobile, setIsSidebarOpen);
 
   useEffect(() => {
     // Listen for incoming messages

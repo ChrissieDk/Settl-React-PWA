@@ -27,43 +27,31 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     if (error.response && error.response.status === 401) {
-//       console.log("Token expired, attempting to refresh...");
-//       try {
-//         const user = auth.currentUser;
-//         if (user) {
-//           // Force refresh the token
-//           const newIdToken = await user.getIdToken(true);
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      console.log("Token expired, redirecting to login page");
 
-//           // Update localStorage with the new token
-//           localStorage.setItem("bearer", newIdToken);
+      // Clear the expired token
+      localStorage.removeItem("bearer");
 
-//           // Update the original request with the new token
-//           error.config.headers["Authorization"] = `Bearer ${newIdToken}`;
+      // Store a message that can be displayed on the login page
+      localStorage.setItem(
+        "loginMessage",
+        "Session has expired. Please log in again to access your dashboard."
+      );
 
-//           // Retry the original request with the new token
-//           return axiosInstance(error.config);
-//         } else {
-//           // No user is signed in, redirect to login
-//           console.log("No user signed in, redirecting to login");
-//           window.location.href = "/login"; // Adjust the path as needed
-//           return Promise.reject(error);
-//         }
-//       } catch (refreshError) {
-//         // If token refresh fails, redirect to login
-//         console.error("Failed to refresh token:", refreshError);
-//         localStorage.removeItem("bearer");
-//         window.location.href = "/login"; // Adjust the path as needed
-//         return Promise.reject(refreshError);
-//       }
-//     }
-//     // If the error is not 401, reject the promise with the original error
-//     return Promise.reject(error);
-//   }
-// );
+      // Redirect to login page
+      window.location.href = "/Settl-React-PWA/login"; // Adjust the path as needed
+
+      return Promise.reject(error);
+    }
+
+    // If the error is not 401, reject the promise with the original error
+    return Promise.reject(error);
+  }
+);
 
 export const register = async (user: UserIn) => {
   try {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   sendEmailVerification,
   signInWithEmailAndPassword,
@@ -17,6 +17,17 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginMessage, setLoginMessage] = useState<string | null>(null);
+
+  // Check for session expiration message on component mount
+  useEffect(() => {
+    const message = localStorage.getItem("loginMessage");
+    if (message) {
+      setLoginMessage(message);
+      // Clear the message so it doesn't appear again on refresh
+      localStorage.removeItem("loginMessage");
+    }
+  }, []);
 
   // Forgot password function
   const handleForgotPassword = (email: string) => {
@@ -32,7 +43,6 @@ const Login = () => {
       });
   };
 
-  // Maybe change to signInWithRedirect to avoid error in console ?
   // Google login
   const signInWithGoogle = async () => {
     try {
@@ -55,27 +65,6 @@ const Login = () => {
     }
   };
 
-  // Email / Password login
-  // const onLogin = (e: { preventDefault: () => void }) => {
-  //   e.preventDefault();
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then(async (userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-  //       user.getIdToken().then((idToken) => {
-  //         localStorage.setItem("bearer", idToken);
-  //         console.log("Bearer " + idToken);
-  //       });
-  //       const userSession = await login();
-  //       navigate("/Dashboard");
-  //       console.log(user);
-  //     })
-  //     .catch((error) => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       console.log(errorCode, errorMessage);
-  //     });
-  // };
   const onLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
@@ -106,20 +95,31 @@ const Login = () => {
   return (
     <>
       <main
-        className="flex bg-cover bg-center"
-        style={{ backgroundImage: `url(${bgLogin})`, height: "90vh" }}
+        className="flex bg-cover bg-center min-h-screen py-8"
+        style={{ backgroundImage: `url(${bgLogin})` }}
       >
         <section className="m-auto w-full max-w-md px-8 py-6 bg-white rounded-lg shadow-md">
           <img src={settlLogo} alt="Settl Logo" className="h-16 mx-auto mb-2" />
-          <h1 className="text-3xl font-bold text-center text-blue-500 mt-2 lg:mt-6">
-            Let’s get you logged in
+
+          {/* Session Expiration Message */}
+          {loginMessage && (
+            <div
+              className="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-3 mb-4 rounded text-sm"
+              role="alert"
+            >
+              <p>{loginMessage}</p>
+            </div>
+          )}
+
+          <h1 className="text-2xl font-bold text-center text-blue-500 mt-2">
+            Let's get you logged in
           </h1>
-          <h2 className="text-md font-button text-center text-black">
+          <h2 className="text-sm font-button text-center text-black">
             Welcome back!
           </h2>
 
-          {/* Google and Facebook Login Buttons */}
-          <div className="flex flex-col items-center my-4">
+          {/* Google Login Button */}
+          <div className="flex flex-col items-center my-3">
             <button
               type="button"
               className="flex items-center justify-center w-full px-4 py-2 mb-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -128,29 +128,21 @@ const Login = () => {
               <FcGoogle size={20} className="mr-2" />
               Log in with Google
             </button>
-            {/* <button
-              type="button"
-              className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              onClick={signInWithFacebook}
-            >
-              <FaFacebookF size={20} className="mr-2 text-blue-600" />
-              Log in with Facebook
-            </button> */}
           </div>
 
           {/* Horizontal Split with 'OR' */}
-          <div className="flex items-center my-4">
+          <div className="flex items-center my-3">
             <div className="flex-grow border-t border-orange-500"></div>
-            <span className="mx-4 text-gray-500">OR</span>
+            <span className="mx-4 text-gray-500 text-sm">OR</span>
             <div className="flex-grow border-t border-orange-500"></div>
           </div>
 
           {/* Login Form */}
-          <form className="mt-4">
-            <div className="mb-4">
+          <form className="mt-3">
+            <div className="mb-3">
               <label
                 htmlFor="email-address"
-                className="block text-md font-button text-black"
+                className="block text-sm font-medium text-gray-700"
                 aria-required="true"
               >
                 Email address
@@ -166,10 +158,10 @@ const Login = () => {
               />
             </div>
 
-            <div className="mb-6">
+            <div className="mb-4">
               <label
                 htmlFor="password"
-                className="block text-md font-button text-black"
+                className="block text-sm font-medium text-gray-700"
                 aria-required="true"
               >
                 Password
@@ -194,7 +186,7 @@ const Login = () => {
                 Log In
               </button>
             </div>
-            <div className="mt-4">
+            <div className="mt-3">
               <button
                 type="button"
                 className="text-indigo-600 hover:text-indigo-500 text-sm"
@@ -206,7 +198,7 @@ const Login = () => {
             </div>
           </form>
 
-          <p className="mt-4 text-sm text-center text-gray-600">
+          <p className="mt-3 text-sm text-center text-gray-600">
             No account yet?
             <NavLink
               to="/signup"
