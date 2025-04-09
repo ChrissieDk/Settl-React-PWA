@@ -3,6 +3,7 @@ import backgroundImage from "../img/AdobeStock_471841623.png";
 import logo from "../img/Homepage/Settl logo.png";
 import birdBg from "../img/birds.png";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
+import FadeIn from "./FadeIn/FadeIn";
 
 const ContactUs: React.FC = () => {
   return (
@@ -11,16 +12,25 @@ const ContactUs: React.FC = () => {
       style={{ backgroundImage: `url(${birdBg})` }}
     >
       {/* Background Elements */}
-      <img src={logo} alt="Settl Logo" className="absolute top-6 left-6 w-28" />
+      <FadeIn>
+        <img
+          src={logo}
+          alt="Settl Logo"
+          className="absolute top-6 left-6 w-28"
+        />
+      </FadeIn>
 
       <div className="relative flex flex-col md:flex-col lg:flex-row items-center w-4/5 max-w-6xl">
         {/* Contact Us Text (Visible on small screens) */}
-        <h1 className="block lg:hidden text-7xl font-header text-blue-500 text-center mb-4">
-          Contact <br />
-          <span className="text-orange-500 text-7xl font-header">Us</span>
-        </h1>
+        <FadeIn>
+          <h1 className="block lg:hidden text-7xl font-header text-blue-500 text-center mb-4">
+            Contact <br />
+            <span className="text-orange-500 text-7xl font-header">Us</span>
+          </h1>
+        </FadeIn>
 
         {/* Text Section */}
+
         <div className="flex-1 z-10 order-2 lg:order-1">
           {/* Contact Details */}
           <div className="flex flex-col items-center mt-6 lg:mt-[18rem]">
@@ -63,6 +73,7 @@ const ContactUs: React.FC = () => {
         </div>
 
         {/* Image Section (Hidden on Small Screens) */}
+
         <div className="relative flex-1 hidden lg:block order-1 lg:order-2">
           <img
             src={backgroundImage}
