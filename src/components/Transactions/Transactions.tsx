@@ -8,7 +8,24 @@ import {
 import { getTransactions } from "../../Services/data.service";
 import { tableTransactions } from "../../types/Types";
 import RedeemModal from "../RedeemModal/RedeemModal";
+import { FaSearch } from "react-icons/fa";
 
+// Constants
+const PAGE_SIZE_OPTIONS = [5, 10, 15, 20, 50, 100, 150];
+const TABLE_HEADERS = [
+  "Transaction ID",
+  "Date",
+  "Time",
+  "Type",
+  "Amount",
+  "Balance",
+  "Service",
+  "Status",
+  "Currency",
+  "Voucher Code",
+];
+
+// Component Types
 interface TransactionsTabProps {
   transactions: tableTransactions[];
   tokens: any[];
@@ -20,7 +37,13 @@ interface TransactionsTabProps {
   updateTransactions: (transactions: tableTransactions[]) => void;
 }
 
-const StatusPill = React.memo(({ status }: { status: string }) => {
+interface SortConfig {
+  key: string;
+  direction: "ascending" | "descending";
+}
+
+// Helper Components
+const StatusPill: React.FC<{ status: string }> = React.memo(({ status }) => {
   const statusClasses = useMemo(() => {
     switch (status) {
       case "add":
@@ -38,15 +61,30 @@ const StatusPill = React.memo(({ status }: { status: string }) => {
 
   return (
     <span
-      className={`inline-flex items-center justify-center font-semibold rounded-full text-xs py-1 ${statusClasses}`}
+      className={`inline-flex items-center justify-center font-semibold rounded-full text-xs py-1 px-3 ${statusClasses}`}
     >
       {status}
     </span>
   );
 });
 
+// Utility Functions
 const truncateId = (id: string) => `${id.slice(0, 10)}...`;
 
+const formatDate = (dateString: string) =>
+  new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+const formatTime = (dateString: string) =>
+  new Date(dateString).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+// Main Component
 const TransactionsTab: React.FC<TransactionsTabProps> = ({
   transactions,
   tokens,
@@ -55,48 +93,30 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
   selectedTab,
   updateTransactions,
 }) => {
+  // State Management
   const [tokenModalOpen, setTokenModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: "ascending" | "descending";
-  } | null>(null);
+  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
+  // Data Processing
   const sortedTransactions = useMemo(() => {
-    let sortableTransactions = [...transactions];
-    if (sortConfig) {
-      sortableTransactions.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key])
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        if (a[sortConfig.key] > b[sortConfig.key])
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        return 0;
-      });
-    }
-    return sortableTransactions;
+    if (!sortConfig) return [...transactions];
+
+    return [...transactions].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key])
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      if (a[sortConfig.key] > b[sortConfig.key])
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      return 0;
+    });
   }, [transactions, sortConfig]);
 
   const filteredTransactions = useMemo(() => {
+    if (!searchTerm) return sortedTransactions;
+
     const searchLower = searchTerm.toLowerCase();
     return sortedTransactions.filter((transaction) =>
       Object.values(transaction).some(
@@ -106,27 +126,64 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     );
   }, [sortedTransactions, searchTerm]);
 
-  const requestSort = (key: string) => {
-    const direction =
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === "ascending"
-        ? "descending"
-        : "ascending";
-    setSortConfig({ key, direction });
-  };
-
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentData = filteredTransactions.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
-  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
 
-  const handlePageChange = (page: number) => {
+  const getPageNumbers = useMemo(() => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    const pageNumbers: (number | "...")[] = [1];
+
+    if (currentPage <= 3) {
+      pageNumbers.push(2, 3, "...");
+    } else if (currentPage >= totalPages - 2) {
+      pageNumbers.push("...", totalPages - 2, totalPages - 1);
+    } else {
+      pageNumbers.push("...", currentPage, "...");
+    }
+
+    pageNumbers.push(totalPages);
+    return pageNumbers;
+  }, [currentPage, totalPages]);
+
+  // Event Handlers
+  const requestSort = useCallback((key: string) => {
+    setSortConfig((prevConfig) => {
+      const direction =
+        prevConfig?.key === key && prevConfig.direction === "ascending"
+          ? "descending"
+          : "ascending";
+      return { key, direction };
+    });
+  }, []);
+
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
+
+  const handleSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+      setCurrentPage(1);
+    },
+    []
+  );
+
+  const handleItemsPerPageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setItemsPerPage(Number(e.target.value));
+      setCurrentPage(1); // Reset to first page when changing items per page
+    },
+    []
+  );
 
   const openRedeemModal = useCallback((action: string) => {
     setSelectedAction(action);
@@ -138,32 +195,9 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     setSelectedAction("");
   }, []);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    setCurrentPage(1);
-  };
-
-  const getPageNumbers = useMemo(() => {
-    const pageNumbers = [];
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
-    } else {
-      pageNumbers.push(1);
-      if (currentPage <= 3) {
-        pageNumbers.push(2, 3, "...");
-      } else if (currentPage >= totalPages - 2) {
-        pageNumbers.push("...", totalPages - 2, totalPages - 1);
-      } else {
-        pageNumbers.push("...", currentPage, "...");
-      }
-      pageNumbers.push(totalPages);
-    }
-    return pageNumbers;
-  }, [currentPage, totalPages]);
-
-  // Fetch transactions only when the selectedTab changes to "transactions"
+  // Side Effects
   useEffect(() => {
-    if (selectedTab !== "transactions") return; // Only run for the transactions tab
+    if (selectedTab !== "transactions") return;
 
     const fetchTransactions = async () => {
       try {
@@ -175,27 +209,226 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     };
 
     fetchTransactions();
+  }, [selectedTab, updateTransactions]);
 
-    // Optional: Add a cleanup function if needed
-    // return () => {
-    //   console.log("Cleaning up transactions fetch");
-    // };
-  }, [selectedTab]); // Only depend on selectedTab
-
-  return (
-    <div>
-      <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
-        <div className="mt-4">
+  // Render Helper Components
+  const renderSearchBar = () => (
+    <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
+      <div className="mt-4 w-full lg:w-64">
+        <div className="relative">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search transactions..."
             value={searchTerm}
             onChange={handleSearch}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors"
             aria-label="Search transactions"
           />
+          <FaSearch className="absolute left-3 top-3 text-gray-400" />
         </div>
       </div>
+    </div>
+  );
+
+  const renderEmptyState = () => (
+    <div className="text-center py-12 flex flex-col items-center justify-center h-64 bg-gray-50">
+      <svg
+        className="w-16 h-16 text-gray-400 mb-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        ></path>
+      </svg>
+      <p className="text-gray-500 text-lg font-medium">No transactions found</p>
+      <p className="text-gray-400 mt-1">Try adjusting your search criteria</p>
+    </div>
+  );
+
+  const renderTableHeader = () => (
+    <thead>
+      <tr>
+        {TABLE_HEADERS.map((header) => {
+          const sortKey = header.toLowerCase().replace(/ /g, "");
+          const isCurrentSortKey = sortConfig?.key === sortKey;
+          const sortDirection = isCurrentSortKey ? sortConfig.direction : null;
+
+          return (
+            <th
+              key={header}
+              scope="col"
+              className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 bg-gray-50 shadow-sm z-10 cursor-pointer transition-colors hover:bg-gray-100"
+              onClick={() => requestSort(sortKey)}
+            >
+              <div className="flex items-center">
+                {header}
+                {isCurrentSortKey &&
+                  (sortDirection === "ascending" ? (
+                    <FaArrowDown className="ml-2 text-orange-500" />
+                  ) : (
+                    <FaArrowUp className="ml-2 text-orange-500" />
+                  ))}
+              </div>
+            </th>
+          );
+        })}
+      </tr>
+    </thead>
+  );
+
+  const renderTableRow = (transaction: tableTransactions, index: number) => {
+    const isEvenRow = index % 2 === 0;
+    const rowClass = isEvenRow
+      ? "bg-white hover:bg-gray-200"
+      : "bg-gray-50 hover:bg-gray-200";
+    const amount = Number(transaction.amount);
+    const isPositiveAmount = amount > 0;
+    const formattedAmount = (amount / 100).toFixed(2);
+    const amountPrefix = isPositiveAmount ? "+" : "";
+    const amountClass = isPositiveAmount ? "text-green-600" : "text-red-600";
+
+    return (
+      <tr
+        key={transaction.transactionId}
+        className={`transition-colors ${rowClass}`}
+      >
+        <td
+          className="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-900 cursor-help"
+          title={transaction.id}
+        >
+          {truncateId(transaction.id)}
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+          {formatDate(transaction.transactionDate)}
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+          {formatTime(transaction.transactionDate)}
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+          {transaction.transactionType}
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm font-medium">
+          <span className={amountClass}>
+            {amountPrefix}
+            {formattedAmount}
+          </span>
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+          {transaction.balance ? (transaction.balance / 100).toFixed(2) : "-"}
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+          {transaction.service}
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap">
+          <StatusPill status={transaction.status} />
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700 text-center">
+          ZAR
+        </td>
+        <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+          {transaction.voucherCode || "-"}
+        </td>
+      </tr>
+    );
+  };
+
+  const renderPagination = () => {
+    if (filteredTransactions.length === 0) return null;
+
+    return (
+      <div className="bg-gray-50 px-4 py-3 border-t border-gray-200 sm:px-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center">
+          <div className="flex text-sm text-gray-700">
+            Showing{" "}
+            <span className="font-medium mx-1">{indexOfFirstItem + 1}</span> to{" "}
+            <span className="font-medium mx-1">
+              {Math.min(indexOfLastItem, filteredTransactions.length)}
+            </span>{" "}
+            of{" "}
+            <span className="font-medium mx-1">
+              {filteredTransactions.length}
+            </span>{" "}
+            results
+          </div>
+
+          <div className="mt-3 sm:mt-0 flex items-center">
+            <nav
+              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px mr-4"
+              aria-label="Pagination"
+            >
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="sr-only">Previous</span>
+                <FaChevronLeft className="h-4 w-4" aria-hidden="true" />
+              </button>
+
+              {getPageNumbers.map((number, index) => (
+                <button
+                  key={number === "..." ? `ellipsis-${index}` : number}
+                  onClick={() =>
+                    typeof number === "number" && handlePageChange(number)
+                  }
+                  disabled={number === "..."}
+                  className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                    number === currentPage
+                      ? "z-10 bg-orange-400 border-orange-500 text-white"
+                      : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                  } ${number === "..." ? "cursor-default" : ""}`}
+                >
+                  {number}
+                </button>
+              ))}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="sr-only">Next</span>
+                <FaChevronRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </nav>
+
+            <div className="flex items-center">
+              <label
+                htmlFor="itemsPerPage"
+                className="text-sm text-gray-700 mr-2"
+              >
+                Show:
+              </label>
+              <select
+                id="itemsPerPage"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+                className="rounded border border-gray-300 text-sm focus:ring-orange-500 focus:border-orange-500 py-1"
+              >
+                {PAGE_SIZE_OPTIONS.map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Main Render
+  return (
+    <div>
+      {renderSearchBar()}
+
       {tokenModalOpen && (
         <RedeemModal
           action={selectedAction}
@@ -204,154 +437,24 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
           vouchers={tokens}
         />
       )}
-      <div className="mt-4 bg-white shadow-lg rounded-lg p-4">
-        {filteredTransactions.length === 0 ? (
-          <div className="text-center py-8 flex items-center justify-center h-64">
-            <p className="text-gray-500 text-lg">No transactions found</p>
-          </div>
-        ) : (
-          <div className="overflow-y-auto max-h-96">
-            <table className="min-w-full leading-normal">
-              <thead>
-                <tr>
-                  {[
-                    "Transaction ID",
-                    "Date",
-                    "Time",
-                    "Type",
-                    "Amount",
-                    "Balance",
-                    "Service",
-                    "Status",
-                    "Currency",
-                    "Voucher Code",
-                  ].map((header) => (
-                    <th
-                      key={header}
-                      scope="col"
-                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5 cursor-pointer"
-                      onClick={() =>
-                        requestSort(header.toLowerCase().replace(/ /g, ""))
-                      }
-                    >
-                      <div className="flex items-center">
-                        {header}
-                        {sortConfig?.key ===
-                          header.toLowerCase().replace(/ /g, "") &&
-                          (sortConfig.direction === "ascending" ? (
-                            <FaArrowDown className="ml-2" />
-                          ) : (
-                            <FaArrowUp className="ml-2" />
-                          ))}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {currentData.map((transaction) => (
-                  <tr key={transaction.transactionId}>
-                    <td
-                      className="px-5 py-3 border-b border-gray-200 text-sm text-left cursor-help"
-                      title={transaction.id}
-                    >
-                      {truncateId(transaction.id)}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatDate(transaction.transactionDate)}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatTime(transaction.transactionDate)}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.transactionType}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {(transaction.amount / 100).toFixed(2)}{" "}
-                      {/* Convert cents to rands */}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.balance
-                        ? (transaction.balance / 100).toFixed(2)
-                        : "-"}{" "}
-                      {/* Convert cents to rands */}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.service}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      <StatusPill status={transaction.status} />
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-center">
-                      ZAR
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.voucherCode || "-"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
 
-        {/* Pagination */}
-        {filteredTransactions.length > 0 && (
-          <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
-            <nav
-              className="flex items-center justify-center"
-              aria-label="Pagination"
-            >
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="mr-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
-                aria-label="Previous page"
-              >
-                <FaChevronLeft className="h-4 w-4" />
-              </button>
-              {getPageNumbers.map((number, index) => (
-                <button
-                  key={number === "..." ? `ellipsis-${index}` : number}
-                  onClick={() =>
-                    typeof number === "number" && handlePageChange(number)
-                  }
-                  className={`mx-1 px-3 py-1 rounded-md ${
-                    number === currentPage
-                      ? "bg-orange-400 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                  aria-label={`Go to page ${number}`}
-                >
-                  {number}
-                </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="ml-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
-                aria-label="Next page"
-              >
-                <FaChevronRight className="h-4 w-4" />
-              </button>
-            </nav>
-            <div className="mt-4 sm:mt-0">
-              <select
-                id="itemsPerPage"
-                value={itemsPerPage}
-                onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                className="ml-2 rounded px-2 py-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Items per page"
-              >
-                {[5, 10, 15, 20, 50, 100, 150].map((value) => (
-                  <option key={value} value={value}>
-                    {value} per page
-                  </option>
-                ))}
-              </select>
+      <div className="mt-4 bg-white shadow-lg rounded-lg overflow-hidden">
+        {filteredTransactions.length === 0 ? (
+          renderEmptyState()
+        ) : (
+          <div className="overflow-x-auto">
+            <div className="overflow-y-auto max-h-96">
+              <table className="min-w-full divide-y divide-gray-200">
+                {renderTableHeader()}
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {currentData.map(renderTableRow)}
+                </tbody>
+              </table>
             </div>
           </div>
         )}
+
+        {renderPagination()}
       </div>
     </div>
   );

@@ -28,7 +28,6 @@ import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
 import OTPRedemptionModal from "./components/OtpRedemption/OTPRedemption";
 import SignalRservice from "./Services/SignalRservice";
-import { useDriverTour } from "./hooks/DriverJS/useDriverTour";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
