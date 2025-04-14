@@ -8,6 +8,7 @@ import {
 import { getTransactions } from "../../Services/data.service";
 import { tableTransactions } from "../../types/Types";
 import RedeemModal from "../RedeemModal/RedeemModal";
+import { FaSearch } from "react-icons/fa";
 
 interface TransactionsTabProps {
   transactions: tableTransactions[];
@@ -38,7 +39,7 @@ const StatusPill = React.memo(({ status }: { status: string }) => {
 
   return (
     <span
-      className={`inline-flex items-center justify-center font-semibold rounded-full text-xs py-1 ${statusClasses}`}
+      className={`inline-flex items-center justify-center font-semibold rounded-full text-xs py-1 px-3 ${statusClasses}`}
     >
       {status}
     </span>
@@ -180,22 +181,26 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
     // return () => {
     //   console.log("Cleaning up transactions fetch");
     // };
-  }, [selectedTab]); // Only depend on selectedTab
+  }, [selectedTab, updateTransactions]); // Added updateTransactions dependency
 
   return (
     <div>
       <div className="flex justify-between text-left lg:items-center mt-4 flex-col lg:flex-row">
-        <div className="mt-4">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label="Search transactions"
-          />
+        <div className="mt-4 w-full lg:w-64">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search transactions..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 transition-colors"
+              aria-label="Search transactions"
+            />
+            <FaSearch className="absolute left-3 top-3 text-gray-400" />
+          </div>
         </div>
       </div>
+
       {tokenModalOpen && (
         <RedeemModal
           action={selectedAction}
@@ -204,151 +209,213 @@ const TransactionsTab: React.FC<TransactionsTabProps> = ({
           vouchers={tokens}
         />
       )}
-      <div className="mt-4 bg-white shadow-lg rounded-lg p-4">
+
+      <div className="mt-4 bg-white shadow-lg rounded-lg overflow-hidden">
         {filteredTransactions.length === 0 ? (
-          <div className="text-center py-8 flex items-center justify-center h-64">
-            <p className="text-gray-500 text-lg">No transactions found</p>
+          <div className="text-center py-12 flex flex-col items-center justify-center h-64 bg-gray-50">
+            <svg
+              className="w-16 h-16 text-gray-400 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+            <p className="text-gray-500 text-lg font-medium">
+              No transactions found
+            </p>
+            <p className="text-gray-400 mt-1">
+              Try adjusting your search criteria
+            </p>
           </div>
         ) : (
-          <div className="overflow-y-auto max-h-96">
-            <table className="min-w-full leading-normal">
-              <thead>
-                <tr>
-                  {[
-                    "Transaction ID",
-                    "Date",
-                    "Time",
-                    "Type",
-                    "Amount",
-                    "Balance",
-                    "Service",
-                    "Status",
-                    "Currency",
-                    "Voucher Code",
-                  ].map((header) => (
-                    <th
-                      key={header}
-                      scope="col"
-                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 z-5 cursor-pointer"
-                      onClick={() =>
-                        requestSort(header.toLowerCase().replace(/ /g, ""))
-                      }
-                    >
-                      <div className="flex items-center">
-                        {header}
-                        {sortConfig?.key ===
-                          header.toLowerCase().replace(/ /g, "") &&
-                          (sortConfig.direction === "ascending" ? (
-                            <FaArrowDown className="ml-2" />
-                          ) : (
-                            <FaArrowUp className="ml-2" />
-                          ))}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {currentData.map((transaction) => (
-                  <tr key={transaction.transactionId}>
-                    <td
-                      className="px-5 py-3 border-b border-gray-200 text-sm text-left cursor-help"
-                      title={transaction.id}
-                    >
-                      {truncateId(transaction.id)}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatDate(transaction.transactionDate)}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {formatTime(transaction.transactionDate)}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.transactionType}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {(transaction.amount / 100).toFixed(2)}{" "}
-                      {/* Convert cents to rands */}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.balance
-                        ? (transaction.balance / 100).toFixed(2)
-                        : "-"}{" "}
-                      {/* Convert cents to rands */}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.service}
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      <StatusPill status={transaction.status} />
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-center">
-                      ZAR
-                    </td>
-                    <td className="px-5 py-3 border-b border-gray-200 text-sm text-left">
-                      {transaction.voucherCode || "-"}
-                    </td>
+          <div className="overflow-x-auto">
+            <div className="overflow-y-auto max-h-96">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    {[
+                      "Transaction ID",
+                      "Date",
+                      "Time",
+                      "Type",
+                      "Amount",
+                      "Balance",
+                      "Service",
+                      "Status",
+                      "Currency",
+                      "Voucher Code",
+                    ].map((header) => (
+                      <th
+                        key={header}
+                        scope="col"
+                        className="px-5 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider sticky top-0 bg-gray-50 shadow-sm z-10 cursor-pointer transition-colors hover:bg-gray-100"
+                        onClick={() =>
+                          requestSort(header.toLowerCase().replace(/ /g, ""))
+                        }
+                      >
+                        <div className="flex items-center">
+                          {header}
+                          {sortConfig?.key ===
+                            header.toLowerCase().replace(/ /g, "") &&
+                            (sortConfig.direction === "ascending" ? (
+                              <FaArrowDown className="ml-2 text-orange-500" />
+                            ) : (
+                              <FaArrowUp className="ml-2 text-orange-500" />
+                            ))}
+                        </div>
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {currentData.map((transaction, index) => (
+                    <tr
+                      key={transaction.transactionId}
+                      className={`transition-colors ${
+                        index % 2 === 0
+                          ? "bg-white hover:bg-gray-50"
+                          : "bg-gray-50 hover:bg-gray-100"
+                      }`}
+                    >
+                      <td
+                        className="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-900 cursor-help"
+                        title={transaction.id}
+                      >
+                        {truncateId(transaction.id)}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {formatDate(transaction.transactionDate)}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {formatTime(transaction.transactionDate)}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {transaction.transactionType}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm font-medium">
+                        <span
+                          className={
+                            Number(transaction.amount) > 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }
+                        >
+                          {Number(transaction.amount) > 0 ? "+" : ""}
+                          {(transaction.amount / 100).toFixed(2)}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {transaction.balance
+                          ? (transaction.balance / 100).toFixed(2)
+                          : "-"}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {transaction.service}
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap">
+                        <StatusPill status={transaction.status} />
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700 text-center">
+                        ZAR
+                      </td>
+                      <td className="px-5 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {transaction.voucherCode || "-"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
-        {/* Pagination */}
+        {/* Pagination - Improved styling */}
         {filteredTransactions.length > 0 && (
-          <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
-            <nav
-              className="flex items-center justify-center"
-              aria-label="Pagination"
-            >
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="mr-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
-                aria-label="Previous page"
-              >
-                <FaChevronLeft className="h-4 w-4" />
-              </button>
-              {getPageNumbers.map((number, index) => (
-                <button
-                  key={number === "..." ? `ellipsis-${index}` : number}
-                  onClick={() =>
-                    typeof number === "number" && handlePageChange(number)
-                  }
-                  className={`mx-1 px-3 py-1 rounded-md ${
-                    number === currentPage
-                      ? "bg-orange-400 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                  aria-label={`Go to page ${number}`}
+          <div className="bg-gray-50 px-4 py-3 border-t border-gray-200 sm:px-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center">
+              <div className="flex text-sm text-gray-700">
+                Showing{" "}
+                <span className="font-medium mx-1">{indexOfFirstItem + 1}</span>{" "}
+                to{" "}
+                <span className="font-medium mx-1">
+                  {Math.min(indexOfLastItem, filteredTransactions.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-medium mx-1">
+                  {filteredTransactions.length}
+                </span>{" "}
+                results
+              </div>
+
+              <div className="mt-3 sm:mt-0 flex items-center">
+                <nav
+                  className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px mr-4"
+                  aria-label="Pagination"
                 >
-                  {number}
-                </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="ml-2 px-2 py-1 rounded-md bg-gray-200 text-gray-700 disabled:opacity-50"
-                aria-label="Next page"
-              >
-                <FaChevronRight className="h-4 w-4" />
-              </button>
-            </nav>
-            <div className="mt-4 sm:mt-0">
-              <select
-                id="itemsPerPage"
-                value={itemsPerPage}
-                onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                className="ml-2 rounded px-2 py-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Items per page"
-              >
-                {[5, 10, 15, 20, 50, 100, 150].map((value) => (
-                  <option key={value} value={value}>
-                    {value} per page
-                  </option>
-                ))}
-              </select>
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span className="sr-only">Previous</span>
+                    <FaChevronLeft className="h-4 w-4" aria-hidden="true" />
+                  </button>
+
+                  {getPageNumbers.map((number, index) => (
+                    <button
+                      key={number === "..." ? `ellipsis-${index}` : number}
+                      onClick={() =>
+                        typeof number === "number" && handlePageChange(number)
+                      }
+                      disabled={number === "..."}
+                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                        number === currentPage
+                          ? "z-10 bg-orange-400 border-orange-500 text-white"
+                          : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                      } ${number === "..." ? "cursor-default" : ""}`}
+                    >
+                      {number}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span className="sr-only">Next</span>
+                    <FaChevronRight className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </nav>
+
+                <div className="flex items-center">
+                  <label
+                    htmlFor="itemsPerPage"
+                    className="text-sm text-gray-700 mr-2"
+                  >
+                    Show:
+                  </label>
+                  <select
+                    id="itemsPerPage"
+                    value={itemsPerPage}
+                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                    className="rounded border border-gray-300 text-sm focus:ring-orange-500 focus:border-orange-500 py-1"
+                  >
+                    {[5, 10, 15, 20, 50, 100, 150].map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         )}

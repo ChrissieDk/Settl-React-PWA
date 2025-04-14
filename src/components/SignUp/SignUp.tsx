@@ -26,7 +26,7 @@ const Signup = () => {
         const token = credential?.accessToken;
         // The signed-in user info.
         const user = result.user;
-        // Navigate to Dashboard or do something with the user info
+        // Navigate to Dashboard
         await registerLocal(user);
         navigate("/Dashboard");
       })
@@ -66,7 +66,7 @@ const Signup = () => {
   const registerLocal = async (user: any) => {
     const userIn = {
       email: user.email,
-      password: password || "test", // Using the password or default if none provided
+      password: password,
       firebaseId: user.uid,
       username: user.email,
     };
@@ -110,14 +110,6 @@ const Signup = () => {
               <FcGoogle size={20} className="mr-2" />
               Sign Up with Google
             </button>
-            {/* <button
-            type="button"
-            className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            onClick={signInWithFacebook}
-          >
-            <FaFacebookF size={20} className="mr-2 text-blue-600" />
-            Log in with Facebook
-          </button> */}
           </div>
 
           <div className="flex items-center my-4">
