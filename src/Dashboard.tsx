@@ -28,6 +28,7 @@ import placeholder from "../src/img/settl_logo1.png";
 import RedeemModal from "./components/RedeemModal/RedeemModal";
 import OTPRedemptionModal from "./components/OtpRedemption/OTPRedemption";
 import SignalRservice from "./Services/SignalRservice";
+import PatientList from "./components/Patient/PatientList";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
@@ -74,6 +75,11 @@ const Dashboard: React.FC = () => {
         {
           id: "otp-redemption",
           label: "OTP Redemption",
+          icon: <MdHealthAndSafety size={20} />,
+        },
+        {
+          id: "patient-list",
+          label: "Patient List",
           icon: <MdHealthAndSafety size={20} />,
         },
       ]
@@ -155,10 +161,11 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isMerchant && selectedTab !== "transactions") {
+    // Only set default tab on initial load, not when tab changes
+    if (isMerchant && !selectedTab) {
       setSelectedTab("transactions");
     }
-  }, [selectedTab, isMerchant]);
+  }, [isMerchant]); // Only depend on isMerchant, not selectedTab
 
   // Responsive sidebar handling
   useEffect(() => {
@@ -500,6 +507,11 @@ const Dashboard: React.FC = () => {
             />
           )}
           {selectedTab === "vouchers" && <Vouchers />}
+          {selectedTab === "patient-list" && (
+            <div id="patient-list">
+              <PatientList key="patient-list" />
+            </div>
+          )}
         </div>
       </div>
 
