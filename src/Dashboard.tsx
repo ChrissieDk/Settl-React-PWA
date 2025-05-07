@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { tableTransactions, Voucher } from "./types/Types";
 import HealthVault from "./components/HealthVault/HealthVault";
 import TransactionsTab from "./components/Transactions/Transactions";
-import { AuthContext, useAuth } from "./Auth/AuthContext";
+import { useAuth } from "./Auth/AuthContext";
 import {
   initiateIssueToken,
   listTokens,

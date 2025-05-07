@@ -50,8 +50,6 @@ const Login = () => {
       const user = result.user;
       const idToken = await user.getIdToken();
       localStorage.setItem("bearer", idToken);
-      console.log("Bearer " + idToken);
-
       const loginResponse = await login();
       localStorage.setItem(
         "userIsMerchant",
@@ -76,8 +74,6 @@ const Login = () => {
       const user = userCredential.user;
       const idToken = await user.getIdToken();
       localStorage.setItem("bearer", idToken);
-      console.log("Bearer " + idToken);
-
       const loginResponse = await login();
       localStorage.setItem(
         "userIsMerchant",

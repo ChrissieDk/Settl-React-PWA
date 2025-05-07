@@ -37,6 +37,7 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
         const merchantStatus =
           localStorage.getItem("userIsMerchant") === "true";
         setIsMerchant(merchantStatus);
+        console.log(merchantStatus);
       } else {
         setIsMerchant(false); // Reset when logged out
       }
