@@ -10,7 +10,6 @@ interface User {
   amount: number;
 }
 
-// New interface for Transaction data
 interface Transaction {
   id: string;
   userId?: string;
