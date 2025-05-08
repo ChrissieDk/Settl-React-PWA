@@ -41,7 +41,7 @@ const PatientBlock: React.FC<PatientBlockProps> = ({
 
       <div className="flex items-center justify-between mt-auto">
         <span className="font-medium text-gray-900">
-          R{Math.abs(patient.amount).toFixed(2)}
+          R{Math.abs(patient.amount / 100).toFixed(2)}
         </span>
         <button
           onClick={() => onViewDetails(patient.id)}

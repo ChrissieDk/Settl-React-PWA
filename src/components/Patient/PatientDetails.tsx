@@ -1,13 +1,27 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchMerchantTransactions } from "../../Services/data.service";
 
-// Updated interface to match your API data structure
+// Interface for User data
 interface User {
   id: string;
   emailAddress: string;
   username: string;
   lastTransactionDate: string;
   amount: number;
+}
+
+// New interface for Transaction data
+interface Transaction {
+  id: string;
+  userId?: string;
+  amount: number;
+  transactionDate: string;
+  service?: string;
+  status?: string;
+  balance?: number;
+  transactionType?: string;
+  voucherCode?: string;
+  description?: string;
 }
 
 interface PatientDetailModalProps {
@@ -23,12 +37,40 @@ const PatientDetail: React.FC<PatientDetailModalProps> = ({
 }) => {
   type TabType = "transactions" | "info";
   const [activeTab, setActiveTab] = useState<TabType>("transactions");
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch transactions when patient changes
+  useEffect(() => {
+    const loadTransactions = async () => {
+      if (!patient) return;
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const data = await fetchMerchantTransactions(patient.id);
+
+        setTransactions(data);
+      } catch (err) {
+        console.error("Failed to fetch transactions:", err);
+        setError("Failed to load transactions. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isOpen && patient) {
+      loadTransactions();
+    }
+  }, [patient, isOpen]);
 
   if (!isOpen || !patient) return null;
 
   // Format currency with proper spacing
   const formatCurrency = (amount: number): string => {
-    return `R ${Math.abs(amount).toFixed(2)}`;
+    return `R ${amount.toFixed(2)}`;
   };
 
   // Extract username (and potentially firstname/lastname)
@@ -60,30 +102,41 @@ const PatientDetail: React.FC<PatientDetailModalProps> = ({
     return { name: username, surname: "" };
   };
 
+  // Format the transaction date
+  const formatDate = (dateString: string | null | undefined): string => {
+    if (!dateString) return "N/A";
+
+    try {
+      // Try to parse the date
+      const date = new Date(dateString);
+
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        console.warn(`Invalid date format: ${dateString}`);
+        return "N/A";
+      }
+
+      return date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (err) {
+      console.error(`Error formatting date: ${dateString}`, err);
+      return "N/A";
+    }
+  };
+
   const { name, surname } = extractDisplayName(patient.username);
 
-  // Get transaction type based on amount
-  const getTransactionType = (): string => {
-    return patient.amount < 0 ? "Debit" : "Credit";
-  };
-
-  // Get transaction badge color based on amount
-  const getTransactionBadgeColor = (): string => {
-    return patient.amount < 0
-      ? "bg-red-100 text-red-800"
-      : "bg-green-100 text-green-800";
-  };
-
-  // Format the transaction date
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  // Calculate total transaction amount
+  const getTotalAmount = (): number => {
+    return transactions.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
   };
 
   return (
@@ -196,6 +249,43 @@ const PatientDetail: React.FC<PatientDetailModalProps> = ({
                       {patient.emailAddress}
                     </p>
                   </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">User ID</p>
+                    <p className="font-medium text-gray-800 truncate">
+                      {patient.id}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Last Activity</p>
+                    <p className="font-medium text-gray-800">
+                      {formatDate(patient.lastTransactionDate)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Transaction Summary
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Total Payments</p>
+                    <p className="font-medium text-gray-800">
+                      {transactions.length}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Total Amount</p>
+                    <p className="font-medium text-blue-600">
+                      {formatCurrency(
+                        transactions.reduce(
+                          (sum, t) => sum + Math.abs(t.amount / 100),
+                          0
+                        )
+                      )}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -205,38 +295,113 @@ const PatientDetail: React.FC<PatientDetailModalProps> = ({
             <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden h-full">
               <div className="p-5 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-800">
-                  Transaction History
+                  Payment History
                 </h3>
                 <p className="text-sm text-gray-500">
-                  Last transaction: {formatDate(patient.lastTransactionDate)}
+                  {transactions.length} transactions found
                 </p>
               </div>
 
               <div className="overflow-y-auto max-h-full">
-                {/* We only have one transaction from the API */}
-                <div className="px-5 py-4 hover:bg-gray-50 transition-colors">
-                  <div className="flex justify-between items-center mb-2">
-                    <div>
-                      <span
-                        className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${getTransactionBadgeColor()}`}
+                {isLoading && (
+                  <div className="p-8 text-center">
+                    <div className="mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-gray-100">
+                      <svg
+                        className="animate-spin h-8 w-8 text-blue-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
                       >
-                        {getTransactionType()}
-                      </span>
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
                     </div>
-                    <span className="text-sm text-gray-500">
-                      {formatDate(patient.lastTransactionDate)}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-end">
-                    <p className="text-lg font-semibold text-gray-800">
-                      {formatCurrency(patient.amount)}
+                    <p className="text-gray-500 font-medium">
+                      Loading transactions...
                     </p>
                   </div>
-                </div>
+                )}
 
-                {/* Empty state message */}
-                {!patient.lastTransactionDate && (
+                {error && (
+                  <div className="p-8 text-center">
+                    <div className="mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-red-100">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-8 w-8 text-red-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-gray-700 font-medium">{error}</p>
+                    <button
+                      onClick={() => fetchMerchantTransactions(patient.id)}
+                      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                )}
+
+                {!isLoading && !error && transactions.length > 0 && (
+                  <div>
+                    {transactions.map((transaction) => (
+                      <div
+                        key={transaction.id}
+                        className="px-5 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                      >
+                        <div className="flex justify-between items-center mb-2">
+                          <div>
+                            <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                              {transaction.transactionType || "Payment"}
+                            </span>
+                          </div>
+                          <span className="text-sm text-gray-500">
+                            {formatDate(transaction.transactionDate)}
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between items-end">
+                          <p className="text-lg font-semibold text-gray-800">
+                            {formatCurrency(Math.abs(transaction.amount / 100))}
+                          </p>
+                          <div className="text-right">
+                            {transaction.service && (
+                              <p className="text-sm text-gray-500">
+                                {transaction.service}
+                              </p>
+                            )}
+                            {transaction.voucherCode && (
+                              <p className="text-xs text-gray-400">
+                                Voucher: {transaction.voucherCode}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {!isLoading && !error && transactions.length === 0 && (
                   <div className="p-8 text-center">
                     <div className="mx-auto w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-gray-100">
                       <svg

@@ -246,7 +246,6 @@ export const fetchMerchantTransactions = async (
   try {
     const query = userId ? `?userId=${userId}` : "";
     const response = await axiosInstance.get(`/merchant/transactions${query}`);
-    console.log("fetchMerchantTransactions", response);
     return response.data;
   } catch (error) {
     console.error("Error fetching merchant transactions:", error);
@@ -259,7 +258,6 @@ export const fetchMerchantTransactions = async (
 export const fetchMerchantUsers = async (): Promise<any[]> => {
   try {
     const response = await axiosInstance.get("/merchant/users");
-    console.log("merchantUsers", response);
     return response.data;
   } catch (error) {
     console.error("Error fetching merchant users:", error);
