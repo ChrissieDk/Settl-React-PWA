@@ -29,6 +29,7 @@ import RedeemModal from "./components/RedeemModal/RedeemModal";
 import OTPRedemptionModal from "./components/OtpRedemption/OTPRedemption";
 import SignalRservice from "./Services/SignalRservice";
 import PatientList from "./components/Patient/PatientList";
+import MerchantTransactionsTable from "./components/MerchantTransactions/MerchantTransactions";
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
@@ -68,7 +69,7 @@ const Dashboard: React.FC = () => {
   const navItems = isMerchant
     ? [
         {
-          id: "transactions",
+          id: "merchantTransactionsTable",
           label: "Transactions",
           icon: <BiTransfer size={20} />,
         },
@@ -510,6 +511,11 @@ const Dashboard: React.FC = () => {
           {selectedTab === "patient-list" && (
             <div id="patient-list">
               <PatientList key="patient-list" />
+            </div>
+          )}
+          {selectedTab === "merchantTransactionsTable" && (
+            <div id="merchantTransactionsTable">
+              <MerchantTransactionsTable key="merchantTransactionsTable" />
             </div>
           )}
         </div>
