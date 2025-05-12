@@ -78,7 +78,6 @@ export const register = async (user: UserIn) => {
 export const login = async () => {
   try {
     const response = await axiosInstance.get("/user/login");
-    console.log("User logged in:", response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -235,6 +234,31 @@ export const acceptOTP = async (otp: string, merchantId: string) => {
     return response.data;
   } catch (error) {
     console.error("Error accepting OTP:", error);
+    throw error;
+  }
+};
+
+export const fetchMerchantTransactions = async (
+  userId?: string
+): Promise<any[]> => {
+  try {
+    const query = userId ? `?userId=${userId}` : "";
+    const response = await axiosInstance.get(`/merchant/transactions${query}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching merchant transactions:", error);
+    throw error;
+  }
+};
+
+// services/merchantService.ts
+
+export const fetchMerchantUsers = async (): Promise<any[]> => {
+  try {
+    const response = await axiosInstance.get("/merchant/users");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching merchant users:", error);
     throw error;
   }
 };
