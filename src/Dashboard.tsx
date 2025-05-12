@@ -164,7 +164,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     // Only set default tab on initial load, not when tab changes
     if (isMerchant && !selectedTab) {
-      setSelectedTab("transactions");
+      setSelectedTab("merchantTransactionsTable");
     }
   }, [isMerchant]); // Only depend on isMerchant, not selectedTab
 

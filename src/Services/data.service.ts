@@ -78,8 +78,6 @@ export const register = async (user: UserIn) => {
 export const login = async () => {
   try {
     const response = await axiosInstance.get("/user/login");
-    console.log("Login response:", response);
-    console.log("User logged in:", response.data);
     return response.data;
   } catch (error) {
     throw error;
