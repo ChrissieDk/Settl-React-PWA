@@ -136,7 +136,7 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({
                       </div>
                     </div>
                     <div className="text-sm text-gray-600 mt-1">
-                      Cost per visit: R{service.costPerVisit.toFixed(2)}
+                      Service cost: R{service.costPerVisit.toFixed(2)}
                     </div>
                   </div>
                 ))}

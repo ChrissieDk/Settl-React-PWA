@@ -60,15 +60,21 @@ export const IconList: React.FC<IconListProps> = ({
       <div className="space-y-2 flex-1">
         <div className="flex items-center">
           <FaUserDoctor className="text-white text-xl mr-2" />
-          <span className="text-white">{gpVisits / 500}: GP Visits</span>
+          <span className="text-white">
+            {Math.round(gpVisits / 500)}: GP Visits
+          </span>
         </div>
         <div className="flex items-center">
           <LiaToothSolid className="text-white text-xl mr-2" />
-          <span className="text-white">{dental / 300}: Dentist</span>
+          <span className="text-white">
+            {Math.round(dental / 1000)}: Dentist
+          </span>
         </div>
         <div className="flex items-center">
           <PiEyeThin className="text-white text-xl mr-2" />
-          <span className="text-white">{optometry / 200}: Optometrist</span>
+          <span className="text-white">
+            {Math.round(optometry / 1200)}: Optometrist
+          </span>
         </div>
         <div className="flex items-center">
           <GiMedicinePills className="text-white text-xl mr-2" />

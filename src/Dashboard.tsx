@@ -21,6 +21,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { IoWalletOutline } from "react-icons/io5";
 import { MdOutlineConfirmationNumber, MdHealthAndSafety } from "react-icons/md";
 import { BiTransfer } from "react-icons/bi";
+import { FaTicketAlt } from "react-icons/fa";
 
 import blurredBird from "../src/img/Homepage/settl bird_blur.png";
 import phone from "../src/img/HP_Phones.png";
@@ -30,6 +31,13 @@ import OTPRedemptionModal from "./components/OtpRedemption/OTPRedemption";
 import SignalRservice from "./Services/SignalRservice";
 import PatientList from "./components/Patient/PatientList";
 import MerchantTransactionsTable from "./components/MerchantTransactions/MerchantTransactions";
+
+type ExpenseItem = {
+  category: string;
+  amount: string;
+  icon: JSX.Element;
+  description: string;
+};
 
 const Dashboard: React.FC = () => {
   // Navigation and UI State
@@ -57,6 +65,7 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
+  const [expenses, setExpenses] = useState<ExpenseItem[]>([]);
 
   const circleTexts = [
     "Secure Payments.",
@@ -215,14 +224,60 @@ const Dashboard: React.FC = () => {
     const fetchVouchers = async () => {
       try {
         const response = await getVouchers();
-        setVouchers(response);
+        setVouchers(response); // Keeping this in case you need all vouchers elsewhere
 
-        const balance = response.reduce(
-          (acc: any, voucher: any) => acc + voucher.balance,
+        const activeVouchers = response.filter(
+          (voucher: Voucher) => voucher.balance > 0
+        );
+
+        const usedVouchers = response
+          .filter((voucher: Voucher) => voucher.balance === 0)
+          .sort(
+            (
+              a: { createdDate: string | number | Date },
+              b: { createdDate: string | number | Date }
+            ) =>
+              new Date(b.createdDate).getTime() -
+              new Date(a.createdDate).getTime()
+          )
+          .slice(0, 5);
+
+        const placeholderExpenses: ExpenseItem[] = [
+          {
+            category: "Placeholder",
+            amount: "0",
+            icon: <FaUserDoctor size={30} />,
+            description: "Placeholder expense",
+          },
+        ];
+
+        const finalExpenses: ExpenseItem[] = usedVouchers.map(
+          (voucher: { pluName: any; amount: number }) => ({
+            category: voucher.pluName,
+            amount: Math.floor(voucher.amount / 100).toString(),
+            icon: <FaTicketAlt size={30} />,
+            description: `Used voucher for ${voucher.pluName}`,
+          })
+        );
+
+        while (finalExpenses.length < 5) {
+          finalExpenses.push({
+            category: "Unused Slot",
+            amount: "0",
+            icon: <FaTicketAlt size={30} />,
+            description: "No voucher used for this slot yet",
+          });
+        }
+
+        setExpenses(finalExpenses);
+
+        const balance = activeVouchers.reduce(
+          (acc: any, voucher: { balance: any }) => acc + voucher.balance,
           0
         );
-        const value = response.reduce(
-          (acc: any, voucher: any) => acc + voucher.amount,
+
+        const value = activeVouchers.reduce(
+          (acc: any, voucher: { amount: any }) => acc + voucher.amount,
           0
         );
 
@@ -446,38 +501,7 @@ const Dashboard: React.FC = () => {
                 percentage={Math.floor(percentage)}
                 totalValue={Math.floor(totalValue / 100).toString()}
                 description="Health Vault"
-                expenses={[
-                  {
-                    category: "GP",
-                    amount: "500",
-                    icon: <FaUserDoctor size={30} />,
-                    description: "General practitioner voucher value",
-                  },
-                  {
-                    category: "Dentist",
-                    amount: "500",
-                    icon: <FaTooth size={30} />,
-                    description: "Dentist voucher value",
-                  },
-                  {
-                    category: "Optometrist",
-                    amount: "500",
-                    icon: <FaGlasses size={30} />,
-                    description: "Optometrist voucher value",
-                  },
-                  {
-                    category: "Over the counter medication",
-                    amount: "",
-                    icon: <GiMedicinePills size={30} />,
-                    description: "Over-the-counter medication",
-                  },
-                  {
-                    category: "Transaction summary",
-                    amount: "",
-                    icon: <TbReportAnalytics size={30} />,
-                    description: "Detailed description of past transactions",
-                  },
-                ]}
+                expenses={expenses}
               />
             </div>
           )}
