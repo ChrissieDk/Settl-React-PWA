@@ -7,6 +7,10 @@ import Lottie from "lottie-react";
 import successAnimation from "../../successAnimation.json";
 import failureAnimation from "../../failureAnimation.json";
 
+type MerchantDisplayMap = {
+  [key: string]: string;
+};
+
 const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
   const [merchantId, setMerchantId] = useState(
     "b2b911a2-f8df-4e0e-9168-d5dada20786f"
@@ -43,6 +47,18 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
 
   // Sample data for dropdowns
   const services = ["GP", "Dentist", "Optometrist", "OTC"];
+
+  const merchantDisplayNames: MerchantDisplayMap = {
+    "b2b911a2-f8df-4e0e-9168-d5dada20786f": "Dr. Scott Hogarth",
+    "de66a1f1-544d-414c-bf59-fc31d4344ccb": "Dr. Jesse Thomas",
+    "123": "Dr. Fabian Williams",
+    "456": "Dr. Ryno Ellis",
+    "789": "Dr. Lauren Matthee",
+  };
+
+  const getMerchantDisplayName = (id: string): string => {
+    return merchantDisplayNames[id] || id;
+  };
 
   // Fetch vouchers
   useEffect(() => {
@@ -224,7 +240,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
               <div className="relative" ref={dropdownRef}>
                 <input
                   type="text"
-                  value={merchantId}
+                  value={getMerchantDisplayName(merchantId)}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   readOnly
                   className="border border-gray-300 rounded-md p-2 w-full focus:outline-none cursor-pointer"
@@ -249,7 +265,8 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                           }}
                           className="p-2 hover:bg-gray-100 cursor-pointer rounded-md"
                         >
-                          {merchant}
+                          {getMerchantDisplayName(merchant)}{" "}
+                          {/* This is the only change here */}
                         </div>
                       ))}
                     </div>

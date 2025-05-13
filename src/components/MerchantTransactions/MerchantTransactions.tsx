@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { FaSearch, FaArrowUp, FaArrowDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaSearch,
+  FaArrowUp,
+  FaArrowDown,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import { fetchMerchantTransactions } from "../../Services/data.service"; // Import from your data service
 
 // TypeScript interface for transaction data
@@ -17,7 +23,16 @@ interface Transaction {
 
 // Constants
 const TABLE_HEADERS = [
-  "ID", "Date", "Time", "Type", "Amount", "Balance", "Service", "Status", "Currency", "Voucher Code"
+  "ID",
+  "Date",
+  "Time",
+  "Type",
+  "Amount",
+  "Balance",
+  "Service",
+  "Status",
+  "Currency",
+  "Voucher Code",
 ];
 const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 
@@ -28,23 +43,44 @@ const StatusPill = ({ status }: { status: string }) => {
   let statusText = "Unknown";
 
   switch (status) {
-    case "00": bgColor = "bg-green-100"; textColor = "text-green-800"; statusText = "Completed"; break;
-    case "01": bgColor = "bg-blue-100"; textColor = "text-blue-800"; statusText = "Pending"; break;
-    case "02": bgColor = "bg-yellow-100"; textColor = "text-yellow-800"; statusText = "Processing"; break;
-    case "03": bgColor = "bg-red-100"; textColor = "text-red-800"; statusText = "Failed"; break;
-    default: statusText = status;
+    case "00":
+      bgColor = "bg-green-100";
+      textColor = "text-green-800";
+      statusText = "Success";
+      break;
+    case "01":
+      bgColor = "bg-blue-100";
+      textColor = "text-blue-800";
+      statusText = "Success";
+      break;
+    case "02":
+      bgColor = "bg-yellow-100";
+      textColor = "text-yellow-800";
+      statusText = "Processing";
+      break;
+    case "03":
+      bgColor = "bg-red-100";
+      textColor = "text-red-800";
+      statusText = "Failed";
+      break;
+    default:
+      statusText = status;
   }
 
   return (
-    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${bgColor} ${textColor}`}>
+    <span
+      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${bgColor} ${textColor}`}
+    >
       {statusText}
     </span>
   );
 };
 
 // Helper functions
-const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
-const formatTime = (dateString: string) => new Date(dateString).toLocaleTimeString();
+const formatDate = (dateString: string) =>
+  new Date(dateString).toLocaleDateString();
+const formatTime = (dateString: string) =>
+  new Date(dateString).toLocaleTimeString();
 const truncateId = (id: string) => id.substring(0, 8) + "...";
 
 // Main component
@@ -67,7 +103,9 @@ const MerchantTransactionsTable = ({ userId }: { userId?: string }) => {
       try {
         setLoading(true);
         const data = await fetchMerchantTransactions(userId);
-        setTransactions(data.map(t => ({ ...t, transactionId: t.transactionId || t.id })));
+        setTransactions(
+          data.map((t) => ({ ...t, transactionId: t.transactionId || t.id }))
+        );
         setError(null);
       } catch (err) {
         setError("Failed to load transactions");
@@ -106,8 +144,11 @@ const MerchantTransactionsTable = ({ userId }: { userId?: string }) => {
           transaction.id.toLowerCase().includes(lowerSearchTerm) ||
           transaction.transactionType.toLowerCase().includes(lowerSearchTerm) ||
           transaction.service.toLowerCase().includes(lowerSearchTerm) ||
-          (transaction.voucherCode && transaction.voucherCode.toLowerCase().includes(lowerSearchTerm)) ||
-          formatDate(transaction.transactionDate).toLowerCase().includes(lowerSearchTerm)
+          (transaction.voucherCode &&
+            transaction.voucherCode.toLowerCase().includes(lowerSearchTerm)) ||
+          formatDate(transaction.transactionDate)
+            .toLowerCase()
+            .includes(lowerSearchTerm)
       );
     }
 
@@ -130,7 +171,10 @@ const MerchantTransactionsTable = ({ userId }: { userId?: string }) => {
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentTransactions = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem);
+  const currentTransactions = filteredTransactions.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
@@ -139,7 +183,9 @@ const MerchantTransactionsTable = ({ userId }: { userId?: string }) => {
     }
   };
 
-  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setItemsPerPage(Number(e.target.value));
     setCurrentPage(1);
   };
@@ -153,13 +199,13 @@ const MerchantTransactionsTable = ({ userId }: { userId?: string }) => {
       for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
     } else {
       pageNumbers.push(1);
-      
+
       let startPage = Math.max(2, currentPage - 1);
       let endPage = Math.min(totalPages - 1, currentPage + 1);
-      
+
       if (currentPage <= 2) endPage = 3;
       else if (currentPage >= totalPages - 1) startPage = totalPages - 2;
-      
+
       if (startPage > 2) pageNumbers.push("...");
       for (let i = startPage; i <= endPage; i++) pageNumbers.push(i);
       if (endPage < totalPages - 1) pageNumbers.push("...");
@@ -407,7 +453,7 @@ const MerchantTransactionsTable = ({ userId }: { userId?: string }) => {
   return (
     <div className="flex flex-col">
       {renderSearchBar()}
-      
+
       <div className="mt-4 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
         <div className="overflow-x-auto">
           {filteredTransactions.length > 0 ? (

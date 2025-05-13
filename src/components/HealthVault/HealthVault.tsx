@@ -63,18 +63,18 @@ const HealthVault: React.FC<HealthVaultProps> = ({
         <div className="bg-gradient-to-r from-orange-400 via-orange-400 to-blue-400 text-white rounded-lg p-6 relative overflow-hidden text-left shadow-xl row-span-2 md:col-span-2">
           <div className="relative flex items-center justify-between">
             <div className="lg:ml-4 space-y-2">
-              <h2 className="text-lg lg:text-2xl font-button text-[#FFFFFF]">
-                My Balance
-              </h2>
-              <p className="text-2xl lg:text-6xl font-header text-[#FFFFFF]">
-                R {balance}
-              </p>
               <h2 className="text-lg font-button text-[#FFFFFF]">
                 Total Voucher Value
               </h2>
               <h2 className="text-lg font-paragraph text-[#FFFFFF]">
                 R {totalValue}
               </h2>
+              <h2 className="text-lg lg:text-2xl font-button text-[#FFFFFF]">
+                My Balance
+              </h2>
+              <p className="text-2xl lg:text-6xl font-header text-[#FFFFFF]">
+                R {balance}
+              </p>
             </div>
             <div className="w-32 h-32 lg:w-60 lg:h-60 rounded-full bg-white bg-opacity-10 flex items-center justify-center lg:mt-8 lg:mr-5">
               <CircularProgress percentage={percentage} />

@@ -283,6 +283,14 @@ const Load: React.FC<LoadProps> = ({
                 Secure Payment
               </button>
             </form>
+            <a
+              href="https://netcash.co.za/demos/landing-page.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center w-full py-2 px-4 mt-2 rounded-md shadow-sm text-lg font-paragraph text-blue-500 border border-blue-400 hover:bg-blue-50 transition-colors duration-200"
+            >
+              Need alternative payment method?
+            </a>
             <div></div>
           </>
         );
