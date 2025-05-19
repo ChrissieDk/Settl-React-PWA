@@ -56,7 +56,6 @@ axiosInstance.interceptors.response.use(
 export const register = async (user: UserIn) => {
   try {
     const response = await axiosInstance.post("/user/register", user);
-    console.log("User registered:", response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -140,7 +139,6 @@ export const initiateAuthenticateToken = async (
     const response = await axiosInstance.get(
       `/payment/initiateauthenticatetoken/${paymentToken}/${orderId}`
     );
-    console.log("Token authenticated:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error authenticating token:", error);
