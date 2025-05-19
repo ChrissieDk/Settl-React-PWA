@@ -179,6 +179,53 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
     alert("OTP copied to clipboard!");
   };
 
+  // Calculate the order summary values
+  const calculateOrderSummary = () => {
+    if (!transactionAmount)
+      return { amount: 0, settlFee: 0, transactionFee: 0, total: 0 };
+
+    const amount = parseInt(transactionAmount, 10) / 100; // Convert cents to Rands
+    const settlFee = amount * 0.075; // 7.5% Settl fee
+    const transactionFee = amount * 0.025; // 2.5% Transaction fee
+    const total = amount + settlFee + transactionFee;
+
+    return {
+      amount,
+      settlFee,
+      transactionFee,
+      total,
+    };
+  };
+
+  // Order summary component
+  const OrderSummary = () => {
+    const { amount, settlFee, transactionFee, total } = calculateOrderSummary();
+
+    return (
+      <div className="mt-6 border-t border-gray-200 pt-4">
+        <h3 className="text-lg font-semibold mb-3">Order Summary</h3>
+        <div className="space-y-2">
+          <div className="flex justify-between px-2">
+            <span>Voucher Amount</span>
+            <span>R {amount.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between px-2 text-gray-600">
+            <span>Settl Fee (7.5%)</span>
+            <span>R {settlFee.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between px-2 text-gray-600">
+            <span>Transaction Fee (2.5%)</span>
+            <span>R {transactionFee.toFixed(2)}</span>
+          </div>
+          <div className="mt-2 py-2 px-2 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm flex justify-between">
+            <span>Total</span>
+            <span>R {total.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderContent = () => {
     switch (redeemStatus) {
       case "otpGenerated":
@@ -265,8 +312,7 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                           }}
                           className="p-2 hover:bg-gray-100 cursor-pointer rounded-md"
                         >
-                          {getMerchantDisplayName(merchant)}{" "}
-                          {/* This is the only change here */}
+                          {getMerchantDisplayName(merchant)}
                         </div>
                       ))}
                     </div>
@@ -384,6 +430,9 @@ const RedeemModal: React.FC<TokenModalProps> = ({ isOpen, onClose }) => {
                 required
               />
             </div>
+
+            {/* Order Summary Section */}
+            {transactionAmount && <OrderSummary />}
 
             {/* Submit Button */}
             <div className="mt-6">

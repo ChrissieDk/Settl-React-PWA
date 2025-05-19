@@ -3,7 +3,7 @@ import { FaUserDoctor } from "react-icons/fa6";
 import { LiaToothSolid } from "react-icons/lia";
 import { PiEyeThin } from "react-icons/pi";
 import { GiMedicinePills } from "react-icons/gi";
-import { useNavigate } from "react-router-dom"; // Add this import
+import { useNavigate } from "react-router-dom";
 
 interface IconListProps {
   gpVisits: number;

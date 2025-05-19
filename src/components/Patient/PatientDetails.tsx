@@ -148,9 +148,9 @@ const PatientDetail: React.FC<PatientDetailModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white p-6 shrink-0">
+        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white p-3 shrink-0">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">User Details</h2>
+            <h2 className="text-xl font-bold">User Details</h2>
             <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-white/20 transition-colors"
